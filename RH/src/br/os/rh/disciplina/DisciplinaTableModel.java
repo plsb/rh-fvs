@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.os.rh.disciplina;
 
 import br.os.rh.curso.Curso;
@@ -17,9 +16,9 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author JOABB
  */
+public class DisciplinaTableModel extends AbstractTableModel {
 
-public class DisciplinaTableModel extends AbstractTableModel{
-        private String[] nomeColunas = {"Código", "Descrição","Hora/Aula"};
+    private String[] nomeColunas = {"Código", "Descrição", "Hora/Aula", "Semestre", "Curso"};
     private List<Disciplina> disciplinas;
 
     /**
@@ -70,6 +69,12 @@ public class DisciplinaTableModel extends AbstractTableModel{
                 return Util.decimalFormat().format(disciplina.getId());
             case 1:
                 return disciplina.getDescricao();
+            case 2:
+                return disciplina.getHoras();
+            case 3:
+                return disciplina.getSemestre().getDescricao();
+            case 4:
+                return disciplina.getSemestre().getCurso().getDescricao();
 
         }
         return null;
@@ -77,7 +82,7 @@ public class DisciplinaTableModel extends AbstractTableModel{
 
     /**
      * Método sobrescrito.
-     * 
+     *
      * @param column int.
      * @return String nomeColunas[index].
      */
@@ -90,6 +95,10 @@ public class DisciplinaTableModel extends AbstractTableModel{
                 return nomeColunas[1];
             case 2:
                 return nomeColunas[2];
+            case 3:
+                return nomeColunas[3];
+            case 4:
+                return nomeColunas[4];
         }
         return null;
     }

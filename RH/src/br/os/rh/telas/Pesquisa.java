@@ -5,12 +5,22 @@
  */
 
 package br.os.rh.telas;
+import br.os.rh.util.*;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JViewport;
+import javax.swing.table.AbstractTableModel;
 
 /**
  *
  * @author JOABB
  */
 public class Pesquisa extends javax.swing.JFrame {
+    
+    private static Object o;
 
     /**
      * Creates new form Pesquisa
@@ -193,6 +203,21 @@ public class Pesquisa extends javax.swing.JFrame {
         procuraTable(tfPesquisar.getText());
     }//GEN-LAST:event_btProcurarActionPerformed
 
+    private void procuraTable(String nome) {
+        for (int linha = 0; linha < tbPesquisa.getRowCount(); linha++) {
+            String nomeTabela = String.valueOf(tbPesquisa.getValueAt(linha, 1));
+            if (nomeTabela.toLowerCase().startsWith(nome.toLowerCase())) {
+                tbPesquisa.setRowSelectionInterval(linha, linha);
+                JViewport viewport = (JViewport) tbPesquisa.getParent();
+                Rectangle rect = tbPesquisa.getCellRect(linha, 1, true);
+                Point pt = viewport.getViewPosition();
+                rect.setLocation(rect.x - pt.x, rect.y - pt.y);
+                viewport.scrollRectToVisible(rect);
+                break;
+            }
+        }
+    }
+    
     private void tbPesquisaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPesquisaMouseClicked
         if (evt.getClickCount() == 2) {
             btSelecionarActionPerformed(null);

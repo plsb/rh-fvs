@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.os.rh.telas;
 
 import br.os.rh.periodo.Periodo;
 import br.os.rh.periodo.PeriodoDAO;
 import br.os.rh.periodo.PeriodoTableModel;
+import br.os.rh.util.Util;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -17,7 +17,9 @@ import javax.swing.JOptionPane;
  * @author JOABB
  */
 public class TelaPeriodo extends javax.swing.JDialog {
+
     private Periodo periodo;
+
     /**
      * Creates new form TelaPeriodo
      */
@@ -25,7 +27,8 @@ public class TelaPeriodo extends javax.swing.JDialog {
         initComponents();
         setModal(true);
         setLocationRelativeTo(null);
-        }
+        limpaCampos();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -48,6 +51,7 @@ public class TelaPeriodo extends javax.swing.JDialog {
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
 
@@ -179,56 +183,48 @@ public class TelaPeriodo extends javax.swing.JDialog {
     private void tfDescricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfDescricaoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfDescricaoActionPerformed
-    private void limpaCampos(){
+    private void limpaCampos() {
         tfDescricao.setText("");
-        periodo=null;
+        periodo = new Periodo();
         btRemover.setEnabled(false);
     }
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         limpaCampos();
     }//GEN-LAST:event_jButton5ActionPerformed
-    private boolean verificaCampos(){
-        if (tfDescricao.equals("")){
-            return false;
-          
-        }
-        return true;
-    }
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (verificaCampos()){
-            Periodo p = new Periodo();
-            p.setDescricao(tfDescricao.getText());
+        if (Util.chkVazio(tfDescricao.getText())) {
+            
+            periodo.setDescricao(tfDescricao.getText());
 
             PeriodoDAO dao = new PeriodoDAO();
-            dao.salvar(p);
+            dao.salvar(periodo);
             limpaCampos();
 
             JOptionPane.showMessageDialog(rootPane, "Cadastro Efetuado");
-        }else{
-            JOptionPane.showMessageDialog(rootPane, "Preencha os Campos Obrigatórios (*)");
-        }
+        } 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverActionPerformed
         PeriodoDAO dao = new PeriodoDAO();
         dao.remover(periodo);
         limpaCampos();
-        
+
         JOptionPane.showMessageDialog(rootPane, "Periodo Excluído");
-        
+
     }//GEN-LAST:event_btRemoverActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         PeriodoDAO dao = new PeriodoDAO();
-        List <Periodo> periodos = (!tfDescricao.getText().isEmpty() ? dao.pesquisaDescricao(tfDescricao.getText())
-            : dao.listar());
+        List<Periodo> periodos = (!tfDescricao.getText().isEmpty() ? dao.pesquisaDescricao(tfDescricao.getText())
+                : dao.listar());
 
         PeriodoTableModel ctm = new PeriodoTableModel(periodos);
 
         Object o = TelaPesquisa.exibeTela(ctm, "Periodo");
 
-        if (o != null){
-            periodo = new Periodo();
+        if (o != null) {
+            
             periodo = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
 
             tfDescricao.setText(periodo.getDescricao());
@@ -238,8 +234,7 @@ public class TelaPeriodo extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        setVisible(false);
-        //dispose();
+        dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
