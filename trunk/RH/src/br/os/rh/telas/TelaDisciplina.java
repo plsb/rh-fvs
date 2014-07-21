@@ -6,9 +6,20 @@
 
 package br.os.rh.telas;
 
+import br.os.rh.curso.Curso;
+import br.os.rh.curso.CursoDAO;
+import br.os.rh.curso.CursoTableModel;
 import br.os.rh.disciplina.Disciplina;
 import br.os.rh.disciplina.DisciplinaDAO;
 import br.os.rh.disciplina.DisciplinaTableModel;
+import br.os.rh.estado.Estado;
+import br.os.rh.estado.EstadoDAO;
+import br.os.rh.estado.EstadoTableModel;
+import br.os.rh.semestre.Semestre;
+import br.os.rh.semestre.SemestreDAO;
+import br.os.rh.semestre.SemestreTableModel;
+import br.os.rh.util.OnlyNumberField;
+import br.os.rh.util.Util;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -25,6 +36,8 @@ public class TelaDisciplina extends javax.swing.JDialog {
         initComponents();
         setModal(true);
         setLocationRelativeTo(null);
+        limpaCampos();
+        tfCH.setDocument(new OnlyNumberField(3));
     }
 
     /**
@@ -45,6 +58,12 @@ public class TelaDisciplina extends javax.swing.JDialog {
         btRemover = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        tfCH = new javax.swing.JTextField();
+        tfSemestre = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -98,6 +117,39 @@ public class TelaDisciplina extends javax.swing.JDialog {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel2.setText("Carga Horária:*");
+
+        tfCH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfCHActionPerformed(evt);
+            }
+        });
+
+        tfSemestre.setEnabled(false);
+        tfSemestre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfSemestreActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel3.setText("Semestre:*");
+
+        jButton2.setText("...");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setText("+");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -107,7 +159,7 @@ public class TelaDisciplina extends javax.swing.JDialog {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tfDescricao)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addGap(0, 205, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -117,9 +169,20 @@ public class TelaDisciplina extends javax.swing.JDialog {
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(tfCH, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(tfSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton6)))))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -128,19 +191,32 @@ public class TelaDisciplina extends javax.swing.JDialog {
                 .addGap(23, 23, 23)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tfDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(tfDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfCH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2)
+                            .addComponent(jButton6))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btRemover, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setText("CADASTRO DE CURSO");
+        jLabel5.setText("CADASTRO DE DISCIPLINA");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -159,16 +235,14 @@ public class TelaDisciplina extends javax.swing.JDialog {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,32 +257,26 @@ public class TelaDisciplina extends javax.swing.JDialog {
     }//GEN-LAST:event_tfDescricaoActionPerformed
     private void limpaCampos(){
         tfDescricao.setText("");
-        disciplina=null;
+        disciplina= new Disciplina();
         btRemover.setEnabled(false);
+        tfCH.setText("");
+        tfSemestre.setText("");
              
     }
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         limpaCampos();
     }//GEN-LAST:event_jButton5ActionPerformed
-    private boolean verificaCampos(){
-        if (tfDescricao.equals("")){
-            return false;
-          
-        }
-        return true;
-    }
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (verificaCampos()){
-            Disciplina d = new Disciplina();
-            d.setDescricao(tfDescricao.getText());
-
+        if (Util.chkVazio(tfCH.getText(),tfSemestre.getText(),tfDescricao.getText())){
+            
+            disciplina.setDescricao(tfDescricao.getText());
+            disciplina.setHoras(Integer.parseInt(tfCH.getText()));
             DisciplinaDAO dao = new DisciplinaDAO();
-            dao.salvar(d);
+            dao.salvar(disciplina);
             limpaCampos();
 
             JOptionPane.showMessageDialog(rootPane, "Cadastro Efetuado");
-        }else{
-            JOptionPane.showMessageDialog(rootPane, "Preencha os Campos Obrigatórios (*)");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -234,6 +302,8 @@ public class TelaDisciplina extends javax.swing.JDialog {
             disciplina = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
 
             tfDescricao.setText(disciplina.getDescricao());
+            tfCH.setText(String.valueOf(disciplina.getHoras()));
+            tfSemestre.setText(disciplina.getSemestre().toString());
 
             btRemover.setEnabled(true);
         }
@@ -244,6 +314,34 @@ public class TelaDisciplina extends javax.swing.JDialog {
         setVisible(false);
         //dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void tfCHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfCHActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfCHActionPerformed
+
+    private void tfSemestreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfSemestreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfSemestreActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        TelaSemestre ts = new TelaSemestre();
+        ts.setVisible(true);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        SemestreDAO dao = new SemestreDAO();
+        List<Semestre> lista = dao.listar();
+        SemestreTableModel stm = new SemestreTableModel(lista);
+        Object o = TelaPesquisa.exibeTela(stm, "Semestre");
+        Semestre s;
+        if (o != null) {
+            s = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
+            disciplina.setSemestre(s);
+            tfSemestre.setText(s.toString());
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -283,13 +381,19 @@ public class TelaDisciplina extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btRemover;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JTextField tfCH;
     private javax.swing.JTextField tfDescricao;
+    private javax.swing.JTextField tfSemestre;
     // End of variables declaration//GEN-END:variables
 }

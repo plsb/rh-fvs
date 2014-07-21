@@ -21,6 +21,18 @@ public class UsuarioDAO extends GenericDAO<Usuario>{
      public UsuarioDAO(){
         super(Usuario.class);
     }
+     
+     public boolean  autentica(Usuario usu){
+         setSessao(HibernateUtil.getSessionFactory().openSession());
+        setTransacao(getSessao().beginTransaction());
+        
+        Usuario usuario = (Usuario) getSessao().createCriteria(Usuario.class).
+                add(Restrictions.eq("login", usu.getLogin())).
+                add(Restrictions.eq("senha", usu.getSenha())).uniqueResult();
+        
+        getSessao().close();
+        return usuario!=null;
+     }
     
     public List <Usuario> pesquisaDescricao(String Login){
         setSessao(HibernateUtil.getSessionFactory().openSession());

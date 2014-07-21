@@ -7,6 +7,7 @@
 package br.os.rh.disciplina;
 
 import br.os.rh.curso.Curso;
+import br.os.rh.semestre.Semestre;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,52 +25,15 @@ public class Disciplina {
     @GeneratedValue
     private int id;
     
-    @Column (length = 45, nullable = false)
+    @Column (length = 200, nullable = false)
     private String descricao;
     
     private int horas;
     
     @ManyToOne
-    private Curso curso;
+    private Semestre semestre;
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 59 * hash + this.id;
-        hash = 59 * hash + Objects.hashCode(this.descricao);
-        hash = 59 * hash + this.horas;
-        hash = 59 * hash + Objects.hashCode(this.curso);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Disciplina other = (Disciplina) obj;
-        if (this.id != other.id) {
-            return false;
-        }
-        if (!Objects.equals(this.descricao, other.descricao)) {
-            return false;
-        }
-        if (this.horas != other.horas) {
-            return false;
-        }
-        if (!Objects.equals(this.curso, other.curso)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Disciplina{" + "id=" + id + ", descricao=" + descricao + ", horas=" + horas + ", curso=" + curso + '}';
-    }
+    
 
     /**
      * @return the id
@@ -114,17 +78,52 @@ public class Disciplina {
     }
 
     /**
-     * @return the curso
+     * @return the semestre
      */
-    public Curso getCurso() {
-        return curso;
+    public Semestre getSemestre() {
+        return semestre;
     }
 
     /**
-     * @param curso the curso to set
+     * @param semestre the semestre to set
      */
-    public void setCurso(Curso curso) {
-        this.curso = curso;
+    public void setSemestre(Semestre semestre) {
+        this.semestre = semestre;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 31 * hash + this.id;
+        hash = 31 * hash + Objects.hashCode(this.descricao);
+        hash = 31 * hash + this.horas;
+        hash = 31 * hash + Objects.hashCode(this.semestre);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Disciplina other = (Disciplina) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.descricao, other.descricao)) {
+            return false;
+        }
+        if (this.horas != other.horas) {
+            return false;
+        }
+        if (!Objects.equals(this.semestre, other.semestre)) {
+            return false;
+        }
+        return true;
+    }
+
     
 }

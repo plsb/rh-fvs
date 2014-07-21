@@ -4,11 +4,10 @@
  * and open the template in the editor.
  */
 
-package br.os.rh.cidade;
+package br.os.rh.semestre;
 
-import br.os.rh.estado.Estado;
+import br.os.rh.curso.Curso;
 import java.util.Objects;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,47 +15,68 @@ import javax.persistence.ManyToOne;
 
 /**
  *
- * @author JOABB
+ * @author 'Pedro
  */
 @Entity
-public class Cidade {
+public class Semestre {
+    
     @Id
     @GeneratedValue
     private int id;
     
-    @Column(length = 45, nullable = false)
     private String descricao;
     
     @ManyToOne
-    private Estado estado;
-    
-    @Override
-    public String toString() {
-        return "Cidade{" + "id=" + id + ", descricao=" + descricao + '}';
-    }
+    private Curso curso;
 
+    /**
+     * @return the id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * @return the descricao
+     */
     public String getDescricao() {
         return descricao;
     }
 
+    /**
+     * @param descricao the descricao to set
+     */
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
 
-    
+    /**
+     * @return the curso
+     */
+    public Curso getCurso() {
+        return curso;
+    }
+
+    /**
+     * @param curso the curso to set
+     */
+    public void setCurso(Curso curso) {
+        this.curso = curso;
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 53 * hash + this.id;
-        hash = 53 * hash + Objects.hashCode(this.descricao);
+        hash = 29 * hash + this.id;
+        hash = 29 * hash + Objects.hashCode(this.descricao);
+        hash = 29 * hash + Objects.hashCode(this.curso);
         return hash;
     }
 
@@ -68,29 +88,24 @@ public class Cidade {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Cidade other = (Cidade) obj;
+        final Semestre other = (Semestre) obj;
         if (this.id != other.id) {
             return false;
         }
         if (!Objects.equals(this.descricao, other.descricao)) {
             return false;
         }
+        if (!Objects.equals(this.curso, other.curso)) {
+            return false;
+        }
         return true;
     }
 
-    /**
-     * @return the estado
-     */
-    public Estado getEstado() {
-        return estado;
+    @Override
+    public String toString() {
+        return "{" +  descricao + ", " + curso.getDescricao() + '}';
     }
-
-    /**
-     * @param estado the estado to set
-     */
-    public void setEstado(Estado estado) {
-        this.estado = estado;
-    }
-
+    
+    
     
 }

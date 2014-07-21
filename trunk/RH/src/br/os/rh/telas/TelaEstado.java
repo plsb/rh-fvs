@@ -9,6 +9,7 @@ package br.os.rh.telas;
 import br.os.rh.estado.Estado;
 import br.os.rh.estado.EstadoDAO;
 import br.os.rh.estado.EstadoTableModel;
+import br.os.rh.util.Util;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -25,6 +26,7 @@ public class TelaEstado extends javax.swing.JDialog {
         initComponents();
         setModal(true);
         setLocationRelativeTo(null);
+        limpaCampos();
     }
 
     /**
@@ -48,6 +50,7 @@ public class TelaEstado extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
 
@@ -181,32 +184,23 @@ public class TelaEstado extends javax.swing.JDialog {
     }//GEN-LAST:event_tfDescricaoActionPerformed
     private void limpaCampos(){ //limpar campos
         tfDescricao.setText("");
-        estado=null;
+        estado= new Estado();
         btRemover.setEnabled(false);
     }
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         limpaCampos();
     }//GEN-LAST:event_jButton5ActionPerformed
-    
-    private boolean verificaCampos(){
-        if (tfDescricao.equals("")){
-            return false;
-          
-        }
-        return true;
-    }
+        
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (verificaCampos()){
-        Estado e = new Estado();
-        e.setDescricao(tfDescricao.getText());
+        if (Util.chkVazio(tfDescricao.getText())){
+        
+        estado.setDescricao(tfDescricao.getText());
 
         EstadoDAO dao = new EstadoDAO();
-        dao.salvar(e);
+        dao.salvar(estado);
         limpaCampos();
 
             JOptionPane.showMessageDialog(rootPane, "Cadastro Efetuado");
-        }else{
-            JOptionPane.showMessageDialog(rootPane, "Preencha os Campos Obrigatórios (*)");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -239,8 +233,7 @@ public class TelaEstado extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        setVisible(false);
-        //dispose();
+        dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**

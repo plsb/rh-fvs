@@ -6,9 +6,18 @@
 
 package br.os.rh.telas;
 
-import br.os.rh.titulacao.Titulacao;
-import br.os.rh.titulacao.TitulacaoDAO;
-import br.os.rh.titulacao.TitulacaoTableModel;
+import br.os.rh.cidade.Cidade;
+import br.os.rh.cidade.CidadeDAO;
+import br.os.rh.cidade.CidadeTableModel;
+import br.os.rh.curso.Curso;
+import br.os.rh.curso.CursoDAO;
+import br.os.rh.curso.CursoTableModel;
+import br.os.rh.estado.Estado;
+import br.os.rh.estado.EstadoDAO;
+import br.os.rh.estado.EstadoTableModel;
+import br.os.rh.semestre.Semestre;
+import br.os.rh.semestre.SemestreDAO;
+import br.os.rh.semestre.SemestreTableModel;
 import br.os.rh.util.Util;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -17,12 +26,12 @@ import javax.swing.JOptionPane;
  *
  * @author JOABB
  */
-public class TelaTitulacao extends javax.swing.JDialog {
-    private Titulacao titulacao;
+public class TelaSemestre extends javax.swing.JDialog {
+    private Semestre semestre;
     /**
-     * Creates new form TelaTitulacao
+     * Creates new form TelaCidade
      */
-    public TelaTitulacao() {
+    public TelaSemestre() {
         initComponents();
         setModal(true);
         setLocationRelativeTo(null);
@@ -39,7 +48,6 @@ public class TelaTitulacao extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         tfDescricao = new javax.swing.JTextField();
@@ -48,14 +56,16 @@ public class TelaTitulacao extends javax.swing.JDialog {
         btRemover = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        tfCurso = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setText("CADASTRO DE TITULAÇÃO");
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -104,6 +114,30 @@ public class TelaTitulacao extends javax.swing.JDialog {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel2.setText("Curso: *");
+
+        tfCurso.setEnabled(false);
+        tfCurso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfCursoActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("...");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setText("+");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -112,20 +146,30 @@ public class TelaTitulacao extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tfDescricao)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addGap(0, 205, Short.MAX_VALUE)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(0, 407, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addComponent(tfCurso)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton6)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -135,6 +179,13 @@ public class TelaTitulacao extends javax.swing.JDialog {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tfDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton6))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -142,8 +193,11 @@ public class TelaTitulacao extends javax.swing.JDialog {
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap())
         );
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel5.setText("CADASTRO DE CIDADE");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -160,8 +214,8 @@ public class TelaTitulacao extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(26, 26, 26))
         );
 
@@ -182,22 +236,23 @@ public class TelaTitulacao extends javax.swing.JDialog {
     private void tfDescricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfDescricaoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfDescricaoActionPerformed
-    private void limpaCampos(){
+     private void limpaCampos(){ //limpar campos
         tfDescricao.setText("");
-        titulacao= new Titulacao();
+        semestre= new Semestre();
         btRemover.setEnabled(false);
+        tfCurso.setText("");
     }
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         limpaCampos();
     }//GEN-LAST:event_jButton5ActionPerformed
-    
+     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (Util.chkVazio(tfDescricao.getText())){
+        if (Util.chkVazio(tfDescricao.getText(),tfCurso.getText())){
             
-            titulacao.setDescricao(tfDescricao.getText());
+            semestre.setDescricao(tfDescricao.getText());
 
-            TitulacaoDAO dao = new TitulacaoDAO();
-            dao.salvar(titulacao);
+            SemestreDAO dao = new SemestreDAO();
+            dao.salvar(semestre);
             limpaCampos();
 
             JOptionPane.showMessageDialog(rootPane, "Cadastro Efetuado");
@@ -205,27 +260,28 @@ public class TelaTitulacao extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverActionPerformed
-        TitulacaoDAO dao = new TitulacaoDAO();
-        dao.remover(titulacao);
+        SemestreDAO dao = new SemestreDAO();
+        dao.remover(semestre);
         limpaCampos();
         
-        JOptionPane.showMessageDialog(rootPane, "Titulacao Excluída");
+        JOptionPane.showMessageDialog(rootPane, "Cidade Excluída");
     }//GEN-LAST:event_btRemoverActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        TitulacaoDAO dao = new TitulacaoDAO();
-        List <Titulacao> titulacoes = (!tfDescricao.getText().isEmpty() ? dao.pesquisaDescricao(tfDescricao.getText())
+        SemestreDAO dao = new SemestreDAO();
+        List <Semestre> semestres = (!tfDescricao.getText().isEmpty() ? dao.pesquisaDescricao(tfDescricao.getText())
             : dao.listar());
 
-        TitulacaoTableModel etm = new TitulacaoTableModel(titulacoes);
+        SemestreTableModel etm = new SemestreTableModel(semestres);
 
-        Object o = TelaPesquisa.exibeTela(etm, "Estado");
+        Object o = TelaPesquisa.exibeTela(etm, "Semestre");
 
         if (o != null){
-            
-            titulacao = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
+             
+            semestre = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
 
-            tfDescricao.setText(titulacao.getDescricao());
+            tfDescricao.setText(semestre.getDescricao());
+            tfCurso.setText(semestre.getCurso().getDescricao());
 
             btRemover.setEnabled(true);
         }
@@ -234,6 +290,30 @@ public class TelaTitulacao extends javax.swing.JDialog {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void tfCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfCursoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfCursoActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        TelaCurso tc = new TelaCurso();
+        tc.setVisible(true);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        CursoDAO dao = new CursoDAO();
+        List<Curso> lista = dao.listar();
+        CursoTableModel stm = new CursoTableModel(lista);
+        Object o = TelaPesquisa.exibeTela(stm, "Curso");
+        Curso c;
+        if (o != null) {
+            c = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
+            semestre.setCurso(c);
+            tfCurso.setText(c.getDescricao());
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -252,20 +332,20 @@ public class TelaTitulacao extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaTitulacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaSemestre.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaTitulacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaSemestre.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaTitulacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaSemestre.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaTitulacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaSemestre.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaTitulacao().setVisible(true);
+                new TelaSemestre().setVisible(true);
             }
         });
     }
@@ -273,13 +353,17 @@ public class TelaTitulacao extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btRemover;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JTextField tfCurso;
     private javax.swing.JTextField tfDescricao;
     // End of variables declaration//GEN-END:variables
 }

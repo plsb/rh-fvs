@@ -8,6 +8,7 @@ package br.os.rh.telas;
 import br.os.rh.usuario.Usuario;
 import br.os.rh.usuario.UsuarioDAO;
 import br.os.rh.usuario.UsuarioTableModel;
+import br.os.rh.util.Util;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -17,7 +18,7 @@ import javax.swing.JOptionPane;
  */
 public class TelaUsuario extends javax.swing.JDialog {
 
-    private Usuario usuario;
+    private Usuario u;
 
     /**
      * Creates new form TelaUsuario
@@ -26,6 +27,7 @@ public class TelaUsuario extends javax.swing.JDialog {
         initComponents();
         setModal(true);
         setLocationRelativeTo(null);
+        limpaCampos();
     }
 
     /**
@@ -47,12 +49,14 @@ public class TelaUsuario extends javax.swing.JDialog {
         btRemover = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        tfSenha = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        tfConfirmaSenha = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        tfSenha = new javax.swing.JPasswordField();
+        tfConfirmaSenha = new javax.swing.JPasswordField();
+        chbAdministrado = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
 
@@ -106,23 +110,14 @@ public class TelaUsuario extends javax.swing.JDialog {
             }
         });
 
-        tfSenha.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfSenhaActionPerformed(evt);
-            }
-        });
-
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Senha:*");
 
-        tfConfirmaSenha.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfConfirmaSenhaActionPerformed(evt);
-            }
-        });
-
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText("Confimar Senha:*");
+
+        chbAdministrado.setBackground(new java.awt.Color(255, 255, 255));
+        chbAdministrado.setText("Administrador");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -131,17 +126,6 @@ public class TelaUsuario extends javax.swing.JDialog {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addGap(0, 205, Short.MAX_VALUE)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -152,8 +136,22 @@ public class TelaUsuario extends javax.swing.JDialog {
                             .addComponent(tfSenha, javax.swing.GroupLayout.Alignment.LEADING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(tfConfirmaSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tfConfirmaSenha, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(chbAdministrado)
+                                    .addComponent(jLabel3))
+                                .addGap(105, 105, 105)))))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -162,8 +160,10 @@ public class TelaUsuario extends javax.swing.JDialog {
                 .addGap(23, 23, 23)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tfLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chbAdministrado))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -200,7 +200,7 @@ public class TelaUsuario extends javax.swing.JDialog {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -224,25 +224,21 @@ public class TelaUsuario extends javax.swing.JDialog {
         tfLogin.setText("");
         tfSenha.setText("");
         tfConfirmaSenha.setText("");
-        usuario = null;
+        u = new Usuario();
         btRemover.setEnabled(false);
+        chbAdministrado.setSelected(false);
     }
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         limpaCampos();
     }//GEN-LAST:event_jButton5ActionPerformed
-    private boolean verificaCampos() {
-        if (tfLogin.equals("") || tfSenha.equals("") || tfConfirmaSenha.equals("")) {
-            return false;
-
-        }
-        return true;
-    }
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (verificaCampos()) {
+        if (Util.chkVazio(tfLogin.getText(),tfSenha.getText(),tfConfirmaSenha.getText())) {
             if (tfSenha.getText().equals(tfConfirmaSenha.getText())) {
-                Usuario u = new Usuario();
+                
                 u.setLogin(tfLogin.getText());
                 u.setSenha(tfSenha.getText());
+                u.setAdministrador(chbAdministrado.isSelected());
 
                 UsuarioDAO dao = new UsuarioDAO();
                 dao.salvar(u);
@@ -253,17 +249,15 @@ public class TelaUsuario extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(rootPane, "Confirmação de Senha não confere com a Senha");
             }
 
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "Preencha os Campos Obrigatórios (*)");
-        }
+        } 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverActionPerformed
         UsuarioDAO dao = new UsuarioDAO();
-        dao.remover(usuario);
+        dao.remover(u);
         limpaCampos();
 
-        JOptionPane.showMessageDialog(rootPane, "Estado Excluído");
+        JOptionPane.showMessageDialog(rootPane, "Usuário Excluído");
     }//GEN-LAST:event_btRemoverActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -275,28 +269,19 @@ public class TelaUsuario extends javax.swing.JDialog {
 
         Object o = TelaPesquisa.exibeTela(utm, "Usuario");
 
-        if (o != null) {
-            usuario = new Usuario();
-            usuario = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
+        if (o != null) {        
+            u = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
 
-            tfLogin.setText(usuario.getLogin());
+            tfLogin.setText(u.getLogin());
+            chbAdministrado.setSelected(u.isAdministrador());
 
             btRemover.setEnabled(true);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        setVisible(false);
-        //dispose();
+        dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void tfSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfSenhaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfSenhaActionPerformed
-
-    private void tfConfirmaSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfConfirmaSenhaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfConfirmaSenhaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -335,6 +320,7 @@ public class TelaUsuario extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btRemover;
+    private javax.swing.JCheckBox chbAdministrado;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -345,8 +331,8 @@ public class TelaUsuario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JTextField tfConfirmaSenha;
+    private javax.swing.JPasswordField tfConfirmaSenha;
     private javax.swing.JTextField tfLogin;
-    private javax.swing.JTextField tfSenha;
+    private javax.swing.JPasswordField tfSenha;
     // End of variables declaration//GEN-END:variables
 }

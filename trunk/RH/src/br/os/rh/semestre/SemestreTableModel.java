@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.os.rh.cidade;
+package br.os.rh.semestre;
 
+import br.os.rh.disciplina.*;
+import br.os.rh.curso.Curso;
 import br.os.rh.util.Util;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
@@ -16,20 +17,20 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author JOABB
  */
-public class CidadeTableModel extends AbstractTableModel {
+public class SemestreTableModel extends AbstractTableModel {
 
-    private String[] nomeColunas = {"Código", "Descrição", "Estado"};
-    private List<Cidade> cidades;
+    private String[] nomeColunas = {"Código", "Descrição", "Curso"};
+    private List<Semestre> semestres;
 
     /**
      * Construtor sobrecarregado.
      *
      * @param lista List(Editora).
      */
-    public CidadeTableModel(List<Cidade> lista) {
-        cidades = new ArrayList(new HashSet(lista));
-        this.cidades.clear();
-        this.cidades.addAll(lista);
+    public SemestreTableModel(List<Semestre> lista) {
+        semestres = new ArrayList(new HashSet(lista));
+        this.semestres.clear();
+        this.semestres.addAll(lista);
         //Collections.sort(cursos);
         super.fireTableDataChanged();
     }
@@ -41,7 +42,7 @@ public class CidadeTableModel extends AbstractTableModel {
      */
     @Override
     public int getRowCount() {
-        return cidades.size();
+        return semestres.size();
     }
 
     /**
@@ -63,14 +64,14 @@ public class CidadeTableModel extends AbstractTableModel {
      */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Cidade cidade = cidades.get(rowIndex);
+        Semestre semestre = semestres.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return Util.decimalFormat().format(cidade.getId());
+                return Util.decimalFormat().format(semestre.getId());
             case 1:
-                return cidade.getDescricao();
+                return semestre.getDescricao();
             case 2:
-                return cidade.getEstado().getDescricao();
+                return semestre.getCurso().getDescricao();
 
         }
         return null;
@@ -91,6 +92,7 @@ public class CidadeTableModel extends AbstractTableModel {
                 return nomeColunas[1];
             case 2:
                 return nomeColunas[2];
+
         }
         return null;
     }
