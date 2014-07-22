@@ -22,6 +22,7 @@
         <mapping class="br.os.rh.titulacao.Titulacao"/>
         <mapping class="br.os.rh.usuario.Usuario"/>
         <mapping class="br.os.rh.semestre.Semestre"/>
+        <mapping class="br.os.rh.funcionario.Funcionario"/>
                   
     </session-factory>
 </hibernate-configuration>
