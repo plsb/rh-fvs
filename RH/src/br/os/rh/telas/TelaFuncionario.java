@@ -118,7 +118,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 330, 48, -1));
+        jPanel5.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 329, 48, 40));
 
         btRemover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/remove_1.png"))); // NOI18N
         btRemover.setEnabled(false);
@@ -151,7 +151,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
                 tfTitulacaoActionPerformed(evt);
             }
         });
-        jPanel5.add(tfTitulacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 200, -1));
+        jPanel5.add(tfTitulacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 190, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText("Titulação:*");
@@ -163,7 +163,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, 35, -1));
+        jPanel5.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, 35, -1));
 
         jButton6.setText("+");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -171,7 +171,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
                 jButton6ActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 190, -1, -1));
+        jPanel5.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 190, -1, -1));
 
         tfEndereco.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -229,12 +229,17 @@ public class TelaFuncionario extends javax.swing.JDialog {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jPanel5.add(tfTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 200, -1));
+        jPanel5.add(tfTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 190, -1));
         jPanel5.add(tfBairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 190, -1));
         jPanel5.add(tfEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 460, -1));
 
         chbAtivo.setBackground(new java.awt.Color(255, 255, 255));
         chbAtivo.setText("Ativo");
+        chbAtivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbAtivoActionPerformed(evt);
+            }
+        });
         jPanel5.add(chbAtivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -404,6 +409,10 @@ public class TelaFuncionario extends javax.swing.JDialog {
     private void tfCidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfCidadeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfCidadeActionPerformed
+
+    private void chbAtivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbAtivoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chbAtivoActionPerformed
 
     /**
      * @param args the command line arguments
