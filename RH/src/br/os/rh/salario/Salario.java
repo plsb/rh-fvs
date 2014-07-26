@@ -30,22 +30,22 @@ public class Salario {
     @GeneratedValue
     private int id;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 45)
     private double salario;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 45)
     private double porcentGratifica;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 45)
     private double valAjudaCusto;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 45)
     private double salarioBase;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 45)
     private String tipoRegime;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 45)
     private double valHoraAula;
 
     @ManyToOne
@@ -275,7 +275,7 @@ public class Salario {
 
     @Override
     public String toString() {
-        return "Salario{" + "id=" + id + ", salario=" + salario + ", porcentGratifica=" + porcentGratifica + ", valAjudaCusto=" + valAjudaCusto + ", salarioBase=" + salarioBase + ", tipoRegime=" + tipoRegime + ", valHoraAula=" + valHoraAula + ", periodo=" + periodo + ", funcionario=" + funcionario + ", professor=" + professor + '}';
+        return funcionario.getNome()+ ", " +periodo.getDescricao();
     }
 
     /**

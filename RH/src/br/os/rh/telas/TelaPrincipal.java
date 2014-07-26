@@ -21,6 +21,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         mmUsuario.setVisible(!UsuarioAtivo.getUsuario().isAdministrador());
+        setTitle("OSRH");
     }
 
     /**
