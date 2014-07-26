@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.os.rh.telas;
 
+import br.os.rh.disciplina.Disciplina;
+import br.os.rh.disciplina.DisciplinaDAO;
+import br.os.rh.disciplina.DisciplinaTableModel;
 import br.os.rh.funcionario.Funcionario;
 import br.os.rh.funcionario.FuncionarioDAO;
 import br.os.rh.funcionario.FuncionarioTableModel;
@@ -15,7 +17,12 @@ import br.os.rh.periodo.PeriodoTableModel;
 import br.os.rh.salario.Salario;
 import br.os.rh.salario.SalarioDAO;
 import br.os.rh.salario.SalarioTableModel;
+import br.os.rh.salariodiscplinas.SalarioDisciplina;
+import br.os.rh.salariodiscplinas.SalarioDisciplinaDAO;
+import br.os.rh.salariodiscplinas.SalarioDisciplinaTableModel;
+import br.os.rh.util.OnlyNumberField;
 import br.os.rh.util.Util;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -24,15 +31,28 @@ import javax.swing.JOptionPane;
  * @author JOABB
  */
 public class TelaSalario extends javax.swing.JDialog {
+
     private Salario salario;
+    private List<SalarioDisciplina> disciplinas;
+
     /**
      * Creates new form TelaSalario
      */
     public TelaSalario() {
         initComponents();
         setModal(true);
+        limpaCampos();
+        pnTelaSalario.setVisible(false);
+        setSize(500, 230);
         setLocationRelativeTo(null);
         limpaCampos();
+        //tfSalario.setDocument(new OnlyNumberField(20));
+
+    }
+
+    private void preencheTabelaDisciplinas() {
+        SalarioDisciplinaTableModel dtm = new SalarioDisciplinaTableModel(disciplinas);
+        tbDisciplinas.setModel(dtm);
     }
 
     /**
@@ -47,18 +67,12 @@ public class TelaSalario extends javax.swing.JDialog {
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        btRemover = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        tfSalario = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         tfFuncionario = new javax.swing.JTextField();
         chbProfessor = new javax.swing.JCheckBox();
-        jPanel1 = new javax.swing.JPanel();
+        pnTelaSalario = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jcbRegime = new javax.swing.JComboBox();
         tfValorHoraAula = new javax.swing.JTextField();
@@ -67,17 +81,21 @@ public class TelaSalario extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
-        jcbGratificacao = new javax.swing.JComboBox();
         tfPorcentagem = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbDisciplinas = new javax.swing.JTable();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
         tfValorAjudaCusto = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        btRemover = new javax.swing.JButton();
+        tfSalario = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -90,54 +108,6 @@ public class TelaSalario extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel1.setText("Nome:*");
         jPanel5.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
-
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/novo_1.png"))); // NOI18N
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-        jPanel5.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 370, 48, -1));
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/save_1.png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel5.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 370, 48, -1));
-
-        btRemover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/remove_1.png"))); // NOI18N
-        btRemover.setEnabled(false);
-        btRemover.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btRemoverActionPerformed(evt);
-            }
-        });
-        jPanel5.add(btRemover, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 370, 48, -1));
-
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/procurar_1.png"))); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        jPanel5.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 370, 48, -1));
-
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/SA.png"))); // NOI18N
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        jPanel5.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 370, 48, 39));
-
-        tfSalario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfSalarioActionPerformed(evt);
-            }
-        });
-        jPanel5.add(tfSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 220, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel4.setText("Salário:*");
@@ -177,12 +147,13 @@ public class TelaSalario extends javax.swing.JDialog {
         });
         jPanel5.add(chbProfessor, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 80, -1, -1));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        pnTelaSalario.setBackground(new java.awt.Color(255, 255, 255));
+        pnTelaSalario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel6.setText("Regime:*");
 
-        jcbRegime.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Horista", "Mensalista" }));
+        jcbRegime.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione ", "Horista", "Mensalista" }));
         jcbRegime.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcbRegimeActionPerformed(evt);
@@ -216,23 +187,13 @@ public class TelaSalario extends javax.swing.JDialog {
             }
         });
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel7.setText("Gratificação:*");
-
-        jcbGratificacao.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Sim", "Não" }));
-        jcbGratificacao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcbGratificacaoActionPerformed(evt);
-            }
-        });
-
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel11.setText("Porcentagem:*");
+        jLabel11.setText("Porcentagem:");
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel8.setText("Disciplinas:*");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbDisciplinas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -243,7 +204,7 @@ public class TelaSalario extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbDisciplinas);
 
         jButton9.setText("...");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
@@ -262,104 +223,140 @@ public class TelaSalario extends javax.swing.JDialog {
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel12.setText("Valor Ajuda de Custo:");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnTelaSalarioLayout = new javax.swing.GroupLayout(pnTelaSalario);
+        pnTelaSalario.setLayout(pnTelaSalarioLayout);
+        pnTelaSalarioLayout.setHorizontalGroup(
+            pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnTelaSalarioLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnTelaSalarioLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton10))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel11))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jcbGratificacao, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(tfPorcentagem)))
-                        .addGap(10, 10, 10)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(tfPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(5, 5, 5)
-                                .addComponent(jButton6))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(pnTelaSalarioLayout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(pnTelaSalarioLayout.createSequentialGroup()
+                        .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnTelaSalarioLayout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addGap(39, 39, 39)
                                 .addComponent(jLabel10))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(pnTelaSalarioLayout.createSequentialGroup()
                                 .addComponent(jcbRegime, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(10, 10, 10)
                                 .addComponent(tfValorHoraAula, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel12)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(pnTelaSalarioLayout.createSequentialGroup()
                                 .addComponent(tfValorAjudaCusto)
-                                .addGap(92, 92, 92)))))
+                                .addGap(92, 92, 92))))
+                    .addGroup(pnTelaSalarioLayout.createSequentialGroup()
+                        .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnTelaSalarioLayout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(jLabel11))
+                            .addComponent(tfPorcentagem))
+                        .addGap(10, 10, 10)
+                        .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(pnTelaSalarioLayout.createSequentialGroup()
+                                .addComponent(tfPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(5, 5, 5)
+                                .addComponent(jButton6)))))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        pnTelaSalarioLayout.setVerticalGroup(
+            pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnTelaSalarioLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel6)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnTelaSalarioLayout.createSequentialGroup()
                         .addGap(5, 5, 5)
                         .addComponent(jcbRegime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(pnTelaSalarioLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tfValorHoraAula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tfValorAjudaCusto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(13, 13, 13)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
+                .addGap(12, 12, 12)
+                .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnTelaSalarioLayout.createSequentialGroup()
+                        .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
                             .addComponent(jLabel3))
                         .addGap(4, 4, 4)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jcbGratificacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tfPorcentagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tfPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jButton2)
                         .addComponent(jButton6)))
-                .addGap(5, 5, 5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton10)
                         .addComponent(jButton9))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
-        jPanel5.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 480, 250));
+        jPanel5.add(pnTelaSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 480, 260));
+
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/novo_1.png"))); // NOI18N
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, -1, -1));
+
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/SA.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, -1, 40));
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/procurar_1.png"))); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 110, -1, -1));
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/save_1.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 110, -1, -1));
+
+        btRemover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/remove_1.png"))); // NOI18N
+        btRemover.setEnabled(false);
+        btRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btRemoverActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btRemover, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 110, -1, -1));
+        jPanel5.add(tfSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 220, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("SALÁRIO");
@@ -382,8 +379,8 @@ public class TelaSalario extends javax.swing.JDialog {
                 .addGap(9, 9, 9)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -394,12 +391,14 @@ public class TelaSalario extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private void limpaCampos(){
+    private void limpaCampos() {
         tfFuncionario.setText("");
         tfSalario.setText("");
         tfValorAjudaCusto.setText("");
@@ -407,48 +406,60 @@ public class TelaSalario extends javax.swing.JDialog {
         tfPeriodo.setText("");
         tfPorcentagem.setText("");
         chbProfessor.setSelected(false);
-        jPanel1.setEnabled(false);
+        pnTelaSalario.setEnabled(false);
+        salario = new Salario();
+        disciplinas = new ArrayList<SalarioDisciplina>();
+        setSize(500, 230);
+        preencheTabelaDisciplinas();
+
+        jcbRegime.setSelectedIndex(0);
     }
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         limpaCampos();
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (chbProfessor......()){
-                        
-            if (Util.chkVazio(tfSalario.getText())){
-
-            salario.setSalario(Double.valueOf(tfSalario.getText()));
-       
+    private void salvar() {
         SalarioDAO dao = new SalarioDAO();
+        salario.setSalario(Double.parseDouble(tfSalario.getText()));
+        salario.setPorcentGratifica(Double.parseDouble(tfPorcentagem.getText()));
+        salario.setValAjudaCusto(Double.parseDouble(tfValorAjudaCusto.getText()));
+        salario.setValHoraAula(Double.parseDouble(tfValorHoraAula.getText()));
+        salario.setTipoRegime(jcbRegime.getSelectedItem().toString());
+        salario.setProfessor(chbProfessor.isSelected());
         dao.salvar(salario);
-        limpaCampos();
+        for (int i = 0; i < disciplinas.size(); i++) {
+            SalarioDisciplinaDAO sDAO = new SalarioDisciplinaDAO();
+            disciplinas.get(i).setSalario(salario);
+            sDAO.salvar(disciplinas.get(i));
 
-        JOptionPane.showMessageDialog(rootPane, "Cadastro Efetuado");
-        
-        } else{
-                
-            
-        jPanel1.setEnabled(true);
-        
-        if (Util.chkVazio(tfPorcentagem.getText(),tfSalario.getText(),
-                tfValorAjudaCusto.getText(),tfValorHoraAula.getText(),
-                tfFuncionario.getText(), tfPeriodo.getText())){
-
-        salario.setSalario(Double.valueOf(tfSalario.getText()));
-        salario.setValAjudaCusto(Double.valueOf(tfValorAjudaCusto.getText()));
-        salario.setValHoraAula(Double.valueOf(tfValorHoraAula.getText()));
-        salario.setPorcentGratifica(Double.valueOf(tfPorcentagem.getText()));
-        
-        SalarioDAO dao = new SalarioDAO();
-        dao.salvar(salario);
-        limpaCampos();
-
-        JOptionPane.showMessageDialog(rootPane, "Cadastro Efetuado");
-        
         }
-            }
+        JOptionPane.showMessageDialog(rootPane, "Salario cadastro com sucesso!");
+        limpaCampos();
+        pnTelaSalario.setVisible(false);
+
     }
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (chbProfessor.isSelected()) {
+            if (Util.chkVazio(tfFuncionario.getText(), tfSalario.getText(),
+                    tfValorAjudaCusto.getText(), tfValorHoraAula.getText(),
+                    tfPeriodo.getText())) {
+                if (jcbRegime.getSelectedIndex() != 0) {
+                    salvar();
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Informe o Tipo de Regime!");
+                }
+
+            }
+        } else {
+            if (Util.chkVazio(tfFuncionario.getText(), tfSalario.getText())) {
+                SalarioDAO dao = new SalarioDAO();
+                salario.setSalario(Double.parseDouble(tfSalario.getText()));
+                dao.salvar(salario);
+
+            }
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverActionPerformed
@@ -461,23 +472,32 @@ public class TelaSalario extends javax.swing.JDialog {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         SalarioDAO dao = new SalarioDAO();
-        List <Salario> salarios = (!tfFuncionario.getText().isEmpty() ? dao.pesquisaFuncionario(tfFuncionario.getText())
-            : dao.listar());
+        List<Salario> salarios = (!tfFuncionario.getText().isEmpty() ? dao.pesquisaFuncionario(tfFuncionario.getText())
+                : dao.listar());
 
         SalarioTableModel stm = new SalarioTableModel(salarios);
 
         Object o = TelaPesquisa.exibeTela(stm, "Salario");
 
-        if (o != null){
+        if (o != null) {
             salario = new Salario();
             salario = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
 
-            tfSalario.setText(salario.getSalario());
-            tfPorcentagem.setText(salario.getPorcentGratifica());
-            tfValorAjudaCusto.setText(salario.getValAjudaCusto());
-            tfValorHoraAula.setText(salario.getValHoraAula());
-            
-           btRemover.setEnabled(true);
+            tfFuncionario.setText(salario.getFuncionario().getNome());
+            tfSalario.setText(String.valueOf(salario.getSalario()));
+            tfPorcentagem.setText(String.valueOf(salario.getPorcentGratifica()));
+            tfValorAjudaCusto.setText(String.valueOf(salario.getValAjudaCusto()));
+            tfValorHoraAula.setText(String.valueOf(salario.getValHoraAula()));
+            tfPeriodo.setText(salario.getPeriodo().getDescricao());
+            jcbRegime.setSelectedItem(salario.getTipoRegime());
+            SalarioDisciplinaDAO sdDAO = new SalarioDisciplinaDAO();
+            disciplinas = sdDAO.pesquisaSalario(salario);//salario.getDisciplinas();
+            chbProfessor.setSelected(salario.isProfessor());
+            chbProfessorActionPerformed(evt);
+
+            preencheTabelaDisciplinas();
+
+            btRemover.setEnabled(true);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -505,32 +525,28 @@ public class TelaSalario extends javax.swing.JDialog {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-        TelaTitulacao tt = new TelaTitulacao();
-        tt.setVisible(true);
+        TelaPeriodo tp = new TelaPeriodo();
+        tp.setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void tfSalarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfSalarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfSalarioActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        SalarioDAO dao = new SalarioDAO();
-        List<Salario> lista = dao.listar();
-        SalarioTableModel stm = new SalarioTableModel(lista);
-        Object o = TelaPesquisa.exibeTela(stm, "Salário");
-        Salario s;
+        FuncionarioDAO dao = new FuncionarioDAO();
+        List<Funcionario> lista = dao.listar();
+        FuncionarioTableModel stm = new FuncionarioTableModel(lista);
+        Object o = TelaPesquisa.exibeTela(stm, "Funcionário");
+        Funcionario f;
         if (o != null) {
-            s = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
-            salario.setSalario(s);
-            tfFuncionario.setText(s.toString());
+            f = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
+            salario.setFuncionario(f);
+            tfFuncionario.setText(f.getNome());
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
-        TelaSalario ts = new TelaSalario();
-        ts.setVisible(true);
+        TelaFuncionario tf = new TelaFuncionario();
+        tf.setVisible(true);
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void tfFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfFuncionarioActionPerformed
@@ -539,11 +555,16 @@ public class TelaSalario extends javax.swing.JDialog {
 
     private void chbProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbProfessorActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_chbProfessorActionPerformed
+        if (chbProfessor.isSelected()) {
+            pnTelaSalario.setVisible(true);
+            setSize(500, 500);
+        } else {
+            pnTelaSalario.setVisible(false);
+            setSize(500, 230);
+        }
+        setLocationRelativeTo(null);
 
-    private void jcbGratificacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbGratificacaoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jcbGratificacaoActionPerformed
+    }//GEN-LAST:event_chbProfessorActionPerformed
 
     private void jcbRegimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbRegimeActionPerformed
         // TODO add your handling code here:
@@ -551,10 +572,24 @@ public class TelaSalario extends javax.swing.JDialog {
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
+        DisciplinaDAO dao = new DisciplinaDAO();
+        List<Disciplina> lista = dao.listar();
+        DisciplinaTableModel ptm = new DisciplinaTableModel(lista);
+        Object o = TelaPesquisa.exibeTela(ptm, "Disciplina");
+        Disciplina d;
+        if (o != null) {
+            d = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
+            SalarioDisciplina sd = new SalarioDisciplina();
+            sd.setDisciplina(d);
+            disciplinas.add(sd);
+            preencheTabelaDisciplinas();
+        }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
+        TelaDisciplina td = new TelaDisciplina();
+        td.setVisible(true);
     }//GEN-LAST:event_jButton10ActionPerformed
 
     /**
@@ -568,7 +603,7 @@ public class TelaSalario extends javax.swing.JDialog {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -613,15 +648,13 @@ public class TelaSalario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JComboBox jcbGratificacao;
     private javax.swing.JComboBox jcbRegime;
+    private javax.swing.JPanel pnTelaSalario;
+    private javax.swing.JTable tbDisciplinas;
     private javax.swing.JTextField tfFuncionario;
     private javax.swing.JTextField tfPeriodo;
     private javax.swing.JTextField tfPorcentagem;

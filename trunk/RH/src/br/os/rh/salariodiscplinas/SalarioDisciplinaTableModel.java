@@ -3,36 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package br.os.rh.salariodiscplinas;
 
-package br.os.rh.salario;
-
+import br.os.rh.disciplina.*;
+import br.os.rh.curso.Curso;
 import br.os.rh.util.Util;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
-
-
 /**
  *
  * @author JOABB
  */
+public class SalarioDisciplinaTableModel extends AbstractTableModel {
 
-public class SalarioTableModel extends AbstractTableModel {
-
-    private String[] nomeColunas = {"Código", "Funcionario", "Período"};
-    private List<Salario> salarios;
+    private String[] nomeColunas = {"Código", "Descrição", "Hora/Aula", "Semestre", "Curso"};
+    private List<SalarioDisciplina> disciplinas;
 
     /**
      * Construtor sobrecarregado.
      *
      * @param lista List(Editora).
      */
-    public SalarioTableModel(List<Salario> lista) {
-        salarios = new ArrayList(new HashSet(lista));
-        this.salarios.clear();
-        this.salarios.addAll(lista);
+    public SalarioDisciplinaTableModel(List<SalarioDisciplina> lista) {
+        disciplinas = new ArrayList(new HashSet(lista));
+        this.disciplinas.clear();
+        this.disciplinas.addAll(lista);
         //Collections.sort(cursos);
         super.fireTableDataChanged();
     }
@@ -44,7 +42,7 @@ public class SalarioTableModel extends AbstractTableModel {
      */
     @Override
     public int getRowCount() {
-        return salarios.size();
+        return disciplinas.size();
     }
 
     /**
@@ -66,15 +64,19 @@ public class SalarioTableModel extends AbstractTableModel {
      */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Salario func = salarios.get(rowIndex);
+        SalarioDisciplina disciplina = disciplinas.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return Util.decimalFormat().format(func.getId());
+                return Util.decimalFormat().format(disciplina.getId());
             case 1:
-                return func.getFuncionario().getNome();
+                return disciplina.getDisciplina().getDescricao();
             case 2:
-                return func.getPeriodoTexto();
-           
+                return disciplina.getDisciplina().getHoras();
+            case 3:
+                return disciplina.getDisciplina().getSemestre().getDescricao();
+            case 4:
+                return disciplina.getDisciplina().getSemestre().getCurso().getDescricao();
+
         }
         return null;
     }
@@ -94,7 +96,10 @@ public class SalarioTableModel extends AbstractTableModel {
                 return nomeColunas[1];
             case 2:
                 return nomeColunas[2];
-            
+            case 3:
+                return nomeColunas[3];
+            case 4:
+                return nomeColunas[4];
         }
         return null;
     }
