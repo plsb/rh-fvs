@@ -197,7 +197,7 @@ public class TelaSemestre extends javax.swing.JDialog {
         );
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setText("CADASTRO DE CIDADE");
+        jLabel5.setText("CADASTRO DE SEMESTRE");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
