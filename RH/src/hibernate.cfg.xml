@@ -8,7 +8,7 @@
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.url">jdbc:mysql://localhost/rh</property>
         <property name="connection.username">root</property>
-        <property name="connection.password"></property>
+        <property name="connection.password">root</property>
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
         <property name="generate_statistics">true</property>
@@ -22,7 +22,9 @@
         <mapping class="br.os.rh.titulacao.Titulacao"/>
         <mapping class="br.os.rh.usuario.Usuario"/>
         <mapping class="br.os.rh.semestre.Semestre"/>
+        <mapping class="br.os.rh.salario.Salario"/>
         <mapping class="br.os.rh.funcionario.Funcionario"/>
+        <mapping class="br.os.rh.salariodiscplinas.SalarioDisciplina"/>
                   
     </session-factory>
 </hibernate-configuration>

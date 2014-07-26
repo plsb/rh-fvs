@@ -3,18 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.os.rh.salario;
 
 import br.os.rh.funcionario.Funcionario;
 import br.os.rh.periodo.Periodo;
+import br.os.rh.salariodiscplinas.SalarioDisciplina;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -22,35 +25,39 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class Salario {
+
     @Id
     @GeneratedValue
     private int id;
-    
-    @Column(length = 45,nullable = false)
+
+    @Column(length = 45, nullable = false)
     private double salario;
-    
-    @Column(length = 45,nullable = false)
+
+    @Column(length = 45, nullable = false)
     private double porcentGratifica;
-    
-    @Column(length = 45,nullable = false)
+
+    @Column(length = 45, nullable = false)
     private double valAjudaCusto;
-    
-    @Column(length = 45,nullable = false)
+
+    @Column(length = 45, nullable = false)
     private double salarioBase;
-    
-    @Column(length = 45,nullable = false)
+
+    @Column(length = 45, nullable = false)
     private String tipoRegime;
-    
-    @Column(length = 45,nullable = false)
+
+    @Column(length = 45, nullable = false)
     private double valHoraAula;
-    
-    @ManyToMany
+
+    @ManyToOne
     private Periodo periodo;
-    
+
     @ManyToOne
     private Funcionario funcionario;
-    
-     private boolean professor;
+
+    private boolean professor;
+
+    @OneToMany(mappedBy = "salario")
+    private List<SalarioDisciplina> disciplinas;
 
     /**
      * @return the id
@@ -156,6 +163,15 @@ public class Salario {
     public Periodo getPeriodo() {
         return periodo;
     }
+    
+    public String getPeriodoTexto() {
+        if(periodo==null){
+            return " -- ";
+        } else {
+            return periodo.getDescricao();
+        }
+        
+    }
 
     /**
      * @param periodo the periodo to set
@@ -194,7 +210,7 @@ public class Salario {
 
     @Override
     public int hashCode() {
-        int hash = 5;
+        int hash = 7;
         hash = 97 * hash + this.id;
         hash = 97 * hash + (int) (Double.doubleToLongBits(this.salario) ^ (Double.doubleToLongBits(this.salario) >>> 32));
         hash = 97 * hash + (int) (Double.doubleToLongBits(this.porcentGratifica) ^ (Double.doubleToLongBits(this.porcentGratifica) >>> 32));
@@ -205,6 +221,7 @@ public class Salario {
         hash = 97 * hash + Objects.hashCode(this.periodo);
         hash = 97 * hash + Objects.hashCode(this.funcionario);
         hash = 97 * hash + (this.professor ? 1 : 0);
+        hash = 97 * hash + Objects.hashCode(this.disciplinas);
         return hash;
     }
 
@@ -247,15 +264,32 @@ public class Salario {
         if (this.professor != other.professor) {
             return false;
         }
+        if (!Objects.equals(this.disciplinas, other.disciplinas)) {
+            return false;
+        }
         return true;
     }
+
+    
+    
 
     @Override
     public String toString() {
         return "Salario{" + "id=" + id + ", salario=" + salario + ", porcentGratifica=" + porcentGratifica + ", valAjudaCusto=" + valAjudaCusto + ", salarioBase=" + salarioBase + ", tipoRegime=" + tipoRegime + ", valHoraAula=" + valHoraAula + ", periodo=" + periodo + ", funcionario=" + funcionario + ", professor=" + professor + '}';
     }
 
-   
-    
-    
+    /**
+     * @return the disciplinas
+     */
+    public List<SalarioDisciplina> getDisciplinas() {
+        return disciplinas;
+    }
+
+    /**
+     * @param disciplinas the disciplinas to set
+     */
+    public void setDisciplinas(List<SalarioDisciplina> disciplinas) {
+        this.disciplinas = disciplinas;
+    }
+
 }
