@@ -23,6 +23,7 @@ import br.os.rh.salariodiscplinas.SalarioDisciplinaTableModel;
 import br.os.rh.util.OnlyNumberField;
 import br.os.rh.util.Util;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -50,9 +51,18 @@ public class TelaSalario extends javax.swing.JDialog {
 
     }
 
+    private void calculaHorasMostraJLabel() {
+        double horas = 0;
+        for (int i = 0; i < disciplinas.size(); i++) {
+            horas += disciplinas.get(i).getDisciplina().getHoras();
+        }
+        lblHoras.setText(String.valueOf(horas) + " horas");
+    }
+
     private void preencheTabelaDisciplinas() {
         SalarioDisciplinaTableModel dtm = new SalarioDisciplinaTableModel(disciplinas);
         tbDisciplinas.setModel(dtm);
+        calculaHorasMostraJLabel();
     }
 
     /**
@@ -90,6 +100,8 @@ public class TelaSalario extends javax.swing.JDialog {
         jButton10 = new javax.swing.JButton();
         tfValorAjudaCusto = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
+        lblHoras = new javax.swing.JLabel();
+        lblSalarioBruto = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -223,6 +235,10 @@ public class TelaSalario extends javax.swing.JDialog {
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel12.setText("Valor Ajuda de Custo:");
 
+        lblHoras.setText("000 horas");
+
+        lblSalarioBruto.setText("R$ 0,00");
+
         javax.swing.GroupLayout pnTelaSalarioLayout = new javax.swing.GroupLayout(pnTelaSalario);
         pnTelaSalario.setLayout(pnTelaSalarioLayout);
         pnTelaSalarioLayout.setHorizontalGroup(
@@ -232,10 +248,14 @@ public class TelaSalario extends javax.swing.JDialog {
                 .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnTelaSalarioLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton10))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnTelaSalarioLayout.createSequentialGroup()
+                                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton10))
+                            .addComponent(lblHoras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblSalarioBruto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(pnTelaSalarioLayout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -307,9 +327,14 @@ public class TelaSalario extends javax.swing.JDialog {
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton10)
-                        .addComponent(jButton9))
+                    .addGroup(pnTelaSalarioLayout.createSequentialGroup()
+                        .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton10)
+                            .addComponent(jButton9))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblHoras)
+                        .addGap(9, 9, 9)
+                        .addComponent(lblSalarioBruto))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
@@ -409,10 +434,14 @@ public class TelaSalario extends javax.swing.JDialog {
         pnTelaSalario.setEnabled(false);
         salario = new Salario();
         disciplinas = new ArrayList<SalarioDisciplina>();
+        pnTelaSalario.setVisible(false);
         setSize(500, 230);
         preencheTabelaDisciplinas();
 
         jcbRegime.setSelectedIndex(0);
+        setLocationRelativeTo(null);
+        btRemover.setEnabled(false);
+
     }
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         limpaCampos();
@@ -435,17 +464,29 @@ public class TelaSalario extends javax.swing.JDialog {
         }
         JOptionPane.showMessageDialog(rootPane, "Salario cadastro com sucesso!");
         limpaCampos();
-        pnTelaSalario.setVisible(false);
 
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (chbProfessor.isSelected()) {
+        SalarioDAO dao = new SalarioDAO();
+        Salario salarioCadastrado = dao.pesquisaFuncionarioPeriodoCadastrado(salario.getFuncionario(),
+                (chbProfessor.isSelected() ? salario.getPeriodo() : null));
+        if (salarioCadastrado != null && salario.getId() == 0) {
+            if (JOptionPane.showConfirmDialog(rootPane, "Já existe um salário cadastrado nessas condições, \n"
+                    + "deseja alterar?", "OSRH", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE)
+                    == JOptionPane.YES_OPTION) {
+                carregaSalario(salarioCadastrado.getId());
+            }
+        } else if (chbProfessor.isSelected()) {
             if (Util.chkVazio(tfFuncionario.getText(), tfSalario.getText(),
                     tfValorAjudaCusto.getText(), tfValorHoraAula.getText(),
                     tfPeriodo.getText())) {
                 if (jcbRegime.getSelectedIndex() != 0) {
-                    salvar();
+                    if (disciplinas.size() != 0) {
+                        salvar();
+                    } else {
+                        JOptionPane.showMessageDialog(rootPane, "Informe as disciplinas do Professor!");
+                    }
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Informe o Tipo de Regime!");
                 }
@@ -453,9 +494,11 @@ public class TelaSalario extends javax.swing.JDialog {
             }
         } else {
             if (Util.chkVazio(tfFuncionario.getText(), tfSalario.getText())) {
-                SalarioDAO dao = new SalarioDAO();
+
                 salario.setSalario(Double.parseDouble(tfSalario.getText()));
                 dao.salvar(salario);
+                JOptionPane.showMessageDialog(rootPane, "Salario cadastro com sucesso!");
+                limpaCampos();
 
             }
         }
@@ -472,35 +515,41 @@ public class TelaSalario extends javax.swing.JDialog {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         SalarioDAO dao = new SalarioDAO();
-        List<Salario> salarios = (!tfFuncionario.getText().isEmpty() ? dao.pesquisaFuncionario(tfFuncionario.getText())
+        List<Salario> salarios = (!tfFuncionario.getText().isEmpty() ? dao.pesquisaFuncionario(salario.getFuncionario())
                 : dao.listar());
 
         SalarioTableModel stm = new SalarioTableModel(salarios);
 
         Object o = TelaPesquisa.exibeTela(stm, "Salario");
+        carregaSalario(o);
 
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void carregaSalario(Object o) {
         if (o != null) {
+            SalarioDAO dao = new SalarioDAO();
             salario = new Salario();
             salario = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
 
             tfFuncionario.setText(salario.getFuncionario().getNome());
             tfSalario.setText(String.valueOf(salario.getSalario()));
-            tfPorcentagem.setText(String.valueOf(salario.getPorcentGratifica()));
-            tfValorAjudaCusto.setText(String.valueOf(salario.getValAjudaCusto()));
-            tfValorHoraAula.setText(String.valueOf(salario.getValHoraAula()));
-            tfPeriodo.setText(salario.getPeriodo().getDescricao());
-            jcbRegime.setSelectedItem(salario.getTipoRegime());
-            SalarioDisciplinaDAO sdDAO = new SalarioDisciplinaDAO();
-            disciplinas = sdDAO.pesquisaSalario(salario);//salario.getDisciplinas();
-            chbProfessor.setSelected(salario.isProfessor());
-            chbProfessorActionPerformed(evt);
+            if (salario.isProfessor()) {
+                tfPorcentagem.setText(String.valueOf(salario.getPorcentGratifica()));
+                tfValorAjudaCusto.setText(String.valueOf(salario.getValAjudaCusto()));
+                tfValorHoraAula.setText(String.valueOf(salario.getValHoraAula()));
+                tfPeriodo.setText(salario.getPeriodo().getDescricao());
+                jcbRegime.setSelectedItem(salario.getTipoRegime());
+                SalarioDisciplinaDAO sdDAO = new SalarioDisciplinaDAO();
+                disciplinas = sdDAO.pesquisaSalario(salario);//salario.getDisciplinas();
+                chbProfessor.setSelected(salario.isProfessor());
+                chbProfessorActionPerformed(null);
+                preencheTabelaDisciplinas();
 
-            preencheTabelaDisciplinas();
+            }
 
             btRemover.setEnabled(true);
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
+    }
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -538,8 +587,12 @@ public class TelaSalario extends javax.swing.JDialog {
         Funcionario f;
         if (o != null) {
             f = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
-            salario.setFuncionario(f);
-            tfFuncionario.setText(f.getNome());
+            if (f.isAtivo()) {
+                salario.setFuncionario(f);
+                tfFuncionario.setText(f.getNome());
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Funcionário Não está Ativo!");
+            }
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
@@ -572,19 +625,50 @@ public class TelaSalario extends javax.swing.JDialog {
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
-        DisciplinaDAO dao = new DisciplinaDAO();
-        List<Disciplina> lista = dao.listar();
-        DisciplinaTableModel ptm = new DisciplinaTableModel(lista);
-        Object o = TelaPesquisa.exibeTela(ptm, "Disciplina");
-        Disciplina d;
-        if (o != null) {
-            d = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
-            SalarioDisciplina sd = new SalarioDisciplina();
-            sd.setDisciplina(d);
-            disciplinas.add(sd);
-            preencheTabelaDisciplinas();
+        if (tfPeriodo.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Informe o Período!");
+        } else {
+            DisciplinaDAO dao = new DisciplinaDAO();
+            List<Disciplina> lista = dao.listar();
+            DisciplinaTableModel ptm = new DisciplinaTableModel(lista);
+            Object o = TelaPesquisa.exibeTela(ptm, "Disciplina");
+            Disciplina d;
+            if (o != null) {
+                d = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
+                if (!containsDisciplina(d)) {
+                    SalarioDAO sDAO = new SalarioDAO();
+                    List<Salario> retorno = sDAO.pesquisaDisciplinaPeriodo(d, salario.getPeriodo());
+                    if (retorno.size() > 0) {
+                        if (JOptionPane.showConfirmDialog(rootPane, "Disciplina cadastrada para outros professores \n"
+                                + " no período indicado, deseja continuar?"
+                                + retorno.toString(), "OSRH", JOptionPane.YES_NO_OPTION,
+                                JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
+                            SalarioDisciplina sd = new SalarioDisciplina();
+                            sd.setDisciplina(d);
+                            disciplinas.add(sd);
+                            preencheTabelaDisciplinas();
+                        }
+                    } else {
+                        SalarioDisciplina sd = new SalarioDisciplina();
+                        sd.setDisciplina(d);
+                        disciplinas.add(sd);
+                        preencheTabelaDisciplinas();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Esta disciplina já está na lista!");
+                }
+            }
         }
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private boolean containsDisciplina(Disciplina d) {
+        for (int i = 0; i < disciplinas.size(); i++) {
+            if (disciplinas.get(i).getDisciplina().equals(d)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
@@ -653,6 +737,8 @@ public class TelaSalario extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox jcbRegime;
+    private javax.swing.JLabel lblHoras;
+    private javax.swing.JLabel lblSalarioBruto;
     private javax.swing.JPanel pnTelaSalario;
     private javax.swing.JTable tbDisciplinas;
     private javax.swing.JTextField tfFuncionario;
