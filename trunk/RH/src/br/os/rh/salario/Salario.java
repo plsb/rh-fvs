@@ -58,6 +58,8 @@ public class Salario {
 
     @OneToMany(mappedBy = "salario")
     private List<SalarioDisciplina> disciplinas;
+    
+    private int horasMensalista;
 
     /**
      * @return the id
@@ -210,18 +212,19 @@ public class Salario {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + this.id;
-        hash = 97 * hash + (int) (Double.doubleToLongBits(this.salario) ^ (Double.doubleToLongBits(this.salario) >>> 32));
-        hash = 97 * hash + (int) (Double.doubleToLongBits(this.porcentGratifica) ^ (Double.doubleToLongBits(this.porcentGratifica) >>> 32));
-        hash = 97 * hash + (int) (Double.doubleToLongBits(this.valAjudaCusto) ^ (Double.doubleToLongBits(this.valAjudaCusto) >>> 32));
-        hash = 97 * hash + (int) (Double.doubleToLongBits(this.salarioBase) ^ (Double.doubleToLongBits(this.salarioBase) >>> 32));
-        hash = 97 * hash + Objects.hashCode(this.tipoRegime);
-        hash = 97 * hash + (int) (Double.doubleToLongBits(this.valHoraAula) ^ (Double.doubleToLongBits(this.valHoraAula) >>> 32));
-        hash = 97 * hash + Objects.hashCode(this.periodo);
-        hash = 97 * hash + Objects.hashCode(this.funcionario);
-        hash = 97 * hash + (this.professor ? 1 : 0);
-        hash = 97 * hash + Objects.hashCode(this.disciplinas);
+        int hash = 3;
+        hash = 31 * hash + this.id;
+        hash = 31 * hash + (int) (Double.doubleToLongBits(this.salario) ^ (Double.doubleToLongBits(this.salario) >>> 32));
+        hash = 31 * hash + (int) (Double.doubleToLongBits(this.porcentGratifica) ^ (Double.doubleToLongBits(this.porcentGratifica) >>> 32));
+        hash = 31 * hash + (int) (Double.doubleToLongBits(this.valAjudaCusto) ^ (Double.doubleToLongBits(this.valAjudaCusto) >>> 32));
+        hash = 31 * hash + (int) (Double.doubleToLongBits(this.salarioBase) ^ (Double.doubleToLongBits(this.salarioBase) >>> 32));
+        hash = 31 * hash + Objects.hashCode(this.tipoRegime);
+        hash = 31 * hash + (int) (Double.doubleToLongBits(this.valHoraAula) ^ (Double.doubleToLongBits(this.valHoraAula) >>> 32));
+        hash = 31 * hash + Objects.hashCode(this.periodo);
+        hash = 31 * hash + Objects.hashCode(this.funcionario);
+        hash = 31 * hash + (this.professor ? 1 : 0);
+        hash = 31 * hash + Objects.hashCode(this.disciplinas);
+        hash = 31 * hash + this.horasMensalista;
         return hash;
     }
 
@@ -267,8 +270,13 @@ public class Salario {
         if (!Objects.equals(this.disciplinas, other.disciplinas)) {
             return false;
         }
+        if (this.horasMensalista != other.horasMensalista) {
+            return false;
+        }
         return true;
     }
+
+    
 
     
     
@@ -290,6 +298,20 @@ public class Salario {
      */
     public void setDisciplinas(List<SalarioDisciplina> disciplinas) {
         this.disciplinas = disciplinas;
+    }
+
+    /**
+     * @return the horasMensalista
+     */
+    public int getHorasMensalista() {
+        return horasMensalista;
+    }
+
+    /**
+     * @param horasMensalista the horasMensalista to set
+     */
+    public void setHorasMensalista(int horasMensalista) {
+        this.horasMensalista = horasMensalista;
     }
 
 }

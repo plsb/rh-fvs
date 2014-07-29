@@ -324,7 +324,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
         dao.remover(funcionario);
         limpaCampos();
         
-        JOptionPane.showMessageDialog(rootPane, "Disciplina Excluída");
+        JOptionPane.showMessageDialog(rootPane, "Funcionário Excluída");
     }//GEN-LAST:event_btRemoverActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

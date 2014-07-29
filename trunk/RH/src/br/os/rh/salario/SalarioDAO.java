@@ -48,18 +48,21 @@ public class SalarioDAO extends GenericDAO<Salario> {
         getSessao().close();
         return salario;
     }
-    
+
     public List<Salario> pesquisaDisciplinaPeriodo(Disciplina d, Periodo p) {
         setSessao(HibernateUtil.getSessionFactory().openSession());
         setTransacao(getSessao().beginTransaction());
-      
+
         List<Salario> salarios = (List<Salario>) getSessao().createCriteria(Salario.class).
                 add(Restrictions.eq("periodo", p)).list();
-        
-        List<SalarioDisciplina> listaSalaDis = (List<SalarioDisciplina>) getSessao().createCriteria(SalarioDisciplina.class).
-                add(Restrictions.in("salario", salarios)).
-                add(Restrictions.eq("disciplina", d)).list();
-        
+
+        List<SalarioDisciplina> listaSalaDis = new ArrayList<>();
+        if (salarios.size() > 0) {
+             listaSalaDis = (List<SalarioDisciplina>) getSessao().createCriteria(SalarioDisciplina.class).
+                    add(Restrictions.in("salario", salarios)).
+                    add(Restrictions.eq("disciplina", d)).list();
+        }
+
         List<Salario> salarioReturn = new ArrayList<Salario>();
         for (int i = 0; i < listaSalaDis.size(); i++) {
             salarioReturn.add(listaSalaDis.get(i).getSalario());
@@ -81,7 +84,7 @@ public class SalarioDAO extends GenericDAO<Salario> {
         } else {
             salario = (Salario) getSessao().createCriteria(Salario.class).
                     add(Restrictions.eq("funcionario", func)).
-                   uniqueResult();
+                    uniqueResult();
         }
 
         getSessao().close();
