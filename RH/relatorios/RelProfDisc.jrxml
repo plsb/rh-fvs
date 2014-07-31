@@ -7,16 +7,24 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["C:\\Users\\'Pedro\\Documents\\NetBeansProjects\\rh-fvs\\RH\\relatorios\\"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="texto" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
-		<![CDATA[select f.id, f.nome from funcionario f
+		<![CDATA[select distinct(f.id), p.id as periodoid, f.nome, p.descricao from funcionario f
 inner join salario s on s.funcionario_id=f.id
-where ativo=true and s.periodo_id=1
-order by nome]]>
+inner join periodo p on p.id=s.periodo_id
+inner join salariodisciplina sd on sd.salario_id=s.id
+inner join disciplina d on d.id=sd.disciplina_id
+inner join semestre sem on sem.id=d.semestre_id
+where ativo=true  $P!{texto}]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="periodoid" class="java.lang.Integer"/>
 	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descricao" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<background>
@@ -29,17 +37,17 @@ order by nome]]>
 				<staticText>
 					<reportElement uuid="4e304846-dacd-4476-aca0-928cce9eef0d" x="20" y="20" width="385" height="43" forecolor="#FFFFFF"/>
 					<textElement>
-						<font size="34" isBold="true"/>
+						<font fontName="Arial" size="34" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Professores Discplinas]]></text>
+					<text><![CDATA[Professores/Lotação]]></text>
 				</staticText>
-				<staticText>
-					<reportElement uuid="0734e691-2f7a-4612-8fb3-a66c65830595" x="405" y="63" width="180" height="20" forecolor="#FFFFFF"/>
+				<textField>
+					<reportElement uuid="ec7b5964-cc36-4aae-8c78-5b5604b3e36f" x="335" y="66" width="256" height="20" forecolor="#FFFFFF"/>
 					<textElement textAlignment="Right">
-						<font fontName="Arial" size="14" isBold="false"/>
+						<font fontName="Arial" size="15" isBold="true"/>
 					</textElement>
-					<text><![CDATA[2014.2]]></text>
-				</staticText>
+					<textFieldExpression><![CDATA["Período: "+$F{descricao}]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
 	</title>
@@ -59,6 +67,9 @@ order by nome]]>
 				<reportElement uuid="3ef42ff4-6543-4cd4-be14-ab3c3deb3385" x="0" y="20" width="555" height="22"/>
 				<subreportParameter name="funcionarioid">
 					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="periodo">
+					<subreportParameterExpression><![CDATA[$F{periodoid}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "RelProfDisc_subreport1.jasper"]]></subreportExpression>

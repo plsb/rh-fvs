@@ -585,7 +585,7 @@ public class TelaSalario extends javax.swing.JDialog {
                 disciplinas.get(i).getSdh().get(j).setSalarioDisciplina(disciplinas.get(i));
                 sdhDAO.salvar(disciplinas.get(i).getSdh().get(j));
             }
-            
+
         }
         JOptionPane.showMessageDialog(rootPane, "Salario cadastro com sucesso!");
         limpaCampos();
@@ -640,7 +640,7 @@ public class TelaSalario extends javax.swing.JDialog {
             for (int j = 0; j < disciplinas.get(i).getSdh().size(); j++) {
                 sdhDAO.remover(disciplinas.get(i).getSdh().get(j));
             }
-            
+
         }
         for (int i = 0; i < disciplinas.size(); i++) {
             sdDAO.remover(disciplinas.get(i));
@@ -666,7 +666,7 @@ public class TelaSalario extends javax.swing.JDialog {
         Object o = TelaPesquisa.exibeTela(stm, "Salario");
         carregaSalario(o);
 
-        lblSalarioBruto.setText("R$ " +calculoString());
+        lblSalarioBruto.setText("R$ " + calculoString());
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -685,7 +685,7 @@ public class TelaSalario extends javax.swing.JDialog {
                 tfPeriodo.setText(salario.getPeriodo().getDescricao());
                 jcbRegime.setSelectedItem(salario.getTipoRegime());
                 SalarioDisciplinaDAO sdDAO = new SalarioDisciplinaDAO();
-                disciplinas = new ArrayList<>( new HashSet(sdDAO.pesquisaSalario(salario)));//salario.getDisciplinas();
+                disciplinas = new ArrayList<>(new HashSet(sdDAO.pesquisaSalario(salario)));//salario.getDisciplinas();
                 chbProfessor.setSelected(salario.isProfessor());
                 chbProfessorActionPerformed(null);
                 preencheTabelaDisciplinas();
@@ -781,6 +781,8 @@ public class TelaSalario extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (tfPeriodo.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Informe o Período!");
+        } else if (tfFuncionario.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Informe o Funcionário!");
         } else {
             DisciplinaDAO dao = new DisciplinaDAO();
 //            List<Disciplina> lista = dao.listar();
@@ -788,8 +790,8 @@ public class TelaSalario extends javax.swing.JDialog {
 //            Object o = TelaPesquisa.exibeTela(ptm, "Disciplina");
             Disciplina d = new Disciplina();
             SalarioDisciplina sd = new SalarioDisciplina();
-            sd = TelaSalarioDisciplina.chamaTela();
-            
+            sd = TelaSalarioDisciplina.chamaTela(disciplinas);
+
             if (sd != null) {
 //                d = sd.getDisciplina();
                 d = dao.pesquisaId(Integer.valueOf(String.valueOf(sd.getDisciplina().getId())));
@@ -831,22 +833,22 @@ public class TelaSalario extends javax.swing.JDialog {
 
     private void tfHorasMenslistaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfHorasMenslistaFocusLost
         // TODO add your handling code here:
-        lblSalarioBruto.setText("R$ " +calculoString());
+        lblSalarioBruto.setText("R$ " + calculoString());
     }//GEN-LAST:event_tfHorasMenslistaFocusLost
 
     private void tfValorHoraAulaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfValorHoraAulaFocusLost
         // TODO add your handling code here:
-        lblSalarioBruto.setText("R$ " +calculoString());
+        lblSalarioBruto.setText("R$ " + calculoString());
     }//GEN-LAST:event_tfValorHoraAulaFocusLost
 
     private void tfValorAjudaCustoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfValorAjudaCustoFocusLost
         // TODO add your handling code here:
-        lblSalarioBruto.setText("R$ " +calculoString());
+        lblSalarioBruto.setText("R$ " + calculoString());
     }//GEN-LAST:event_tfValorAjudaCustoFocusLost
 
     private void tfPorcentagemFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfPorcentagemFocusLost
         // TODO add your handling code here:
-        lblSalarioBruto.setText("R$ " +calculoString());
+        lblSalarioBruto.setText("R$ " + calculoString());
     }//GEN-LAST:event_tfPorcentagemFocusLost
 
     /**
