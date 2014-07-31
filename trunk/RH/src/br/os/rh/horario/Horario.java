@@ -4,33 +4,30 @@
  * and open the template in the editor.
  */
 
-package br.os.rh.curso;
+package br.os.rh.horario;
 
+import br.os.rh.turno.Turno;
 import java.util.Objects;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
- * @author JOABB
+ * @author 'Pedro
  */
 @Entity
-public class Curso {
+public class Horario {
+    
     @Id
     @GeneratedValue
     private int id;
     
-    @Column(length = 45, nullable = false)
     private String descricao;
     
-    private String sigla;
-
-    @Override
-    public String toString() {
-        return "Curso{" + "id=" + id + ", descricao=" + descricao + '}';
-    }
+    @ManyToOne
+    private Turno turno;
 
     /**
      * @return the id
@@ -61,25 +58,25 @@ public class Curso {
     }
 
     /**
-     * @return the sigla
+     * @return the turno
      */
-    public String getSigla() {
-        return sigla;
+    public Turno getTurno() {
+        return turno;
     }
 
     /**
-     * @param sigla the sigla to set
+     * @param turno the turno to set
      */
-    public void setSigla(String sigla) {
-        this.sigla = sigla;
+    public void setTurno(Turno turno) {
+        this.turno = turno;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 71 * hash + this.id;
-        hash = 71 * hash + Objects.hashCode(this.descricao);
-        hash = 71 * hash + Objects.hashCode(this.sigla);
+        int hash = 3;
+        hash = 67 * hash + this.id;
+        hash = 67 * hash + Objects.hashCode(this.descricao);
+        hash = 67 * hash + Objects.hashCode(this.turno);
         return hash;
     }
 
@@ -91,17 +88,22 @@ public class Curso {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Curso other = (Curso) obj;
+        final Horario other = (Horario) obj;
         if (this.id != other.id) {
             return false;
         }
         if (!Objects.equals(this.descricao, other.descricao)) {
             return false;
         }
-        if (!Objects.equals(this.sigla, other.sigla)) {
+        if (!Objects.equals(this.turno, other.turno)) {
             return false;
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "{"+descricao+", "+turno.getDescricao()+"}";
+    }    
     
 }

@@ -3,16 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.os.rh.salariodiscplinas;
 
 import br.os.rh.disciplina.Disciplina;
+import br.os.rh.horario.Horario;
 import br.os.rh.salario.Salario;
+import br.os.rh.salariodisciplinahorario.SalarioDisciplinaHorario;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -20,20 +29,23 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class SalarioDisciplina {
-    
+
     @Id
     @GeneratedValue
     private int id;
-    
+
     @ManyToOne
     private Salario salario;
-    
+
     @ManyToOne
     private Disciplina disciplina;
 
+    @OneToMany(mappedBy = "salarioDisciplina", fetch = FetchType.EAGER)
+    private List<SalarioDisciplinaHorario> sdh;
     /**
-     * @return the id
-     */
+             * @return the id
+             */
+
     public int getId() {
         return id;
     }
@@ -73,12 +85,27 @@ public class SalarioDisciplina {
         this.disciplina = disciplina;
     }
 
+    /**
+     * @return the sdh
+     */
+    public List<SalarioDisciplinaHorario> getSdh() {
+        return sdh;
+    }
+
+    /**
+     * @param sdh the sdh to set
+     */
+    public void setSdh(List<SalarioDisciplinaHorario> sdh) {
+        this.sdh = sdh;
+    }
+
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 71 * hash + this.id;
-        hash = 71 * hash + Objects.hashCode(this.salario);
-        hash = 71 * hash + Objects.hashCode(this.disciplina);
+        hash = 37 * hash + this.id;
+        hash = 37 * hash + Objects.hashCode(this.salario);
+        hash = 37 * hash + Objects.hashCode(this.disciplina);
+        hash = 37 * hash + Objects.hashCode(this.sdh);
         return hash;
     }
 
@@ -100,9 +127,14 @@ public class SalarioDisciplina {
         if (!Objects.equals(this.disciplina, other.disciplina)) {
             return false;
         }
+        if (!Objects.equals(this.sdh, other.sdh)) {
+            return false;
+        }
         return true;
     }
+
+     
     
-    
-    
+   
+
 }

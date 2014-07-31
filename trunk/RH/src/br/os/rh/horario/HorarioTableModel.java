@@ -1,42 +1,36 @@
-/* Este arquivo é parte do OSBiblio.
- * Copyright (C) 2014 (Pedro Saraiva, Túlio Vidal, Luís Henrique, Adriano Lima, Oziel Pereira,
- * Marcos Ellys, Francisco Júnior, Fátima Pinheiro, Darly Vinicio).
- *
- * OSBiblio é um software livre; você pode redistribuí-lo e/ou  modificá-lo dentro dos termos da 
- * Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); na versão 2 da Licença,
- * ou (na sua opinião) qualquer versão.
- *
- * Este programa é distribuído na esperança de que possa ser útil, mas SEM NENHUMA GARANTIA; sem uma garantia 
- * implícita de ADEQUAÇÃO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a Licença Pública Geral GNU
- * para maiores detalhes.
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
-package br.os.rh.curso;
 
+package br.os.rh.horario;
+
+import br.os.rh.estado.*;
 import br.os.rh.util.Util;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 /**
  *
- * @author tulio.xcrtf
+ * @author JOABB
  */
-public class CursoTableModel extends AbstractTableModel {
 
-    private String[] nomeColunas = {"Código", "Descrição", "Sigla"};
-    private List<Curso> cursos;
+public class HorarioTableModel extends AbstractTableModel{
+     private String[] nomeColunas = {"Código", "Descrição", "Turno"};
+    private List<Horario> horarios;
 
     /**
      * Construtor sobrecarregado.
      *
      * @param lista List(Editora).
      */
-    public CursoTableModel(List<Curso> lista) {
-        cursos = new ArrayList(new HashSet(lista));
-        this.cursos.clear();
-        this.cursos.addAll(lista);
+    public HorarioTableModel(List<Horario> lista) {
+        horarios = new ArrayList(new HashSet(lista));
+        this.horarios.clear();
+        this.horarios.addAll(lista);
         //Collections.sort(cursos);
         super.fireTableDataChanged();
     }
@@ -48,7 +42,7 @@ public class CursoTableModel extends AbstractTableModel {
      */
     @Override
     public int getRowCount() {
-        return cursos.size();
+        return horarios.size();
     }
 
     /**
@@ -70,14 +64,14 @@ public class CursoTableModel extends AbstractTableModel {
      */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Curso curso = cursos.get(rowIndex);
+        Horario horario = horarios.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return Util.decimalFormat().format(curso.getId());
+                return Util.decimalFormat().format(horario.getId());
             case 1:
-                return curso.getDescricao();
+                return horario.getDescricao();
             case 2:
-                return curso.getSigla();
+                return horario.getTurno().getDescricao();
 
         }
         return null;
@@ -85,7 +79,7 @@ public class CursoTableModel extends AbstractTableModel {
 
     /**
      * Método sobrescrito.
-     *
+     * 
      * @param column int.
      * @return String nomeColunas[index].
      */

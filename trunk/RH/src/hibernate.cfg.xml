@@ -25,6 +25,9 @@
         <mapping class="br.os.rh.salario.Salario"/>
         <mapping class="br.os.rh.funcionario.Funcionario"/>
         <mapping class="br.os.rh.salariodiscplinas.SalarioDisciplina"/>
+        <mapping class="br.os.rh.turno.Turno"/>
+        <mapping class="br.os.rh.horario.Horario"/>
+        <mapping class="br.os.rh.salariodisciplinahorario.SalarioDisciplinaHorario"/>
                   
     </session-factory>
 </hibernate-configuration>
