@@ -1,42 +1,37 @@
-/* Este arquivo é parte do OSBiblio.
- * Copyright (C) 2014 (Pedro Saraiva, Túlio Vidal, Luís Henrique, Adriano Lima, Oziel Pereira,
- * Marcos Ellys, Francisco Júnior, Fátima Pinheiro, Darly Vinicio).
- *
- * OSBiblio é um software livre; você pode redistribuí-lo e/ou  modificá-lo dentro dos termos da 
- * Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); na versão 2 da Licença,
- * ou (na sua opinião) qualquer versão.
- *
- * Este programa é distribuído na esperança de que possa ser útil, mas SEM NENHUMA GARANTIA; sem uma garantia 
- * implícita de ADEQUAÇÃO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a Licença Pública Geral GNU
- * para maiores detalhes.
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
-package br.os.rh.curso;
+package br.os.rh.salariodisciplinahorario;
 
+import br.os.rh.salariodiscplinas.*;
+import br.os.rh.disciplina.*;
+import br.os.rh.curso.Curso;
 import br.os.rh.util.Util;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 /**
  *
- * @author tulio.xcrtf
+ * @author JOABB
  */
-public class CursoTableModel extends AbstractTableModel {
+public class SalarioDisciplinaHorarioTableModel extends AbstractTableModel {
 
-    private String[] nomeColunas = {"Código", "Descrição", "Sigla"};
-    private List<Curso> cursos;
+    private String[] nomeColunas = {"Código", "Horario", "Dia Semana"};
+    private List<SalarioDisciplinaHorario> sdh;
 
     /**
      * Construtor sobrecarregado.
      *
      * @param lista List(Editora).
      */
-    public CursoTableModel(List<Curso> lista) {
-        cursos = new ArrayList(new HashSet(lista));
-        this.cursos.clear();
-        this.cursos.addAll(lista);
+    public SalarioDisciplinaHorarioTableModel(List<SalarioDisciplinaHorario> lista) {
+        sdh = new ArrayList(new HashSet(lista));
+        this.sdh.clear();
+        this.sdh.addAll(lista);
         //Collections.sort(cursos);
         super.fireTableDataChanged();
     }
@@ -48,7 +43,7 @@ public class CursoTableModel extends AbstractTableModel {
      */
     @Override
     public int getRowCount() {
-        return cursos.size();
+        return sdh.size();
     }
 
     /**
@@ -70,14 +65,14 @@ public class CursoTableModel extends AbstractTableModel {
      */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Curso curso = cursos.get(rowIndex);
+        SalarioDisciplinaHorario s = sdh.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return Util.decimalFormat().format(curso.getId());
+                return Util.decimalFormat().format(s.getId());
             case 1:
-                return curso.getDescricao();
+                return s.getHorario().getDescricao();
             case 2:
-                return curso.getSigla();
+                return s.getDiaSemana();
 
         }
         return null;
@@ -98,6 +93,7 @@ public class CursoTableModel extends AbstractTableModel {
                 return nomeColunas[1];
             case 2:
                 return nomeColunas[2];
+            
         }
         return null;
     }

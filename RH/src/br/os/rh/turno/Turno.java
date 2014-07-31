@@ -4,33 +4,24 @@
  * and open the template in the editor.
  */
 
-package br.os.rh.curso;
+package br.os.rh.turno;
 
 import java.util.Objects;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
  *
- * @author JOABB
+ * @author 'Pedro
  */
 @Entity
-public class Curso {
+public class Turno {
     @Id
     @GeneratedValue
     private int id;
     
-    @Column(length = 45, nullable = false)
     private String descricao;
-    
-    private String sigla;
-
-    @Override
-    public String toString() {
-        return "Curso{" + "id=" + id + ", descricao=" + descricao + '}';
-    }
 
     /**
      * @return the id
@@ -60,26 +51,11 @@ public class Curso {
         this.descricao = descricao;
     }
 
-    /**
-     * @return the sigla
-     */
-    public String getSigla() {
-        return sigla;
-    }
-
-    /**
-     * @param sigla the sigla to set
-     */
-    public void setSigla(String sigla) {
-        this.sigla = sigla;
-    }
-
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 71 * hash + this.id;
-        hash = 71 * hash + Objects.hashCode(this.descricao);
-        hash = 71 * hash + Objects.hashCode(this.sigla);
+        int hash = 7;
+        hash = 19 * hash + this.id;
+        hash = 19 * hash + Objects.hashCode(this.descricao);
         return hash;
     }
 
@@ -91,17 +67,16 @@ public class Curso {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Curso other = (Curso) obj;
+        final Turno other = (Turno) obj;
         if (this.id != other.id) {
             return false;
         }
         if (!Objects.equals(this.descricao, other.descricao)) {
             return false;
         }
-        if (!Objects.equals(this.sigla, other.sigla)) {
-            return false;
-        }
         return true;
     }
+    
+    
     
 }

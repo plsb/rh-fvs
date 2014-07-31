@@ -3,9 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/'Pedro/Documents/NetBeansProjects/rh-fvs/RH/src/br/os/rh/salario/SalarioDAO.java</file>
-            <file>file:/C:/Users/'Pedro/Documents/NetBeansProjects/rh-fvs/RH/src/br/os/rh/telas/TelaFuncionario.java</file>
-            <file>file:/C:/Users/'Pedro/Documents/NetBeansProjects/rh-fvs/RH/src/br/os/rh/salario/Salario.java</file>
+            <file>file:/C:/Users/'Pedro/Documents/NetBeansProjects/rh-fvs/RH/src/br/os/rh/salariodisciplinahorario/SalarioDisciplinaHorarioDAO.java</file>
+            <file>file:/C:/Users/'Pedro/Documents/NetBeansProjects/rh-fvs/RH/src/br/os/rh/salariodiscplinas/SalarioDisciplina.java</file>
+            <file>file:/C:/Users/'Pedro/Documents/NetBeansProjects/rh-fvs/RH/src/br/os/rh/telas/TelaSalarioDisciplina.java</file>
             <file>file:/C:/Users/'Pedro/Documents/NetBeansProjects/rh-fvs/RH/src/br/os/rh/telas/TelaSalario.java</file>
         </group>
     </open-files>

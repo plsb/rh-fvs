@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelProfDisc_subreport1" language="groovy" pageWidth="572" pageHeight="752" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="02103df0-7ca3-4d92-8041-a42806d10916">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="funcionarioid" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\'Pedro\\Documents\\NetBeansProjects\\rh-fvs\\RH\\relatorios\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="subReport" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select sd.id as idsd, d.id as iddisc, d.descricao as disciplina, d.horas, sm.descricao as semestre, c.descricao as curso
+from funcionario f
+inner join salario s on s.funcionario_id=f.id
+inner join salariodisciplina sd on sd.salario_id=s.id
+inner join disciplina d on sd.disciplina_id=d.id
+inner join semestre sm on sm.id = d.semestre_id
+inner join curso c on c.id = sm.curso_id
+where f.ativo=true and s.periodo_id=1 and f.id=$P{funcionarioid}
+order by c.descricao, sm.descricao;]]>
+	</queryString>
+	<field name="idsd" class="java.lang.Integer"/>
+	<field name="iddisc" class="java.lang.Integer"/>
+	<field name="disciplina" class="java.lang.String"/>
+	<field name="horas" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="semestre" class="java.lang.String"/>
+	<field name="curso" class="java.lang.String"/>
+	<variable name="somach" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{horas}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<group name="disciplina">
+		<groupExpression><![CDATA[$F{disciplina}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="19">
+			<staticText>
+				<reportElement uuid="9089199a-1224-443f-9b81-f83dd7071c85" x="0" y="-1" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Disciplina]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="616e3a75-49dd-4b3b-b4f6-b6a02f8e950f" x="0" y="18" width="569" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="9089199a-1224-443f-9b81-f83dd7071c85" x="143" y="-2" width="80" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[CH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9089199a-1224-443f-9b81-f83dd7071c85" x="223" y="-1" width="80" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Semestre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9089199a-1224-443f-9b81-f83dd7071c85" x="354" y="-2" width="80" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Curso]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="45" splitType="Stretch">
+			<textField>
+				<reportElement uuid="455b4978-0fb0-470d-ba7e-c6d7b687014c" x="0" y="0" width="143" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{disciplina}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="74191d89-bd31-4b32-8acd-ddab0491663a" x="143" y="0" width="80" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d8f13af1-a950-4dfa-84d9-4642c989425b" x="223" y="1" width="131" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{semestre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="96616fcd-5674-4487-b534-ace3b1180b5b" x="354" y="1" width="218" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{curso}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement uuid="cf4891c8-84dd-45fa-ac2e-4dde5413707c" x="49" y="20" width="482" height="24"/>
+				<subreportParameter name="sd">
+					<subreportParameterExpression><![CDATA[$F{idsd}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="disc">
+					<subreportParameterExpression><![CDATA[$F{iddisc}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "RelProfDiscHorario_subreport.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="26">
+			<line>
+				<reportElement uuid="616e3a75-49dd-4b3b-b4f6-b6a02f8e950f" x="0" y="0" width="569" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="9286f267-e876-4ed5-acd7-cc6aa3262559" x="143" y="1" width="80" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{somach}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>

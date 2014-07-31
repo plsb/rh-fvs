@@ -17,16 +17,20 @@ import br.os.rh.periodo.PeriodoTableModel;
 import br.os.rh.salario.Salario;
 import br.os.rh.salario.SalarioDAO;
 import br.os.rh.salario.SalarioTableModel;
+import br.os.rh.salariodisciplinahorario.SalarioDisciplinaHorarioDAO;
 import br.os.rh.salariodiscplinas.SalarioDisciplina;
 import br.os.rh.salariodiscplinas.SalarioDisciplinaDAO;
 import br.os.rh.salariodiscplinas.SalarioDisciplinaTableModel;
+import br.os.rh.util.FormataTamanhoColunasJTable;
 import br.os.rh.util.OnlyNumberField;
 import br.os.rh.util.Util;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 /**
  *
@@ -123,10 +127,12 @@ public class TelaSalario extends javax.swing.JDialog {
         setModal(true);
         limpaCampos();
         pnTelaSalario.setVisible(false);
-        setSize(500, 230);
+//        setSize(500, 1500);
         setLocationRelativeTo(null);
         limpaCampos();
         tfHorasMenslista.setDocument(new OnlyNumberField(20));
+        tbDisciplinas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        FormataTamanhoColunasJTable.packColumns(tbDisciplinas, 1);
 
     }
 
@@ -176,7 +182,6 @@ public class TelaSalario extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbDisciplinas = new javax.swing.JTable();
         jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
         tfValorAjudaCusto = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         lblHoras = new javax.swing.JLabel();
@@ -204,7 +209,7 @@ public class TelaSalario extends javax.swing.JDialog {
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel4.setText("Salário Base:*");
-        jPanel5.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
+        jPanel5.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 10, -1, -1));
 
         jButton7.setText("...");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -212,7 +217,7 @@ public class TelaSalario extends javax.swing.JDialog {
                 jButton7ActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 30, 35, -1));
+        jPanel5.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 30, 35, -1));
 
         jButton8.setText("+");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
@@ -220,7 +225,7 @@ public class TelaSalario extends javax.swing.JDialog {
                 jButton8ActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 30, -1, -1));
+        jPanel5.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 30, -1, -1));
 
         tfFuncionario.setEnabled(false);
         tfFuncionario.addActionListener(new java.awt.event.ActionListener() {
@@ -228,7 +233,7 @@ public class TelaSalario extends javax.swing.JDialog {
                 tfFuncionarioActionPerformed(evt);
             }
         });
-        jPanel5.add(tfFuncionario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 370, -1));
+        jPanel5.add(tfFuncionario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 320, -1));
 
         chbProfessor.setBackground(new java.awt.Color(255, 255, 255));
         chbProfessor.setText("Professor");
@@ -238,7 +243,7 @@ public class TelaSalario extends javax.swing.JDialog {
                 chbProfessorActionPerformed(evt);
             }
         });
-        jPanel5.add(chbProfessor, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 80, -1, -1));
+        jPanel5.add(chbProfessor, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
 
         pnTelaSalario.setBackground(new java.awt.Color(255, 255, 255));
         pnTelaSalario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -318,13 +323,6 @@ public class TelaSalario extends javax.swing.JDialog {
             }
         });
 
-        jButton10.setText("+");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
-            }
-        });
-
         tfValorAjudaCusto.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 tfValorAjudaCustoFocusLost(evt);
@@ -356,15 +354,13 @@ public class TelaSalario extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnTelaSalarioLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 562, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnTelaSalarioLayout.createSequentialGroup()
-                                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton10))
-                            .addComponent(lblHoras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblSalarioBruto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(lblHoras, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                                .addComponent(lblSalarioBruto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(pnTelaSalarioLayout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -443,20 +439,18 @@ public class TelaSalario extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(pnTelaSalarioLayout.createSequentialGroup()
-                        .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton10)
-                            .addComponent(jButton9))
+                        .addComponent(jButton9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblHoras)
-                        .addGap(9, 9, 9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblSalarioBruto))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
-        jPanel5.add(pnTelaSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 480, 260));
+        jPanel5.add(pnTelaSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 650, 260));
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/novo_1.png"))); // NOI18N
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -464,7 +458,7 @@ public class TelaSalario extends javax.swing.JDialog {
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, -1, -1));
+        jPanel5.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 80, -1, -1));
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/SA.png"))); // NOI18N
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -472,7 +466,7 @@ public class TelaSalario extends javax.swing.JDialog {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, -1, 40));
+        jPanel5.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 80, -1, 40));
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/procurar_1.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -480,7 +474,7 @@ public class TelaSalario extends javax.swing.JDialog {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 110, -1, -1));
+        jPanel5.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 80, -1, -1));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/save_1.png"))); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -488,7 +482,7 @@ public class TelaSalario extends javax.swing.JDialog {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 110, -1, -1));
+        jPanel5.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 80, -1, -1));
 
         btRemover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/remove_1.png"))); // NOI18N
         btRemover.setEnabled(false);
@@ -497,8 +491,8 @@ public class TelaSalario extends javax.swing.JDialog {
                 btRemoverActionPerformed(evt);
             }
         });
-        jPanel5.add(btRemover, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 110, -1, -1));
-        jPanel5.add(tfSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 220, -1));
+        jPanel5.add(btRemover, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 80, -1, -1));
+        jPanel5.add(tfSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 30, 220, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("SALÁRIO");
@@ -510,10 +504,8 @@ public class TelaSalario extends javax.swing.JDialog {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(600, Short.MAX_VALUE))
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -522,7 +514,7 @@ public class TelaSalario extends javax.swing.JDialog {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -555,7 +547,7 @@ public class TelaSalario extends javax.swing.JDialog {
         salario = new Salario();
         disciplinas = new ArrayList<SalarioDisciplina>();
         pnTelaSalario.setVisible(false);
-        setSize(500, 230);
+        setSize(670, 230);
         preencheTabelaDisciplinas();
 
         jcbRegime.setSelectedIndex(0);
@@ -586,6 +578,14 @@ public class TelaSalario extends javax.swing.JDialog {
             disciplinas.get(i).setSalario(salario);
             sDAO.salvar(disciplinas.get(i));
 
+        }
+        for (int i = 0; i < disciplinas.size(); i++) {
+            for (int j = 0; j < disciplinas.get(i).getSdh().size(); j++) {
+                SalarioDisciplinaHorarioDAO sdhDAO = new SalarioDisciplinaHorarioDAO();
+                disciplinas.get(i).getSdh().get(j).setSalarioDisciplina(disciplinas.get(i));
+                sdhDAO.salvar(disciplinas.get(i).getSdh().get(j));
+            }
+            
         }
         JOptionPane.showMessageDialog(rootPane, "Salario cadastro com sucesso!");
         limpaCampos();
@@ -635,6 +635,13 @@ public class TelaSalario extends javax.swing.JDialog {
     private void btRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverActionPerformed
         SalarioDAO dao = new SalarioDAO();
         SalarioDisciplinaDAO sdDAO = new SalarioDisciplinaDAO();
+        SalarioDisciplinaHorarioDAO sdhDAO = new SalarioDisciplinaHorarioDAO();
+        for (int i = 0; i < disciplinas.size(); i++) {
+            for (int j = 0; j < disciplinas.get(i).getSdh().size(); j++) {
+                sdhDAO.remover(disciplinas.get(i).getSdh().get(j));
+            }
+            
+        }
         for (int i = 0; i < disciplinas.size(); i++) {
             sdDAO.remover(disciplinas.get(i));
         }
@@ -678,7 +685,7 @@ public class TelaSalario extends javax.swing.JDialog {
                 tfPeriodo.setText(salario.getPeriodo().getDescricao());
                 jcbRegime.setSelectedItem(salario.getTipoRegime());
                 SalarioDisciplinaDAO sdDAO = new SalarioDisciplinaDAO();
-                disciplinas = sdDAO.pesquisaSalario(salario);//salario.getDisciplinas();
+                disciplinas = new ArrayList<>( new HashSet(sdDAO.pesquisaSalario(salario)));//salario.getDisciplinas();
                 chbProfessor.setSelected(salario.isProfessor());
                 chbProfessorActionPerformed(null);
                 preencheTabelaDisciplinas();
@@ -749,11 +756,11 @@ public class TelaSalario extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (chbProfessor.isSelected()) {
             pnTelaSalario.setVisible(true);
-            setSize(500, 500);
+            setSize(670, 470);
             tfSalario.setEnabled(false);
         } else {
             pnTelaSalario.setVisible(false);
-            setSize(500, 230);
+            setSize(670, 230);
             tfSalario.setEnabled(true);
         }
         setLocationRelativeTo(null);
@@ -764,6 +771,9 @@ public class TelaSalario extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (jcbRegime.getSelectedIndex() == 2) {
             tfHorasMenslista.setEnabled(true);
+        } else {
+            tfHorasMenslista.setText("0");
+            tfHorasMenslista.setEnabled(false);
         }
     }//GEN-LAST:event_jcbRegimeActionPerformed
 
@@ -773,12 +783,16 @@ public class TelaSalario extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(rootPane, "Informe o Período!");
         } else {
             DisciplinaDAO dao = new DisciplinaDAO();
-            List<Disciplina> lista = dao.listar();
-            DisciplinaTableModel ptm = new DisciplinaTableModel(lista);
-            Object o = TelaPesquisa.exibeTela(ptm, "Disciplina");
-            Disciplina d;
-            if (o != null) {
-                d = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
+//            List<Disciplina> lista = dao.listar();
+//            DisciplinaTableModel ptm = new DisciplinaTableModel(lista);
+//            Object o = TelaPesquisa.exibeTela(ptm, "Disciplina");
+            Disciplina d = new Disciplina();
+            SalarioDisciplina sd = new SalarioDisciplina();
+            sd = TelaSalarioDisciplina.chamaTela();
+            
+            if (sd != null) {
+//                d = sd.getDisciplina();
+                d = dao.pesquisaId(Integer.valueOf(String.valueOf(sd.getDisciplina().getId())));
                 if (!containsDisciplina(d)) {
                     SalarioDAO sDAO = new SalarioDAO();
                     List<Salario> retorno = sDAO.pesquisaDisciplinaPeriodo(d, salario.getPeriodo());
@@ -787,14 +801,14 @@ public class TelaSalario extends javax.swing.JDialog {
                                 + " no período indicado, deseja continuar?"
                                 + retorno.toString(), "OSRH", JOptionPane.YES_NO_OPTION,
                                 JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
-                            SalarioDisciplina sd = new SalarioDisciplina();
-                            sd.setDisciplina(d);
+                            //SalarioDisciplina sd = new SalarioDisciplina();
+//                            sd.setDisciplina(d);
                             disciplinas.add(sd);
                             preencheTabelaDisciplinas();
                         }
                     } else {
-                        SalarioDisciplina sd = new SalarioDisciplina();
-                        sd.setDisciplina(d);
+//                        SalarioDisciplina sd = new SalarioDisciplina();
+//                        sd.setDisciplina(d);
                         disciplinas.add(sd);
                         preencheTabelaDisciplinas();
                     }
@@ -814,12 +828,6 @@ public class TelaSalario extends javax.swing.JDialog {
         }
         return false;
     }
-
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        // TODO add your handling code here:
-        TelaDisciplina td = new TelaDisciplina();
-        td.setVisible(true);
-    }//GEN-LAST:event_jButton10ActionPerformed
 
     private void tfHorasMenslistaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfHorasMenslistaFocusLost
         // TODO add your handling code here:
@@ -880,7 +888,6 @@ public class TelaSalario extends javax.swing.JDialog {
     private javax.swing.JButton btRemover;
     private javax.swing.JCheckBox chbProfessor;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
