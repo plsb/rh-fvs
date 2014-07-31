@@ -10,15 +10,19 @@
 		<defaultValueExpression><![CDATA["C:\\Users\\'Pedro\\Documents\\NetBeansProjects\\rh-fvs\\RH\\relatorios\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="subReport" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<parameter name="periodo" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cursoid" class="java.lang.Integer" isForPrompting="false"/>
 	<queryString>
-		<![CDATA[select sd.id as idsd, d.id as iddisc, d.descricao as disciplina, d.horas, sm.descricao as semestre, c.descricao as curso
+		<![CDATA[select  distinct(sd.id) as idsd, d.id as iddisc, d.descricao as disciplina, d.horas, sm.descricao as semestre, c.sigla as curso
 from funcionario f
 inner join salario s on s.funcionario_id=f.id
 inner join salariodisciplina sd on sd.salario_id=s.id
 inner join disciplina d on sd.disciplina_id=d.id
 inner join semestre sm on sm.id = d.semestre_id
 inner join curso c on c.id = sm.curso_id
-where f.ativo=true and s.periodo_id=1 and f.id=$P{funcionarioid}
+where f.ativo=true and s.periodo_id=$P{periodo} and f.id=$P{funcionarioid}
 order by c.descricao, sm.descricao;]]>
 	</queryString>
 	<field name="idsd" class="java.lang.Integer"/>

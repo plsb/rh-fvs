@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.os.rh.telas;
 
 import br.os.rh.cidade.Cidade;
@@ -15,10 +14,13 @@ import br.os.rh.disciplina.DisciplinaTableModel;
 import br.os.rh.estado.Estado;
 import br.os.rh.estado.EstadoDAO;
 import br.os.rh.estado.EstadoTableModel;
+import br.os.rh.funcionario.Funcionario;
 import br.os.rh.horario.Horario;
 import br.os.rh.horario.HorarioDAO;
 import br.os.rh.horario.HorarioTableModel;
+import br.os.rh.periodo.Periodo;
 import br.os.rh.salariodisciplinahorario.SalarioDisciplinaHorario;
+import br.os.rh.salariodisciplinahorario.SalarioDisciplinaHorarioDAO;
 import br.os.rh.salariodisciplinahorario.SalarioDisciplinaHorarioTableModel;
 import br.os.rh.salariodiscplinas.SalarioDisciplina;
 import br.os.rh.util.Util;
@@ -31,30 +33,59 @@ import javax.swing.JOptionPane;
  * @author JOABB
  */
 public class TelaSalarioDisciplina extends javax.swing.JDialog {
+
     private static SalarioDisciplina sd;
     private static SalarioDisciplinaHorario sdh = new SalarioDisciplinaHorario();
-    
-    public static SalarioDisciplina chamaTela(){
-        TelaSalarioDisciplina tsd = new TelaSalarioDisciplina();
+    private List<SalarioDisciplina> listaSaDi;
+//    private Funcionario f;
+//    private Periodo p;
+
+    public static SalarioDisciplina chamaTela(List<SalarioDisciplina> sdlist) {
+
+        TelaSalarioDisciplina tsd = new TelaSalarioDisciplina(sdlist);
         tsd.setVisible(true);
         return sd;
     }
+
     /**
      * Creates new form TelaCidade
      */
-    public TelaSalarioDisciplina() {
-        sd = new SalarioDisciplina();
+    public TelaSalarioDisciplina(List<SalarioDisciplina> sdlist) {
         initComponents();
+        listaSaDi = sdlist;
+        sd = new SalarioDisciplina();
         setModal(true);
         setLocationRelativeTo(null);
         sd.setSdh(new ArrayList<SalarioDisciplinaHorario>());
         preencheTabela();
     }
 
-    private void preencheTabela(){
+    public TelaSalarioDisciplina() {
+        initComponents();
+    }
+
+    private boolean choqueHorario() {
+//        SalarioDisciplinaHorarioDAO sdhDAO = new SalarioDisciplinaHorarioDAO();
+//        return sdhDAO.pesquisaChoqueHorario(f, sdh.getHorario(), cbDiaSemana.getSelectedItem().toString(), p);
+        for (int i = 0; i < listaSaDi.size(); i++) {
+            for (int j = 0; j < listaSaDi.get(i).getSdh().size(); j++) {
+                if (sdh.getDiaSemana().equals(listaSaDi.get(i).getSdh().get(j).getDiaSemana())
+                        &&
+                        sdh.getHorario().equals(listaSaDi.get(i).getSdh().get(j).getHorario())
+                        ) {
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
+    private void preencheTabela() {
         SalarioDisciplinaHorarioTableModel sdh = new SalarioDisciplinaHorarioTableModel(sd.getSdh());
         tb.setModel(sdh);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -303,9 +334,9 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-     
+
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if(!tfDisciplina.getText().equals("") && sd.getSdh().size()!=0){
+        if (!tfDisciplina.getText().equals("") && sd.getSdh().size() != 0) {
             dispose();
         } else {
             JOptionPane.showMessageDialog(rootPane, "Preencha todos os campos com '*'!");
@@ -336,7 +367,7 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
         Horario h;
         if (o != null) {
             h = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
-            
+
             sdh.setHorario(h);
             tfHorario.setText(h.toString());
         }
@@ -356,7 +387,7 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
         if (o != null) {
             d = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
             sd.setDisciplina(d);
-            tfDisciplina.setText(d.getDescricao()+", "+d.getSemestre().getCurso().getDescricao());
+            tfDisciplina.setText(d.getDescricao() + ", " + d.getSemestre().getCurso().getDescricao());
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
@@ -368,17 +399,22 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if(!tfHorario.getText().equals("") && cbDiaSemana.getSelectedIndex()!=0){
-             sdh.setDiaSemana(cbDiaSemana.getSelectedItem().toString());
-             sd.getSdh().add(sdh);
-             sdh = new SalarioDisciplinaHorario();
-             tfHorario.setText("");
-             cbDiaSemana.setSelectedIndex(0);
+        if (!tfHorario.getText().equals("") && cbDiaSemana.getSelectedIndex() != 0) {
+            sdh.setDiaSemana(cbDiaSemana.getSelectedItem().toString());
+            if (choqueHorario()) {
+                JOptionPane.showMessageDialog(rootPane, "Existe Choque de Horário!");
+            } else {
+                
+                sd.getSdh().add(sdh);
+                sdh = new SalarioDisciplinaHorario();
+                tfHorario.setText("");
+                cbDiaSemana.setSelectedIndex(0);
+            }
         } else {
             JOptionPane.showMessageDialog(rootPane, "Informe o horário e o dia da semana!");
         }
         preencheTabela();
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

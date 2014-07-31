@@ -27,8 +27,8 @@ public class PeriodoDAO extends GenericDAO<Periodo>{
         setTransacao(getSessao().beginTransaction());
         
         List <Periodo> periodos = (List<Periodo>) getSessao().createCriteria(Periodo.class).
-                add(Restrictions.ilike("periodo", Descricao, MatchMode.ANYWHERE)).
-                addOrder(Order.asc("periodo")).list();
+                add(Restrictions.ilike("descricao", Descricao, MatchMode.ANYWHERE)).
+                addOrder(Order.asc("descricao")).list();
         
         getSessao().close();
         return periodos;
