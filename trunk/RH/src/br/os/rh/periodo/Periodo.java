@@ -81,7 +81,7 @@ public class Periodo {
 
     @Override
     public String toString() {
-        return "Periodo{" + "id=" + id + ", descricao=" + descricao + '}';
+        return descricao;
     }
     
     

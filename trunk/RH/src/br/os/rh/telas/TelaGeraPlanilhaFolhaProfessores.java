@@ -8,14 +8,23 @@ import br.os.rh.curso.Curso;
 import br.os.rh.curso.CursoDAO;
 import br.os.rh.periodo.Periodo;
 import br.os.rh.periodo.PeriodoDAO;
+import br.os.rh.salario.Salario;
+import br.os.rh.salario.SalarioDAO;
+import br.os.rh.util.Calculo;
 import br.os.rh.util.ConnectionFactory;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -24,22 +33,27 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 
 /**
  *
  * @author Pedro Saraiva
  */
-public class TelaRelatorioProfessoresLotacao extends javax.swing.JDialog {
+public class TelaGeraPlanilhaFolhaProfessores extends javax.swing.JDialog {
 
     /**
      * Creates new form TelaRelatorioAcervo
      */
-    public TelaRelatorioProfessoresLotacao() {
+    public TelaGeraPlanilhaFolhaProfessores() {
         initComponents();
         setModal(true);
         setLocationRelativeTo(null);
         preenchePeriodo();
-        
+
     }
 
     /**
@@ -60,7 +74,7 @@ public class TelaRelatorioProfessoresLotacao extends javax.swing.JDialog {
         btImprimir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Relatório Professores/Lotação");
+        setTitle("Relatório Acervo");
         setModal(true);
         setResizable(false);
 
@@ -79,7 +93,7 @@ public class TelaRelatorioProfessoresLotacao extends javax.swing.JDialog {
         jPanel3.setLayout(null);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setText("RELATÓRIO PROFESSORES/LOTAÇÃO");
+        jLabel5.setText("PLANILHA SALÁRIO PROFESSORES");
         jPanel3.add(jLabel5);
         jLabel5.setBounds(0, 10, 280, 17);
 
@@ -141,6 +155,8 @@ public class TelaRelatorioProfessoresLotacao extends javax.swing.JDialog {
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
+        getAccessibleContext().setAccessibleName("Planilha Salário Professores");
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -150,49 +166,115 @@ public class TelaRelatorioProfessoresLotacao extends javax.swing.JDialog {
 
     private void btImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirActionPerformed
         // TODO add your handling code here:
-        JasperReport pathjrxml;
-        HashMap parametros = new HashMap();
-        String sql = "", texto = "";
-
-        if (cbPeriodo.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(rootPane, "Informe o Período!");
-        }
-        
-        if (cbPeriodo.getSelectedIndex() != 0) {
-            PeriodoDAO pDAO = new PeriodoDAO();
-            
-            Periodo p = pDAO.pesquisaDescricao(cbPeriodo.getSelectedItem().toString()).get(0);          
-            
-            sql += " and s.periodo_id=" + p.getId();
-
-            sql += " order by f.nome";
-            parametros.put("texto", sql);
-
-            Connection connection = new ConnectionFactory().getConnection();
+        if (cbPeriodo.getSelectedIndex() > 0) {
+            SalarioDAO dao = new SalarioDAO();
+            List<Salario> salarios = dao.pesquisaPeriodo((Periodo) cbPeriodo.getSelectedItem());
+            Collections.sort(salarios);
             try {
-                JDialog viewer = new JDialog(new javax.swing.JFrame(), "Visualização do Relatório", true);
-                viewer.setSize(1000, 600);
-                viewer.setLocationRelativeTo(null);
-                viewer.setModal(true);
-                pathjrxml = JasperCompileManager.compileReport("relatorios/RelProfDisc.jrxml");
-                JasperPrint printReport = JasperFillManager.fillReport(pathjrxml, parametros,
-                        connection);
-                JasperViewer jv = new JasperViewer(printReport, false);
-                viewer.getContentPane().add(jv.getContentPane());
-                viewer.setVisible(true);
-            //JasperExportManager.exportReportToPdfFile(printReport, "src/relatorios/RelAcervo.pdf");
+                if (salarios.size() > 0) {
+                    geraPlanilha(salarios);
+                    JOptionPane.showMessageDialog(rootPane, "Planilha gerada com sucesso!");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Não existem dados para gerar!!");
+                }
 
-                //jv.setVisible(true);
-            } catch (JRException ex) {
-                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(rootPane, "ERRO: " + ex.getMessage());
             }
-            //dispose();
-            cbPeriodo.setSelectedIndex(0);
-//            cbCurso.setSelectedIndex(0);
+
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Informe o período!");
         }
 
 
     }//GEN-LAST:event_btImprimirActionPerformed
+
+    public void geraPlanilha(List<Salario> lista) throws IOException {
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet1 = wb.createSheet("Professores");
+
+        HSSFCellStyle estilo = wb.createCellStyle();
+        //Adicionando bordas
+        estilo.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        estilo.setBottomBorderColor(HSSFColor.BLACK.index);
+        estilo.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        estilo.setTopBorderColor(HSSFColor.BLACK.index);
+        estilo.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        estilo.setRightBorderColor(HSSFColor.BLACK.index);
+        estilo.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+        estilo.setLeftBorderColor(HSSFColor.BLACK.index);
+        HSSFRow row = sheet1.createRow(0);
+        row.createCell(0).setCellValue("Nome");
+        row.createCell(1).setCellValue("Titulação");
+        row.createCell(2).setCellValue("Curso");
+        row.createCell(3).setCellValue("Cidade");
+        row.createCell(4).setCellValue("Horas");
+        row.createCell(5).setCellValue("Valor Hora Aula");
+        row.createCell(6).setCellValue("Valor Horista");
+        row.createCell(7).setCellValue("Valor Mensalista");
+        row.createCell(8).setCellValue("1 Sexto");
+        row.createCell(9).setCellValue("Gratificação");
+        row.createCell(10).setCellValue("Ajuda de Custo");
+        row.createCell(11).setCellValue("Total");
+//        row.createCell(12).setCellValue("Adiantamentos");
+//        row.createCell(13).setCellValue("Descontos");
+        for (int j = 0; j < 12; j++) {
+            row.getCell(j).setCellStyle(estilo);
+        }
+        double valorGeral = 0;
+
+        for (int i = 0; i < lista.size(); i++) {
+            Salario s = lista.get(i);
+            if (s.isProfessor() && s.getFuncionario().isAtivo()) {
+                row = sheet1.createRow(i + 1);
+
+                row.createCell(0).setCellValue(s.getFuncionario().getNome());
+                row.createCell(1).setCellValue(s.getFuncionario().getTitulacao().getDescricao());
+                row.createCell(2).setCellValue(s.getDisciplinas().get(0).getDisciplina().getSemestre().getCurso().getSigla());
+                row.createCell(3).setCellValue(s.getFuncionario().getCidade().getDescricao());
+                row.createCell(4).setCellValue((Calculo.calculoHorasSemestre(s.getDisciplinas()) / 20) * 4.5);
+                row.createCell(5).setCellValue(s.getValHoraAula());
+
+                double valorMensalHorista = (((Calculo.calculoHorasSemestre(s.getDisciplinas())-s.getHorasMensalista()) / 20) * 4.5) * s.getValHoraAula();
+                row.createCell(6).setCellValue(valorMensalHorista);
+                row.createCell(7).setCellValue(s.getSalario());
+                double umSexto = valorMensalHorista / 6;
+                row.createCell(8).setCellValue(umSexto);
+                double gratificacao = Calculo.calculoGratificacaoHorista(s.getPorcentGratifica(), valorMensalHorista+s.getSalario());
+                row.createCell(9).setCellValue(gratificacao);
+                row.createCell(10).setCellValue(s.getValAjudaCusto());
+                double total = Calculo.calculoHorista(s.getDisciplinas(), s.getValHoraAula(),
+                        s.getValAjudaCusto(), s.getPorcentGratifica(), s.getHorasMensalista(), s.getSalario());
+                row.createCell(11).setCellValue(total);
+                valorGeral += total;
+
+//                row.createCell(12).setCellValue("adiantamentos");
+//                row.createCell(13).setCellValue("desconto");
+                for (int j = 0; j < 12; j++) {
+                    row.getCell(j).setCellStyle(estilo);
+                }
+
+            }
+
+        }
+
+        row = sheet1.createRow(row.getRowNum() + 1);
+
+        row.createCell(11).setCellValue(valorGeral);
+//        row.createCell(11).setCellStyle(estilo);
+
+        JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showDialog(this, "Salvar");
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            System.out.println(file.getPath());
+            FileOutputStream stream = new FileOutputStream(file.getPath() + ".xls");
+            wb.write(stream);
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Operação Cancelada!");
+        }
+
+    }
 
     /**
      * @param args the command line arguments
@@ -211,20 +293,20 @@ public class TelaRelatorioProfessoresLotacao extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaRelatorioProfessoresLotacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaGeraPlanilhaFolhaProfessores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaRelatorioProfessoresLotacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaGeraPlanilhaFolhaProfessores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaRelatorioProfessoresLotacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaGeraPlanilhaFolhaProfessores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaRelatorioProfessoresLotacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaGeraPlanilhaFolhaProfessores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaRelatorioProfessoresLotacao().setVisible(true);
+                new TelaGeraPlanilhaFolhaProfessores().setVisible(true);
             }
         });
     }
@@ -241,7 +323,7 @@ public class TelaRelatorioProfessoresLotacao extends javax.swing.JDialog {
     private void preenchePeriodo() {
         PeriodoDAO pDAO = new PeriodoDAO();
         for (int i = 0; i < pDAO.listar().size(); i++) {
-            cbPeriodo.addItem(pDAO.listar().get(i).getDescricao());
+            cbPeriodo.addItem(pDAO.listar().get(i));
         }
     }
 

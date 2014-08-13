@@ -18,13 +18,15 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 
 /**
  *
  * @author JOABB
  */
 @Entity
-public class Salario {
+public class Salario implements Comparable<Salario>{
 
     @Id
     @GeneratedValue
@@ -57,8 +59,9 @@ public class Salario {
     private boolean professor;
 
     @OneToMany(mappedBy = "salario")
-    private List<SalarioDisciplina> disciplinas;
     
+    private List<SalarioDisciplina> disciplinas;
+
     private int horasMensalista;
 
     /**
@@ -165,14 +168,14 @@ public class Salario {
     public Periodo getPeriodo() {
         return periodo;
     }
-    
+
     public String getPeriodoTexto() {
-        if(periodo==null){
+        if (periodo == null) {
             return " -- ";
         } else {
             return periodo.getDescricao();
         }
-        
+
     }
 
     /**
@@ -212,19 +215,19 @@ public class Salario {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 31 * hash + this.id;
-        hash = 31 * hash + (int) (Double.doubleToLongBits(this.salario) ^ (Double.doubleToLongBits(this.salario) >>> 32));
-        hash = 31 * hash + (int) (Double.doubleToLongBits(this.porcentGratifica) ^ (Double.doubleToLongBits(this.porcentGratifica) >>> 32));
-        hash = 31 * hash + (int) (Double.doubleToLongBits(this.valAjudaCusto) ^ (Double.doubleToLongBits(this.valAjudaCusto) >>> 32));
-        hash = 31 * hash + (int) (Double.doubleToLongBits(this.salarioBase) ^ (Double.doubleToLongBits(this.salarioBase) >>> 32));
-        hash = 31 * hash + Objects.hashCode(this.tipoRegime);
-        hash = 31 * hash + (int) (Double.doubleToLongBits(this.valHoraAula) ^ (Double.doubleToLongBits(this.valHoraAula) >>> 32));
-        hash = 31 * hash + Objects.hashCode(this.periodo);
-        hash = 31 * hash + Objects.hashCode(this.funcionario);
-        hash = 31 * hash + (this.professor ? 1 : 0);
-        hash = 31 * hash + Objects.hashCode(this.disciplinas);
-        hash = 31 * hash + this.horasMensalista;
+        int hash = 7;
+        hash = 29 * hash + this.id;
+        hash = 29 * hash + (int) (Double.doubleToLongBits(this.salario) ^ (Double.doubleToLongBits(this.salario) >>> 32));
+        hash = 29 * hash + (int) (Double.doubleToLongBits(this.porcentGratifica) ^ (Double.doubleToLongBits(this.porcentGratifica) >>> 32));
+        hash = 29 * hash + (int) (Double.doubleToLongBits(this.valAjudaCusto) ^ (Double.doubleToLongBits(this.valAjudaCusto) >>> 32));
+        hash = 29 * hash + (int) (Double.doubleToLongBits(this.salarioBase) ^ (Double.doubleToLongBits(this.salarioBase) >>> 32));
+        hash = 29 * hash + Objects.hashCode(this.tipoRegime);
+        hash = 29 * hash + (int) (Double.doubleToLongBits(this.valHoraAula) ^ (Double.doubleToLongBits(this.valHoraAula) >>> 32));
+        hash = 29 * hash + Objects.hashCode(this.periodo);
+        hash = 29 * hash + Objects.hashCode(this.funcionario);
+        hash = 29 * hash + (this.professor ? 1 : 0);
+        hash = 29 * hash + Objects.hashCode(this.disciplinas);
+        hash = 29 * hash + this.horasMensalista;
         return hash;
     }
 
@@ -276,14 +279,9 @@ public class Salario {
         return true;
     }
 
-    
-
-    
-    
-
     @Override
     public String toString() {
-        return funcionario.getNome()+ ", " +periodo.getDescricao();
+        return funcionario.getNome() + ", " + periodo.getDescricao();
     }
 
     /**
@@ -314,4 +312,10 @@ public class Salario {
         this.horasMensalista = horasMensalista;
     }
 
+    @Override
+    public int compareTo(Salario o) {
+        return funcionario.getNome().compareTo(o.funcionario.getNome());
+    }
+
+   
 }

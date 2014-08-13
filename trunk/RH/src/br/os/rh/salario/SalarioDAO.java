@@ -12,6 +12,7 @@ import br.os.rh.salariodiscplinas.SalarioDisciplina;
 import br.os.rh.util.GenericDAO;
 import br.os.rh.util.HibernateUtil;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -46,6 +47,17 @@ public class SalarioDAO extends GenericDAO<Salario> {
                 add(Restrictions.eq("id", id)).uniqueResult();
 
         getSessao().close();
+        return salario;
+    }
+    
+    public List<Salario> pesquisaPeriodo(Periodo p) {
+        setSessao(HibernateUtil.getSessionFactory().openSession());
+        setTransacao(getSessao().beginTransaction());
+
+        List<Salario> salario = (List<Salario>) getSessao().createCriteria(Salario.class).
+                add(Restrictions.eq("periodo", p)).list();
+        
+        //        getSessao().close();
         return salario;
     }
 
@@ -98,4 +110,6 @@ public class SalarioDAO extends GenericDAO<Salario> {
             atualizar(s);
         }
     }
+    
+    
 }

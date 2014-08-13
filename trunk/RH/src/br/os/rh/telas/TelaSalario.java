@@ -21,6 +21,7 @@ import br.os.rh.salariodisciplinahorario.SalarioDisciplinaHorarioDAO;
 import br.os.rh.salariodiscplinas.SalarioDisciplina;
 import br.os.rh.salariodiscplinas.SalarioDisciplinaDAO;
 import br.os.rh.salariodiscplinas.SalarioDisciplinaTableModel;
+import br.os.rh.util.Calculo;
 import br.os.rh.util.FormataTamanhoColunasJTable;
 import br.os.rh.util.OnlyNumberField;
 import br.os.rh.util.Util;
@@ -42,82 +43,103 @@ public class TelaSalario extends javax.swing.JDialog {
     private List<SalarioDisciplina> disciplinas;
 
     private double calculo() {
-        if (jcbRegime.getSelectedIndex() == 1) {
-            return calculoHorista();
-        } else if (jcbRegime.getSelectedIndex() == 2) {
-            return calculoMensalistaHorista();
-        }
-        return 0;
-    }
-
-    private double calculoMensalistaHorista() {
-        int ch = 0;
-        for (int i = 0; i < disciplinas.size(); i++) {
-            ch += disciplinas.get(i).getDisciplina().getHoras();
-        }
         int horasMensalista = 0;
-        System.out.println(tfHorasMenslista.getText());
         if (!tfHorasMenslista.getText().equals("")) {
             horasMensalista = Integer.parseInt(tfHorasMenslista.getText());
         }
-        if (ch < horasMensalista) {
-            ch = 0;
-        } else {
-            ch = ch - horasMensalista;
-        }
-
         double vHoraAula = 0;
         if (!tfValorHoraAula.getText().equals("")) {
             vHoraAula = Double.parseDouble(tfValorHoraAula.getText());
-        }
-        double horasMensais = (ch / 20) * 4.5;
-        double remuneracaoMensal = horasMensais * vHoraAula;
-        double umSexto = remuneracaoMensal / 6;
-
-        double ajudaCusto = 0;
-        if (!tfValorAjudaCusto.getText().equals("")) {
-            ajudaCusto = Double.parseDouble(tfValorAjudaCusto.getText());
-        }
-        double salarioBruto = remuneracaoMensal + umSexto + ajudaCusto;
-
-        double horasMensaisMensalista = horasMensalista / 20;
-        double totalMesMensalista = horasMensaisMensalista * 4;
-        double horaAulaMesMensalista = totalMesMensalista / 0.75;
-        double valorMensalista = horaAulaMesMensalista * vHoraAula;
-        double gratificacao = 0;
-        if (!tfPorcentagem.getText().equals("")) {
-            double porcentagem = Double.parseDouble(tfPorcentagem.getText());
-            gratificacao = (porcentagem * (remuneracaoMensal + valorMensalista)) / 100;
-        }
-
-        return salarioBruto + valorMensalista + gratificacao;
-
-    }
-
-    private double calculoHorista() {
-        int ch = 0;
-        for (int i = 0; i < disciplinas.size(); i++) {
-            ch += disciplinas.get(i).getDisciplina().getHoras();
-        }
-        double vHoraAula = 0;
-        if (!tfValorHoraAula.getText().equals("")) {
-            vHoraAula = Double.parseDouble(tfValorHoraAula.getText());
-        }
-        double horasMensais = (ch / 20) * 4.5;
-        double remuneracaoMensal = horasMensais * vHoraAula;
-        double umSexto = remuneracaoMensal / 6;
-        double gratificacao = 0;
-        if (!tfPorcentagem.getText().equals("")) {
-            double porcentagem = Double.parseDouble(tfPorcentagem.getText());
-            gratificacao = (porcentagem * remuneracaoMensal) / 100;
         }
         double ajudaCusto = 0;
         if (!tfValorAjudaCusto.getText().equals("")) {
             ajudaCusto = Double.parseDouble(tfValorAjudaCusto.getText());
         }
-        double salarioBruto = remuneracaoMensal + umSexto + gratificacao + ajudaCusto;
-        return salarioBruto;
+        double porcentagem = 0;
+        if (!tfPorcentagem.getText().equals("")) {
+            porcentagem = Double.parseDouble(tfPorcentagem.getText());
+
+        }
+
+        return Calculo.calculoHorista(disciplinas, vHoraAula, ajudaCusto, porcentagem,
+                horasMensalista, Double.parseDouble(tfSalario.getText()));
+//        if (jcbRegime.getSelectedIndex() == 1) {
+//
+//            return Calculo.calculoHorista(disciplinas, vHoraAula, ajudaCusto, porcentagem);
+//        } else if (jcbRegime.getSelectedIndex() == 2) {
+//            return Calculo.calculoMensalistaHorista(disciplinas, horasMensalista, vHoraAula, ajudaCusto, porcentagem);
+//        }
+        //return 0;
     }
+
+//    private double calculoMensalistaHorista() {
+//        int ch = 0;
+//        for (int i = 0; i < disciplinas.size(); i++) {
+//            ch += disciplinas.get(i).getDisciplina().getHoras();
+//        }
+//        int horasMensalista = 0;
+//        System.out.println(tfHorasMenslista.getText());
+//        if (!tfHorasMenslista.getText().equals("")) {
+//            horasMensalista = Integer.parseInt(tfHorasMenslista.getText());
+//        }
+//        if (ch < horasMensalista) {
+//            ch = 0;
+//        } else {
+//            ch = ch - horasMensalista;
+//        }
+//
+//        double vHoraAula = 0;
+//        if (!tfValorHoraAula.getText().equals("")) {
+//            vHoraAula = Double.parseDouble(tfValorHoraAula.getText());
+//        }
+//        double horasMensais = (ch / 20) * 4.5;
+//        double remuneracaoMensal = horasMensais * vHoraAula;
+//        double umSexto = remuneracaoMensal / 6;
+//
+//        double ajudaCusto = 0;
+//        if (!tfValorAjudaCusto.getText().equals("")) {
+//            ajudaCusto = Double.parseDouble(tfValorAjudaCusto.getText());
+//        }
+//        double salarioBruto = remuneracaoMensal + umSexto + ajudaCusto;
+//
+//        double horasMensaisMensalista = horasMensalista / 20;
+//        double totalMesMensalista = horasMensaisMensalista * 4;
+//        double horaAulaMesMensalista = totalMesMensalista / 0.75;
+//        double valorMensalista = horaAulaMesMensalista * vHoraAula;
+//        double gratificacao = 0;
+//        if (!tfPorcentagem.getText().equals("")) {
+//            double porcentagem = Double.parseDouble(tfPorcentagem.getText());
+//            gratificacao = (porcentagem * (remuneracaoMensal + valorMensalista)) / 100;
+//        }
+//
+//        return salarioBruto + valorMensalista + gratificacao;
+//
+//    }
+//
+//    private double calculoHorista() {
+//        int ch = 0;
+//        for (int i = 0; i < disciplinas.size(); i++) {
+//            ch += disciplinas.get(i).getDisciplina().getHoras();
+//        }
+//        double vHoraAula = 0;
+//        if (!tfValorHoraAula.getText().equals("")) {
+//            vHoraAula = Double.parseDouble(tfValorHoraAula.getText());
+//        }
+//        double horasMensais = (ch / 20) * 4.5;
+//        double remuneracaoMensal = horasMensais * vHoraAula;
+//        double umSexto = remuneracaoMensal / 6;
+//        double gratificacao = 0;
+//        if (!tfPorcentagem.getText().equals("")) {
+//            double porcentagem = Double.parseDouble(tfPorcentagem.getText());
+//            gratificacao = (porcentagem * remuneracaoMensal) / 100;
+//        }
+//        double ajudaCusto = 0;
+//        if (!tfValorAjudaCusto.getText().equals("")) {
+//            ajudaCusto = Double.parseDouble(tfValorAjudaCusto.getText());
+//        }
+//        double salarioBruto = remuneracaoMensal + umSexto + gratificacao + ajudaCusto;
+//        return salarioBruto;
+//    }
 
     /**
      * Creates new form TelaSalario
@@ -247,9 +269,11 @@ public class TelaSalario extends javax.swing.JDialog {
 
         pnTelaSalario.setBackground(new java.awt.Color(255, 255, 255));
         pnTelaSalario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        pnTelaSalario.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel6.setText("Regime:*");
+        pnTelaSalario.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 12, -1, -1));
 
         jcbRegime.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione ", "Horista", "Mensalista/Horista" }));
         jcbRegime.addActionListener(new java.awt.event.ActionListener() {
@@ -257,15 +281,18 @@ public class TelaSalario extends javax.swing.JDialog {
                 jcbRegimeActionPerformed(evt);
             }
         });
+        pnTelaSalario.add(jcbRegime, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 32, 144, -1));
 
         tfValorHoraAula.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 tfValorHoraAulaFocusLost(evt);
             }
         });
+        pnTelaSalario.add(tfValorHoraAula, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 32, 130, -1));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel10.setText("Valor da Hora/Aula:*");
+        pnTelaSalario.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 16, -1, 10));
 
         tfPeriodo.setEnabled(false);
         tfPeriodo.addActionListener(new java.awt.event.ActionListener() {
@@ -273,9 +300,11 @@ public class TelaSalario extends javax.swing.JDialog {
                 tfPeriodoActionPerformed(evt);
             }
         });
+        pnTelaSalario.add(tfPeriodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, 140, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText("Período:*");
+        pnTelaSalario.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 60, -1, -1));
 
         jButton2.setText("...");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -283,6 +312,7 @@ public class TelaSalario extends javax.swing.JDialog {
                 jButton2ActionPerformed(evt);
             }
         });
+        pnTelaSalario.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, 35, -1));
 
         jButton6.setText("+");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -290,18 +320,22 @@ public class TelaSalario extends javax.swing.JDialog {
                 jButton6ActionPerformed(evt);
             }
         });
+        pnTelaSalario.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, -1, -1));
 
         tfPorcentagem.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 tfPorcentagemFocusLost(evt);
             }
         });
+        pnTelaSalario.add(tfPorcentagem, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 93, -1));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel11.setText("Gratificação (%):");
+        pnTelaSalario.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel8.setText("Disciplinas:*");
+        pnTelaSalario.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 110, -1, -1));
 
         tbDisciplinas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -316,25 +350,32 @@ public class TelaSalario extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(tbDisciplinas);
 
+        pnTelaSalario.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 131, 550, 111));
+
         jButton9.setText("...");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton9ActionPerformed(evt);
             }
         });
+        pnTelaSalario.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 130, 35, -1));
 
         tfValorAjudaCusto.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 tfValorAjudaCustoFocusLost(evt);
             }
         });
+        pnTelaSalario.add(tfValorAjudaCusto, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 32, 140, -1));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel12.setText("Valor Ajuda de Custo:");
+        pnTelaSalario.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 16, -1, 10));
 
         lblHoras.setText("000 horas");
+        pnTelaSalario.add(lblHoras, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 200, 70, -1));
 
         lblSalarioBruto.setText("R$ 0,00");
+        pnTelaSalario.add(lblSalarioBruto, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 220, 80, -1));
 
         tfHorasMenslista.setEnabled(false);
         tfHorasMenslista.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -342,115 +383,13 @@ public class TelaSalario extends javax.swing.JDialog {
                 tfHorasMenslistaFocusLost(evt);
             }
         });
+        pnTelaSalario.add(tfHorasMenslista, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 32, 93, -1));
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel13.setText("Horas Mesalista:");
+        jLabel13.setText("Horas Mensalista:");
+        pnTelaSalario.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 16, -1, 10));
 
-        javax.swing.GroupLayout pnTelaSalarioLayout = new javax.swing.GroupLayout(pnTelaSalario);
-        pnTelaSalario.setLayout(pnTelaSalarioLayout);
-        pnTelaSalarioLayout.setHorizontalGroup(
-            pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnTelaSalarioLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnTelaSalarioLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 562, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(lblHoras, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
-                                .addComponent(lblSalarioBruto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(pnTelaSalarioLayout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnTelaSalarioLayout.createSequentialGroup()
-                        .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jcbRegime, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tfValorAjudaCusto)
-                            .addGroup(pnTelaSalarioLayout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(pnTelaSalarioLayout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(74, 74, 74)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnTelaSalarioLayout.createSequentialGroup()
-                                .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(pnTelaSalarioLayout.createSequentialGroup()
-                                        .addGap(1, 1, 1)
-                                        .addComponent(jLabel11))
-                                    .addComponent(tfPorcentagem, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(tfPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton6))
-                            .addGroup(pnTelaSalarioLayout.createSequentialGroup()
-                                .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel13)
-                                    .addComponent(tfHorasMenslista, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel10)
-                                    .addComponent(tfValorHoraAula, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap())
-        );
-        pnTelaSalarioLayout.setVerticalGroup(
-            pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnTelaSalarioLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnTelaSalarioLayout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(5, 5, 5)
-                        .addComponent(jcbRegime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(pnTelaSalarioLayout.createSequentialGroup()
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(tfHorasMenslista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnTelaSalarioLayout.createSequentialGroup()
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(tfValorHoraAula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(13, 13, 13)
-                .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnTelaSalarioLayout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(4, 4, 4)
-                        .addComponent(tfPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jButton2)
-                        .addComponent(jButton6))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnTelaSalarioLayout.createSequentialGroup()
-                        .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(4, 4, 4)
-                        .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tfPorcentagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tfValorAjudaCusto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnTelaSalarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(pnTelaSalarioLayout.createSequentialGroup()
-                        .addComponent(jButton9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblHoras)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblSalarioBruto))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(17, Short.MAX_VALUE))
-        );
-
-        jPanel5.add(pnTelaSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 650, 260));
+        jPanel5.add(pnTelaSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 660, 260));
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/novo_1.png"))); // NOI18N
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -492,6 +431,12 @@ public class TelaSalario extends javax.swing.JDialog {
             }
         });
         jPanel5.add(btRemover, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 80, -1, -1));
+
+        tfSalario.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tfSalarioFocusLost(evt);
+            }
+        });
         jPanel5.add(tfSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 30, 220, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -504,8 +449,10 @@ public class TelaSalario extends javax.swing.JDialog {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addContainerGap(600, Short.MAX_VALUE))
-            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 2, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -684,6 +631,9 @@ public class TelaSalario extends javax.swing.JDialog {
                 tfValorHoraAula.setText(String.valueOf(salario.getValHoraAula()));
                 tfPeriodo.setText(salario.getPeriodo().getDescricao());
                 jcbRegime.setSelectedItem(salario.getTipoRegime());
+                if(salario.getTipoRegime().equals("Horista")){
+                    tfSalario.setEnabled(false);
+                }
                 SalarioDisciplinaDAO sdDAO = new SalarioDisciplinaDAO();
                 disciplinas = new ArrayList<>(new HashSet(sdDAO.pesquisaSalario(salario)));//salario.getDisciplinas();
                 chbProfessor.setSelected(salario.isProfessor());
@@ -757,11 +707,11 @@ public class TelaSalario extends javax.swing.JDialog {
         if (chbProfessor.isSelected()) {
             pnTelaSalario.setVisible(true);
             setSize(670, 470);
-            tfSalario.setEnabled(false);
+//            tfSalario.setEnabled(false);
         } else {
             pnTelaSalario.setVisible(false);
             setSize(670, 230);
-            tfSalario.setEnabled(true);
+//            tfSalario.setEnabled(true);
         }
         setLocationRelativeTo(null);
 
@@ -770,11 +720,15 @@ public class TelaSalario extends javax.swing.JDialog {
     private void jcbRegimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbRegimeActionPerformed
         // TODO add your handling code here:
         if (jcbRegime.getSelectedIndex() == 2) {
-            tfHorasMenslista.setEnabled(true);
+            tfHorasMenslista.setText("240");
+//            tfSalario.setEnabled(true);
         } else {
             tfHorasMenslista.setText("0");
             tfHorasMenslista.setEnabled(false);
+//            tfSalario.setEnabled(false);
+            tfSalario.setText("0");
         }
+        lblSalarioBruto.setText("R$ " + calculoString());
     }//GEN-LAST:event_jcbRegimeActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -850,6 +804,11 @@ public class TelaSalario extends javax.swing.JDialog {
         // TODO add your handling code here:
         lblSalarioBruto.setText("R$ " + calculoString());
     }//GEN-LAST:event_tfPorcentagemFocusLost
+
+    private void tfSalarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfSalarioFocusLost
+        // TODO add your handling code here:
+        lblSalarioBruto.setText("R$ " + calculoString());
+    }//GEN-LAST:event_tfSalarioFocusLost
 
     /**
      * @param args the command line arguments
