@@ -28,6 +28,8 @@ public class Horario {
     
     @ManyToOne
     private Turno turno;
+    
+    private int qtdHora;
 
     /**
      * @return the id
@@ -72,11 +74,25 @@ public class Horario {
     }
 
     @Override
+    public String toString() {
+        return "{"+descricao+", "+turno.getDescricao()+"}";
+    }    
+
+    public int getQtdHora() {
+        return qtdHora;
+    }
+
+    public void setQtdHora(int qtdHora) {
+        this.qtdHora = qtdHora;
+    }
+
+    @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 67 * hash + this.id;
-        hash = 67 * hash + Objects.hashCode(this.descricao);
-        hash = 67 * hash + Objects.hashCode(this.turno);
+        int hash = 7;
+        hash = 79 * hash + this.id;
+        hash = 79 * hash + Objects.hashCode(this.descricao);
+        hash = 79 * hash + Objects.hashCode(this.turno);
+        hash = 79 * hash + this.qtdHora;
         return hash;
     }
 
@@ -100,10 +116,7 @@ public class Horario {
         }
         return true;
     }
-
-    @Override
-    public String toString() {
-        return "{"+descricao+", "+turno.getDescricao()+"}";
-    }    
+    
+    
     
 }

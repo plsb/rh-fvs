@@ -58,6 +58,8 @@ public class TelaHorario extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        tfqdtHoras = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -136,6 +138,15 @@ public class TelaHorario extends javax.swing.JDialog {
             }
         });
 
+        tfqdtHoras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfqdtHorasActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel2.setText("Quant. Horas:*");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -164,7 +175,9 @@ public class TelaHorario extends javax.swing.JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton6)))
+                                .addComponent(jButton6))
+                            .addComponent(jLabel2)
+                            .addComponent(tfqdtHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -176,6 +189,10 @@ public class TelaHorario extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tfDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tfqdtHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -223,7 +240,7 @@ public class TelaHorario extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -235,6 +252,7 @@ public class TelaHorario extends javax.swing.JDialog {
     private void limpaCampos() { //limpar campos
         tfDescricao.setText("");
         tfTurno.setText("");
+        tfqdtHoras.setText("");
         horario = new Horario();
         btRemover.setEnabled(false);
     }
@@ -246,6 +264,7 @@ public class TelaHorario extends javax.swing.JDialog {
         if (Util.chkVazio(tfDescricao.getText(), tfTurno.getText())) {
 
             horario.setDescricao(tfDescricao.getText());
+            horario.setQtdHora(Integer.parseInt(tfqdtHoras.getText()));
 
             HorarioDAO dao = new HorarioDAO();
             dao.salvar(horario);
@@ -278,6 +297,7 @@ public class TelaHorario extends javax.swing.JDialog {
 
             tfDescricao.setText(horario.getDescricao());
             tfTurno.setText(horario.getTurno().getDescricao());
+            tfqdtHoras.setText(String.valueOf(horario.getQtdHora()));
 
             btRemover.setEnabled(true);
         }
@@ -311,6 +331,10 @@ public class TelaHorario extends javax.swing.JDialog {
         TelaTurno tt = new TelaTurno();
         tt.setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void tfqdtHorasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfqdtHorasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfqdtHorasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -356,11 +380,13 @@ public class TelaHorario extends javax.swing.JDialog {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JTextField tfDescricao;
     private javax.swing.JTextField tfTurno;
+    private javax.swing.JTextField tfqdtHoras;
     // End of variables declaration//GEN-END:variables
 }

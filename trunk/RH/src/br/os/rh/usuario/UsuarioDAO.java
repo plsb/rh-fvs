@@ -9,6 +9,7 @@ package br.os.rh.usuario;
 import br.os.rh.util.GenericDAO;
 import br.os.rh.util.HibernateUtil;
 import java.util.List;
+import javax.swing.JOptionPane;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -47,6 +48,19 @@ public class UsuarioDAO extends GenericDAO<Usuario>{
         
     }
     
+    public List <Usuario> pesquisaDescricaoEq(String Login){
+        setSessao(HibernateUtil.getSessionFactory().openSession());
+        setTransacao(getSessao().beginTransaction());
+        
+        List <Usuario> usuarios = (List<Usuario>) getSessao().createCriteria(Usuario.class).
+                add(Restrictions.eq("login", Login)).
+                addOrder(Order.asc("login")).list();
+        
+        getSessao().close();
+        return usuarios;
+        
+    }
+    
     public Usuario pesquisaId(int id){
         setSessao(HibernateUtil.getSessionFactory().openSession());
         setTransacao(getSessao().beginTransaction());
@@ -64,5 +78,21 @@ public class UsuarioDAO extends GenericDAO<Usuario>{
         } else {
             atualizar(u);
         }
+    }
+    
+    public List<Usuario> listarCoordenador() {
+        List<Usuario> lista = null;
+        try {
+            this.setSessao(HibernateUtil.getSessionFactory().openSession());
+            setTransacao(getSessao().beginTransaction());
+            lista = this.getSessao().createCriteria(Usuario.class).add(Restrictions.eq("tipo", "Coordenador de Curso")).list();
+            //sessao.close();
+        } catch (Throwable e) {
+            if (getTransacao().isActive()) {
+                getTransacao().rollback();
+            }
+            JOptionPane.showMessageDialog(null, "Não foi possível listar: " + e.getMessage());
+        }
+        return lista;
     }
 }

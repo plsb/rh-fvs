@@ -6,6 +6,7 @@
 
 package br.os.rh.curso;
 
+import br.os.rh.util.Ativo;
 import br.os.rh.util.GenericDAO;
 import br.os.rh.util.HibernateUtil;
 import java.util.List;
@@ -28,6 +29,18 @@ public class CursoDAO extends GenericDAO<Curso>{
         
         List <Curso> cursos = (List<Curso>) getSessao().createCriteria(Curso.class).
                 add(Restrictions.ilike("descricao", Descricao, MatchMode.ANYWHERE)).
+                addOrder(Order.asc("descricao")).list();
+        
+        getSessao().close();
+        return cursos;
+    }
+    
+    public List <Curso> pesquisaCursosCoordenadores(){
+        setSessao(HibernateUtil.getSessionFactory().openSession());
+        setTransacao(getSessao().beginTransaction());
+        
+        List <Curso> cursos = (List<Curso>) getSessao().createCriteria(Curso.class).
+                add(Restrictions.eq("coordenador", Ativo.getUsuario())).
                 addOrder(Order.asc("descricao")).list();
         
         getSessao().close();

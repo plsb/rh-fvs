@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.os.rh.telas;
 
-import br.os.rh.util.UsuarioAtivo;
+import br.os.rh.util.Ativo;
 
 /**
  *
@@ -20,8 +19,67 @@ public class TelaPrincipal extends javax.swing.JFrame {
     public TelaPrincipal() {
         initComponents();
         setLocationRelativeTo(null);
-        mmUsuario.setVisible(!UsuarioAtivo.getUsuario().isAdministrador());
+        permissaoFalse();
+        permissaoAdm();
+        permissaoRH();
+        permissaoCoordenador();
         setTitle("OSRH");
+        preencheLabel();
+    }
+    
+    private void permissaoCoordenador(){
+        if (Ativo.getUsuario().getTipo().equals("Coordenador de Curso")) {
+            mmDisciplina.setVisible(true);
+            mmLotacao.setVisible(true);
+            mRelatorios.setVisible(false);
+        }
+        
+    }
+    private void preencheLabel(){
+       String str = "Usuário: "+Ativo.getUsuario().getNome()+
+               " | Tipo: "+Ativo.getUsuario().getTipo();
+       if(!Ativo.getUsuario().isAdministrador()){
+           str+=" | Período: "+Ativo.getPeriodo().getDescricao();
+       }
+       lblInformativo.setText(str);
+    }
+
+    private void permissaoFalse() {
+        mmUsuario.setVisible(false);
+        mmPeriodo.setVisible(false);
+        mmDisciplina.setVisible(false);
+        mmFuncionario.setVisible(false);
+        mmHorarios.setVisible(false);
+        mmSalario.setVisible(false);
+        mmRelProfLotacao.setVisible(false);
+        mmRelPlanilhaProfessores.setVisible(false);
+        mmCurso.setVisible(false);
+        mmLotacao.setVisible(false);
+        mmSemestre.setVisible(false);
+    }
+
+    private void permissaoAdm() {
+        if (Ativo.getUsuario().isAdministrador()) {
+            mmSemestre.setVisible(true);
+            mmCurso.setVisible(true);
+            mmUsuario.setVisible(true);
+            mmPeriodo.setVisible(true);
+            mMovimentacao.setVisible(false);
+            mRelatorios.setVisible(false);
+        }
+    }
+
+    private void permissaoRH() {
+        if (Ativo.getUsuario().getTipo().equals("RH")) {
+            mmFuncionario.setVisible(true);
+            mmHorarios.setVisible(true);
+            mmSalario.setVisible(true);
+            mmRelProfLotacao.setVisible(true);
+            mmRelPlanilhaProfessores.setVisible(true);
+            mmCurso.setVisible(true);
+            mmSemestre.setVisible(true);
+        }
+
     }
 
     /**
@@ -35,77 +93,85 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        lblInformativo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        mCadastro = new javax.swing.JMenu();
+        mmCurso = new javax.swing.JMenuItem();
+        mmDisciplina = new javax.swing.JMenuItem();
+        mmFuncionario = new javax.swing.JMenuItem();
+        mmHorarios = new javax.swing.JMenuItem();
+        mmPeriodo = new javax.swing.JMenuItem();
+        mmSemestre = new javax.swing.JMenuItem();
         mmUsuario = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem9 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        mMovimentacao = new javax.swing.JMenu();
+        mmLotacao = new javax.swing.JMenuItem();
+        mmSalario = new javax.swing.JMenuItem();
+        mRelatorios = new javax.swing.JMenu();
+        mmRelProfLotacao = new javax.swing.JMenuItem();
+        mmRelPlanilhaProfessores = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/osprojects.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/nexaspng maior.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, 380, 350));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(215, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(172, 172, 172))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(200, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(186, 186, 186))
-        );
+        lblInformativo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblInformativo.setText("jLabel2");
+        jPanel1.add(lblInformativo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 510, -1, -1));
 
-        jMenu1.setText("Cadastros");
+        mCadastro.setText("Cadastros");
 
-        jMenuItem6.setText("Disciplina");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+        mmCurso.setText("Curso");
+        mmCurso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
+                mmCursoActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem6);
+        mCadastro.add(mmCurso);
 
-        jMenuItem8.setText("Funcionário");
-        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+        mmDisciplina.setText("Disciplina");
+        mmDisciplina.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem8ActionPerformed(evt);
+                mmDisciplinaActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem8);
+        mCadastro.add(mmDisciplina);
 
-        jMenuItem1.setText("Horários");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        mmFuncionario.setText("Funcionário");
+        mmFuncionario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                mmFuncionarioActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        mCadastro.add(mmFuncionario);
 
-        jMenuItem2.setText("Período");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        mmHorarios.setText("Horários");
+        mmHorarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                mmHorariosActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        mCadastro.add(mmHorarios);
+
+        mmPeriodo.setText("Período");
+        mmPeriodo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mmPeriodoActionPerformed(evt);
+            }
+        });
+        mCadastro.add(mmPeriodo);
+
+        mmSemestre.setText("Semestre");
+        mmSemestre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mmSemestreActionPerformed(evt);
+            }
+        });
+        mCadastro.add(mmSemestre);
 
         mmUsuario.setText("Usuário");
         mmUsuario.addActionListener(new java.awt.event.ActionListener() {
@@ -113,42 +179,44 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 mmUsuarioActionPerformed(evt);
             }
         });
-        jMenu1.add(mmUsuario);
+        mCadastro.add(mmUsuario);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(mCadastro);
 
-        jMenu3.setText("Movimentação");
+        mMovimentacao.setText("Movimentação");
 
-        jMenuItem9.setText("Salário");
-        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+        mmLotacao.setText("Lotação");
+        mMovimentacao.add(mmLotacao);
+
+        mmSalario.setText("Salário");
+        mmSalario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem9ActionPerformed(evt);
+                mmSalarioActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem9);
+        mMovimentacao.add(mmSalario);
 
-        jMenuBar1.add(jMenu3);
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(mMovimentacao);
 
-        jMenu4.setText("Relatórios");
+        mRelatorios.setText("Relatórios");
 
-        jMenuItem3.setText("Professores/Lotação");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        mmRelProfLotacao.setText("Professores/Lotação");
+        mmRelProfLotacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                mmRelProfLotacaoActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItem3);
+        mRelatorios.add(mmRelProfLotacao);
 
-        jMenuItem4.setText("Planilha Professores");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        mmRelPlanilhaProfessores.setText("Planilha Professores");
+        mmRelPlanilhaProfessores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                mmRelPlanilhaProfessoresActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItem4);
+        mRelatorios.add(mmRelPlanilhaProfessores);
 
-        jMenuBar1.add(jMenu4);
+        jMenuBar1.add(mRelatorios);
 
         setJMenuBar(jMenuBar1);
 
@@ -172,47 +240,59 @@ public class TelaPrincipal extends javax.swing.JFrame {
         tu.setVisible(true);
     }//GEN-LAST:event_mmUsuarioActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void mmPeriodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmPeriodoActionPerformed
         // TODO add your handling code here:
         TelaPeriodo tp = new TelaPeriodo();
         tp.setVisible(true);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_mmPeriodoActionPerformed
 
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+    private void mmDisciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmDisciplinaActionPerformed
         // TODO add your handling code here:
         TelaDisciplina td = new TelaDisciplina();
         td.setVisible(true);
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
+    }//GEN-LAST:event_mmDisciplinaActionPerformed
 
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+    private void mmFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmFuncionarioActionPerformed
         // TODO add your handling code here:
         TelaFuncionario tf = new TelaFuncionario();
         tf.setVisible(true);
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
+    }//GEN-LAST:event_mmFuncionarioActionPerformed
 
-    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+    private void mmSalarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmSalarioActionPerformed
         // TODO add your handling code here:
         TelaSalario ts = new TelaSalario();
         ts.setVisible(true);
-    }//GEN-LAST:event_jMenuItem9ActionPerformed
+    }//GEN-LAST:event_mmSalarioActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void mmHorariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmHorariosActionPerformed
         // TODO add your handling code here:
         TelaHorario th = new TelaHorario();
         th.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_mmHorariosActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void mmRelProfLotacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmRelProfLotacaoActionPerformed
         // TODO add your handling code here:
         TelaRelatorioProfessoresLotacao trpl = new TelaRelatorioProfessoresLotacao();
         trpl.setVisible(true);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_mmRelProfLotacaoActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    private void mmRelPlanilhaProfessoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmRelPlanilhaProfessoresActionPerformed
         // TODO add your handling code here:
         TelaGeraPlanilhaFolhaProfessores tgpfp = new TelaGeraPlanilhaFolhaProfessores();
         tgpfp.setVisible(true);
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    }//GEN-LAST:event_mmRelPlanilhaProfessoresActionPerformed
+
+    private void mmCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmCursoActionPerformed
+        // TODO add your handling code here:
+        TelaCurso tc = new TelaCurso();
+        tc.setVisible(true);
+    }//GEN-LAST:event_mmCursoActionPerformed
+
+    private void mmSemestreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmSemestreActionPerformed
+        // TODO add your handling code here:
+        TelaSemestre ts = new TelaSemestre();
+        ts.setVisible(true);
+    }//GEN-LAST:event_mmSemestreActionPerformed
 
     /**
      * @param args the command line arguments
@@ -251,19 +331,22 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblInformativo;
+    private javax.swing.JMenu mCadastro;
+    private javax.swing.JMenu mMovimentacao;
+    private javax.swing.JMenu mRelatorios;
+    private javax.swing.JMenuItem mmCurso;
+    private javax.swing.JMenuItem mmDisciplina;
+    private javax.swing.JMenuItem mmFuncionario;
+    private javax.swing.JMenuItem mmHorarios;
+    private javax.swing.JMenuItem mmLotacao;
+    private javax.swing.JMenuItem mmPeriodo;
+    private javax.swing.JMenuItem mmRelPlanilhaProfessores;
+    private javax.swing.JMenuItem mmRelProfLotacao;
+    private javax.swing.JMenuItem mmSalario;
+    private javax.swing.JMenuItem mmSemestre;
     private javax.swing.JMenuItem mmUsuario;
     // End of variables declaration//GEN-END:variables
 }

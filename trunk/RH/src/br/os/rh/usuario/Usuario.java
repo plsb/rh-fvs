@@ -6,12 +6,14 @@
 
 package br.os.rh.usuario;
 
+import br.os.rh.curso.Curso;
 import br.os.rh.util.Util;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -23,6 +25,8 @@ public class Usuario {
     @GeneratedValue
     private int id;
     
+    private String nome;
+    
     @Column(length = 45, nullable = false)
     private String login;
     
@@ -30,7 +34,9 @@ public class Usuario {
     private String senha;
     
     private boolean administrador;
-
+    
+    private String tipo;
+    
     /**
      * @return the id
      */
@@ -87,13 +93,31 @@ public class Usuario {
         this.administrador = administrador;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 61 * hash + this.id;
-        hash = 61 * hash + Objects.hashCode(this.login);
-        hash = 61 * hash + Objects.hashCode(this.senha);
-        hash = 61 * hash + (this.administrador ? 1 : 0);
+        int hash = 7;
+        hash = 89 * hash + this.id;
+        hash = 89 * hash + Objects.hashCode(this.nome);
+        hash = 89 * hash + Objects.hashCode(this.login);
+        hash = 89 * hash + Objects.hashCode(this.senha);
+        hash = 89 * hash + (this.administrador ? 1 : 0);
+        hash = 89 * hash + Objects.hashCode(this.tipo);
         return hash;
     }
 
@@ -109,6 +133,9 @@ public class Usuario {
         if (this.id != other.id) {
             return false;
         }
+        if (!Objects.equals(this.nome, other.nome)) {
+            return false;
+        }
         if (!Objects.equals(this.login, other.login)) {
             return false;
         }
@@ -118,15 +145,12 @@ public class Usuario {
         if (this.administrador != other.administrador) {
             return false;
         }
+        if (!Objects.equals(this.tipo, other.tipo)) {
+            return false;
+        }
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "Usuario{" + "id=" + id + ", login=" + login + ", senha=" + senha + ", administrador=" + administrador + '}';
-    }
-
-   
     
     
 }

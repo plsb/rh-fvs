@@ -9,6 +9,9 @@ package br.os.rh.telas;
 import br.os.rh.curso.Curso;
 import br.os.rh.curso.CursoDAO;
 import br.os.rh.curso.CursoTableModel;
+import br.os.rh.usuario.Usuario;
+import br.os.rh.usuario.UsuarioDAO;
+import br.os.rh.usuario.UsuarioTableModel;
 import br.os.rh.util.Util;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -19,6 +22,7 @@ import javax.swing.JOptionPane;
  */
 public class TelaCurso extends javax.swing.JDialog {
     private Curso curso;
+    private Usuario coordenador;
     /**
      * Creates new form TelaCurso
      */
@@ -49,6 +53,9 @@ public class TelaCurso extends javax.swing.JDialog {
         jButton4 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         tfSigla = new javax.swing.JTextField();
+        tfCoordenador = new javax.swing.JTextField();
+        jButton7 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -112,6 +119,23 @@ public class TelaCurso extends javax.swing.JDialog {
             }
         });
 
+        tfCoordenador.setEnabled(false);
+        tfCoordenador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfCoordenadorActionPerformed(evt);
+            }
+        });
+
+        jButton7.setText("...");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel3.setText("Coordenador:*");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -135,7 +159,12 @@ public class TelaCurso extends javax.swing.JDialog {
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)
-                            .addComponent(tfSigla, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tfSigla, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(tfCoordenador, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -150,7 +179,13 @@ public class TelaCurso extends javax.swing.JDialog {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tfSigla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(5, 5, 5)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tfCoordenador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btRemover, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -180,7 +215,7 @@ public class TelaCurso extends javax.swing.JDialog {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -205,16 +240,20 @@ public class TelaCurso extends javax.swing.JDialog {
         tfSigla.setText("");
         curso= new Curso();
         btRemover.setEnabled(false);
+        coordenador = new Usuario();
+        tfCoordenador.setText("");
     }
+    
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         limpaCampos();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (Util.chkVazio(tfDescricao.getText(),tfSigla.getText())){
+        if (Util.chkVazio(tfDescricao.getText(),tfSigla.getText(), tfCoordenador.getText())){
         
         curso.setDescricao(tfDescricao.getText());
         curso.setSigla(tfSigla.getText().toUpperCase());
+        curso.setCoordenador(coordenador);
         
         CursoDAO dao = new CursoDAO();
         dao.salvar(curso);
@@ -247,6 +286,8 @@ public class TelaCurso extends javax.swing.JDialog {
             
             tfDescricao.setText(curso.getDescricao());
             tfSigla.setText(curso.getSigla());
+            tfCoordenador.setText(curso.getCoordenador().getNome());
+            coordenador = curso.getCoordenador();
             
             btRemover.setEnabled(true);
         }
@@ -260,6 +301,23 @@ public class TelaCurso extends javax.swing.JDialog {
     private void tfSiglaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfSiglaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfSiglaActionPerformed
+
+    private void tfCoordenadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfCoordenadorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfCoordenadorActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        UsuarioDAO dao = new UsuarioDAO();
+        List<Usuario> lista = dao.listarCoordenador();
+        UsuarioTableModel stm = new UsuarioTableModel(lista);
+        Object o = TelaPesquisa.exibeTela(stm, "Coordenador");
+        if (o != null) {
+            coordenador = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
+            tfCoordenador.setText(coordenador.getNome());
+            
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -302,11 +360,14 @@ public class TelaCurso extends javax.swing.JDialog {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JTextField tfCoordenador;
     private javax.swing.JTextField tfDescricao;
     private javax.swing.JTextField tfSigla;
     // End of variables declaration//GEN-END:variables

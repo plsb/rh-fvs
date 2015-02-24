@@ -55,30 +55,40 @@ public class Calculo {
     public static int calculoHorasSemestre(List<SalarioDisciplina> disciplinas, int... chMensalista) {
         int ch = 0;
 
+//        for (int i = 0; i < disciplinas.size(); i++) {
+//            ch += disciplinas.get(i).getDisciplina().getHoras();
+//        }
         for (int i = 0; i < disciplinas.size(); i++) {
-            ch += disciplinas.get(i).getDisciplina().getHoras();
-        }
-        if (chMensalista != null) {
-            if (chMensalista.length > 0) {
-                ch -= chMensalista[0];
+            for (int j = 0; j < disciplinas.get(i).getSdh().size(); j++) {
+                ch += disciplinas.get(i).getSdh().get(j).getHorario().getQtdHora();
             }
         }
+        
+//        if (chMensalista != null) {
+//            if (chMensalista.length > 0) {
+//                ch -= chMensalista[0];
+//            }
+//        }
 
         return ch;
     }
 
     public static double calculoHorista(List<SalarioDisciplina> disciplinas,
             double vHoraAula, double ajudaCusto,
-            double porcentagemGrat, int horasMensalista, double salarioMensalista) {
+            double porcentagemGrat, int horasMensalista, double salarioMensalista, double comissao) {
+        if (((calculoHorasSemestre(disciplinas)*20) - horasMensalista) > 0) {
+//            double horasMensais = ((calculoHorasSemestre(disciplinas) - horasMensalista) / 20) * 4.5;
+            double horasMensais = (((calculoHorasSemestre(disciplinas)*20) - horasMensalista)/20) * 4.5;
+            double remuneracaoMensal = horasMensais * vHoraAula;
+            double umSexto = remuneracaoMensal / 6;
 
-        double horasMensais = ((calculoHorasSemestre(disciplinas)-horasMensalista) / 20) * 4.5;
-        double remuneracaoMensal = horasMensais * vHoraAula;
-        double umSexto = remuneracaoMensal / 6;
+            double gratificacao = calculoGratificacaoHorista(porcentagemGrat, remuneracaoMensal + salarioMensalista);
 
-        double gratificacao = calculoGratificacaoHorista(porcentagemGrat, remuneracaoMensal+salarioMensalista);
-
-        double salarioBruto = remuneracaoMensal + umSexto + gratificacao + ajudaCusto;
-        return salarioBruto + salarioMensalista;
+            double salarioBruto = remuneracaoMensal + umSexto + gratificacao + ajudaCusto;
+            return salarioBruto + salarioMensalista + comissao;
+        } else {
+            return salarioMensalista + comissao;
+        }
     }
 
     public static double calculoGratificacaoHorista(double porc, double remuneracaoMensal) {

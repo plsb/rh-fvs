@@ -9,11 +9,13 @@ import br.os.rh.disciplina.Disciplina;
 import br.os.rh.funcionario.Funcionario;
 import br.os.rh.periodo.Periodo;
 import br.os.rh.salariodiscplinas.SalarioDisciplina;
+import br.os.rh.util.Ativo;
 import br.os.rh.util.GenericDAO;
 import br.os.rh.util.HibernateUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.swing.JOptionPane;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -109,6 +111,22 @@ public class SalarioDAO extends GenericDAO<Salario> {
         } else {
             atualizar(s);
         }
+    }
+    
+    public List<Salario> listar() {
+        List<Salario> lista = null;
+        try {
+            this.setSessao(HibernateUtil.getSessionFactory().openSession());
+            setTransacao(getSessao().beginTransaction());
+            lista = this.getSessao().createCriteria(Salario.class).add(Restrictions.eq("periodo", Ativo.getPeriodo())).list();
+            //sessao.close();
+        } catch (Throwable e) {
+            if (getTransacao().isActive()) {
+                getTransacao().rollback();
+            }
+            JOptionPane.showMessageDialog(null, "Não foi possível listar: " + e.getMessage());
+        }
+        return lista;
     }
     
     

@@ -15,7 +15,16 @@
 	</parameter>
 	<parameter name="cursoid" class="java.lang.Integer" isForPrompting="false"/>
 	<queryString>
-		<![CDATA[select  distinct(sd.id) as idsd, d.id as iddisc, d.descricao as disciplina, d.horas, sm.descricao as semestre, c.sigla as curso
+		<![CDATA[select  distinct(sd.id) as idsd, d.id as iddisc, d.descricao as disciplina,
+
+(select sum(horario.qtdHora)*20 from horario
+  join salariodisciplinahorario on salariodisciplinahorario.horario_id=horario.id
+  join salariodisciplina on salariodisciplina.id=salariodisciplinahorario.salarioDisciplina_id
+  join salario on salario.id=salariodisciplina.salario_id
+  join funcionario on funcionario.id=salario.funcionario_id
+  where f.ativo=true and s.periodo_id=$P{periodo} and f.id=$P{funcionarioid})
+
+horas, sm.descricao as semestre, c.sigla as curso
 from funcionario f
 inner join salario s on s.funcionario_id=f.id
 inner join salariodisciplina sd on sd.salario_id=s.id
@@ -28,7 +37,7 @@ order by c.descricao, sm.descricao;]]>
 	<field name="idsd" class="java.lang.Integer"/>
 	<field name="iddisc" class="java.lang.Integer"/>
 	<field name="disciplina" class="java.lang.String"/>
-	<field name="horas" class="java.lang.Integer">
+	<field name="horas" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="semestre" class="java.lang.String"/>

@@ -6,11 +6,13 @@
 
 package br.os.rh.curso;
 
+import br.os.rh.usuario.Usuario;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -26,6 +28,9 @@ public class Curso {
     private String descricao;
     
     private String sigla;
+    
+    @ManyToOne
+    private Usuario coordenador;
 
     @Override
     public String toString() {
@@ -74,12 +79,21 @@ public class Curso {
         this.sigla = sigla;
     }
 
+    public Usuario getCoordenador() {
+        return coordenador;
+    }
+
+    public void setCoordenador(Usuario coordenador) {
+        this.coordenador = coordenador;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 71 * hash + this.id;
-        hash = 71 * hash + Objects.hashCode(this.descricao);
-        hash = 71 * hash + Objects.hashCode(this.sigla);
+        int hash = 7;
+        hash = 59 * hash + this.id;
+        hash = 59 * hash + Objects.hashCode(this.descricao);
+        hash = 59 * hash + Objects.hashCode(this.sigla);
+        hash = 59 * hash + Objects.hashCode(this.coordenador);
         return hash;
     }
 
@@ -101,7 +115,11 @@ public class Curso {
         if (!Objects.equals(this.sigla, other.sigla)) {
             return false;
         }
+        if (!Objects.equals(this.coordenador, other.coordenador)) {
+            return false;
+        }
         return true;
     }
+
     
 }
