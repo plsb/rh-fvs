@@ -21,6 +21,7 @@ import br.os.rh.salariodisciplinahorario.SalarioDisciplinaHorarioDAO;
 import br.os.rh.salariodiscplinas.SalarioDisciplina;
 import br.os.rh.salariodiscplinas.SalarioDisciplinaDAO;
 import br.os.rh.salariodiscplinas.SalarioDisciplinaTableModel;
+import br.os.rh.util.Ativo;
 import br.os.rh.util.Calculo;
 import br.os.rh.util.FormataTamanhoColunasJTable;
 import br.os.rh.util.OnlyNumberField;
@@ -41,6 +42,7 @@ public class TelaSalario extends javax.swing.JDialog {
 
     private Salario salario;
     private List<SalarioDisciplina> disciplinas;
+    private List<SalarioDisciplina> disciplinasSerExcluidas;
 
     private double calculo() {
         int horasMensalista = 0;
@@ -60,9 +62,15 @@ public class TelaSalario extends javax.swing.JDialog {
             porcentagem = Double.parseDouble(tfPorcentagem.getText());
 
         }
-
+        double comissao = 0;
+        if(!tfComissao.getText().equals("")){
+            comissao = Double.parseDouble(tfComissao.getText());
+        }
+//        if(disciplinas.size()==0){
+//            return Double.parseDouble(tfSalario.getText());
+//        }
         return Calculo.calculoHorista(disciplinas, vHoraAula, ajudaCusto, porcentagem,
-                horasMensalista, Double.parseDouble(tfSalario.getText()));
+                horasMensalista, Double.parseDouble(tfSalario.getText()), comissao);
 //        if (jcbRegime.getSelectedIndex() == 1) {
 //
 //            return Calculo.calculoHorista(disciplinas, vHoraAula, ajudaCusto, porcentagem);
@@ -140,7 +148,6 @@ public class TelaSalario extends javax.swing.JDialog {
 //        double salarioBruto = remuneracaoMensal + umSexto + gratificacao + ajudaCusto;
 //        return salarioBruto;
 //    }
-
     /**
      * Creates new form TelaSalario
      */
@@ -159,11 +166,7 @@ public class TelaSalario extends javax.swing.JDialog {
     }
 
     private void calculaHorasMostraJLabel() {
-        double horas = 0;
-        for (int i = 0; i < disciplinas.size(); i++) {
-            horas += disciplinas.get(i).getDisciplina().getHoras();
-        }
-        lblHoras.setText(String.valueOf(horas) + " horas");
+        lblHoras.setText(String.valueOf(Calculo.calculoHorasSemestre(disciplinas) * 20) + " horas");
     }
 
     private void preencheTabelaDisciplinas() {
@@ -196,8 +199,6 @@ public class TelaSalario extends javax.swing.JDialog {
         jLabel10 = new javax.swing.JLabel();
         tfPeriodo = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
         tfPorcentagem = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -210,6 +211,9 @@ public class TelaSalario extends javax.swing.JDialog {
         lblSalarioBruto = new javax.swing.JLabel();
         tfHorasMenslista = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
+        jButton10 = new javax.swing.JButton();
+        tfComissao = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -306,22 +310,6 @@ public class TelaSalario extends javax.swing.JDialog {
         jLabel3.setText("Período:*");
         pnTelaSalario.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 60, -1, -1));
 
-        jButton2.setText("...");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        pnTelaSalario.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, 35, -1));
-
-        jButton6.setText("+");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-        pnTelaSalario.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, -1, -1));
-
         tfPorcentagem.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 tfPorcentagemFocusLost(evt);
@@ -358,7 +346,7 @@ public class TelaSalario extends javax.swing.JDialog {
                 jButton9ActionPerformed(evt);
             }
         });
-        pnTelaSalario.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 130, 35, -1));
+        pnTelaSalario.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 130, 40, -1));
 
         tfValorAjudaCusto.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -377,7 +365,6 @@ public class TelaSalario extends javax.swing.JDialog {
         lblSalarioBruto.setText("R$ 0,00");
         pnTelaSalario.add(lblSalarioBruto, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 220, 80, -1));
 
-        tfHorasMenslista.setEnabled(false);
         tfHorasMenslista.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 tfHorasMenslistaFocusLost(evt);
@@ -388,6 +375,25 @@ public class TelaSalario extends javax.swing.JDialog {
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel13.setText("Horas Mensalista:");
         pnTelaSalario.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 16, -1, 10));
+
+        jButton10.setText("-");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+        pnTelaSalario.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 160, 40, -1));
+
+        tfComissao.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tfComissaoFocusLost(evt);
+            }
+        });
+        pnTelaSalario.add(tfComissao, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, 140, -1));
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel14.setText("Comissão:");
+        pnTelaSalario.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, -1, 10));
 
         jPanel5.add(pnTelaSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 660, 260));
 
@@ -481,18 +487,19 @@ public class TelaSalario extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
     private void limpaCampos() {
         tfHorasMenslista.setText("");
-        tfHorasMenslista.setEnabled(false);
+//        tfHorasMenslista.setEnabled(false);
         tfSalario.setEnabled(true);
         tfFuncionario.setText("");
         tfSalario.setText("");
         tfValorAjudaCusto.setText("");
         tfValorHoraAula.setText("");
-        tfPeriodo.setText("");
+        tfPeriodo.setText(Ativo.getPeriodo().getDescricao());
         tfPorcentagem.setText("");
         chbProfessor.setSelected(false);
         pnTelaSalario.setEnabled(false);
         salario = new Salario();
         disciplinas = new ArrayList<SalarioDisciplina>();
+        disciplinasSerExcluidas = new ArrayList<SalarioDisciplina>();
         pnTelaSalario.setVisible(false);
         setSize(670, 230);
         preencheTabelaDisciplinas();
@@ -511,14 +518,27 @@ public class TelaSalario extends javax.swing.JDialog {
         if (!tfSalario.getText().equals("")) {
             salario.setSalario(Double.parseDouble(tfSalario.getText()));
         }
-        salario.setPorcentGratifica(Double.parseDouble(tfPorcentagem.getText()));
-        salario.setValAjudaCusto(Double.parseDouble(tfValorAjudaCusto.getText()));
+        if(!tfPorcentagem.getText().equals("")){
+            salario.setPorcentGratifica(Double.parseDouble(tfPorcentagem.getText()));
+        }        
+        if (tfValorAjudaCusto.getText().equals("")) {
+            salario.setValAjudaCusto(0);
+        } else {
+            salario.setValAjudaCusto(Double.parseDouble(tfValorAjudaCusto.getText()));
+        }
+        if(tfComissao.getText().equals("")){
+            salario.setComissao(0);
+        } else {
+            salario.setComissao(Double.parseDouble(tfComissao.getText()));
+        }
         salario.setValHoraAula(Double.parseDouble(tfValorHoraAula.getText()));
         salario.setTipoRegime(jcbRegime.getSelectedItem().toString());
         salario.setProfessor(chbProfessor.isSelected());
+        salario.setPeriodo(Ativo.getPeriodo());
         if (!tfHorasMenslista.getText().equals("")) {
             salario.setHorasMensalista(Integer.parseInt(tfHorasMenslista.getText()));
         }
+
         dao.salvar(salario);
         for (int i = 0; i < disciplinas.size(); i++) {
             SalarioDisciplinaDAO sDAO = new SalarioDisciplinaDAO();
@@ -534,6 +554,12 @@ public class TelaSalario extends javax.swing.JDialog {
             }
 
         }
+        //disciplinas removidas
+        for (int i = 0; i < disciplinasSerExcluidas.size(); i++) {
+            SalarioDisciplinaDAO sDAO = new SalarioDisciplinaDAO();
+            sDAO.remover(disciplinasSerExcluidas.get(i));
+        }
+
         JOptionPane.showMessageDialog(rootPane, "Salario cadastro com sucesso!");
         limpaCampos();
 
@@ -542,7 +568,7 @@ public class TelaSalario extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         SalarioDAO dao = new SalarioDAO();
         Salario salarioCadastrado = dao.pesquisaFuncionarioPeriodoCadastrado(salario.getFuncionario(),
-                (chbProfessor.isSelected() ? salario.getPeriodo() : null));
+                (chbProfessor.isSelected() ? Ativo.getPeriodo() : null));
         if (salarioCadastrado != null && salario.getId() == 0) {
             if (JOptionPane.showConfirmDialog(rootPane, "Já existe um salário cadastrado nessas condições, \n"
                     + "deseja alterar?", "OSRH", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE)
@@ -629,9 +655,10 @@ public class TelaSalario extends javax.swing.JDialog {
                 tfPorcentagem.setText(String.valueOf(salario.getPorcentGratifica()));
                 tfValorAjudaCusto.setText(String.valueOf(salario.getValAjudaCusto()));
                 tfValorHoraAula.setText(String.valueOf(salario.getValHoraAula()));
+                tfComissao.setText(String.valueOf(salario.getComissao()));
                 tfPeriodo.setText(salario.getPeriodo().getDescricao());
                 jcbRegime.setSelectedItem(salario.getTipoRegime());
-                if(salario.getTipoRegime().equals("Horista")){
+                if (salario.getTipoRegime().equals("Horista")) {
                     tfSalario.setEnabled(false);
                 }
                 SalarioDisciplinaDAO sdDAO = new SalarioDisciplinaDAO();
@@ -653,26 +680,6 @@ public class TelaSalario extends javax.swing.JDialog {
     private void tfPeriodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfPeriodoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfPeriodoActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        PeriodoDAO dao = new PeriodoDAO();
-        List<Periodo> lista = dao.listar();
-        PeriodoTableModel ptm = new PeriodoTableModel(lista);
-        Object o = TelaPesquisa.exibeTela(ptm, "Periodo");
-        Periodo p;
-        if (o != null) {
-            p = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
-            salario.setPeriodo(p);
-            tfPeriodo.setText(p.getDescricao());
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-        TelaPeriodo tp = new TelaPeriodo();
-        tp.setVisible(true);
-    }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
@@ -721,11 +728,11 @@ public class TelaSalario extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (jcbRegime.getSelectedIndex() == 2) {
             tfHorasMenslista.setText("240");
-//            tfSalario.setEnabled(true);
+            tfSalario.setEnabled(true);
         } else {
             tfHorasMenslista.setText("0");
             tfHorasMenslista.setEnabled(false);
-//            tfSalario.setEnabled(false);
+            tfSalario.setEnabled(false);
             tfSalario.setText("0");
         }
         lblSalarioBruto.setText("R$ " + calculoString());
@@ -810,6 +817,58 @@ public class TelaSalario extends javax.swing.JDialog {
         lblSalarioBruto.setText("R$ " + calculoString());
     }//GEN-LAST:event_tfSalarioFocusLost
 
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // TODO add your handling code here:
+        int row = tbDisciplinas.getSelectedRow();
+        if (row > -1) { //então tem ítem selecionado
+            if (JOptionPane.showConfirmDialog(rootPane, "Deseja Excluir o Ítem Selecionado?",
+                    "RH", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                Object o = tbDisciplinas.getValueAt(row, 0);
+                if (Integer.valueOf(String.valueOf(o)) == 0) {
+                    o = tbDisciplinas.getValueAt(row, 1);
+                    String s = String.valueOf(o);
+                    //exclui a disciplina da lista
+                    for (int i = 0; i < disciplinas.size(); i++) {
+                        if (disciplinas.get(i).getDisciplina().getDescricao().equals(s)) {
+                            disciplinas.remove(i);
+                        }
+                    }
+                } else if (o != null) {
+                    SalarioDisciplinaDAO sdDAO = new SalarioDisciplinaDAO();
+                    SalarioDisciplina salario = new SalarioDisciplina();
+                    salario = sdDAO.pesquisaId(Integer.valueOf(String.valueOf(o)));
+                    removeDisciplinas(salario);
+
+                }
+                preencheTabelaDisciplinas();
+                lblSalarioBruto.setText("R$ " + calculoString());
+
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Selecione o Ítem!",
+                    "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void tfComissaoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfComissaoFocusLost
+        // TODO add your handling code here:
+        lblSalarioBruto.setText("R$ " + calculoString());
+    }//GEN-LAST:event_tfComissaoFocusLost
+
+    public void removeDisciplinas(SalarioDisciplina salario) {
+        int i = -1;
+        for (int j = 0; j < disciplinas.size(); j++) {
+            if (disciplinas.get(j).getId() == salario.getId()) {
+                i = j;
+                disciplinasSerExcluidas.add(disciplinas.get(j));
+            }
+        }
+        if (i > -1) {
+            disciplinas.remove(i);
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -849,11 +908,10 @@ public class TelaSalario extends javax.swing.JDialog {
     private javax.swing.JButton btRemover;
     private javax.swing.JCheckBox chbProfessor;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
@@ -862,6 +920,7 @@ public class TelaSalario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -875,6 +934,7 @@ public class TelaSalario extends javax.swing.JDialog {
     private javax.swing.JLabel lblSalarioBruto;
     private javax.swing.JPanel pnTelaSalario;
     private javax.swing.JTable tbDisciplinas;
+    private javax.swing.JTextField tfComissao;
     private javax.swing.JTextField tfFuncionario;
     private javax.swing.JTextField tfHorasMenslista;
     private javax.swing.JTextField tfPeriodo;

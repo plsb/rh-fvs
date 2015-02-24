@@ -215,7 +215,8 @@ public class TelaGeraPlanilhaFolhaProfessores extends javax.swing.JDialog {
         row.createCell(8).setCellValue("1 Sexto");
         row.createCell(9).setCellValue("Gratificação");
         row.createCell(10).setCellValue("Ajuda de Custo");
-        row.createCell(11).setCellValue("Total");
+        row.createCell(11).setCellValue("Comissão");
+        row.createCell(12).setCellValue("Total");
 //        row.createCell(12).setCellValue("Adiantamentos");
 //        row.createCell(13).setCellValue("Descontos");
         for (int j = 0; j < 12; j++) {
@@ -232,10 +233,10 @@ public class TelaGeraPlanilhaFolhaProfessores extends javax.swing.JDialog {
                 row.createCell(1).setCellValue(s.getFuncionario().getTitulacao().getDescricao());
                 row.createCell(2).setCellValue(s.getDisciplinas().get(0).getDisciplina().getSemestre().getCurso().getSigla());
                 row.createCell(3).setCellValue(s.getFuncionario().getCidade().getDescricao());
-                row.createCell(4).setCellValue((Calculo.calculoHorasSemestre(s.getDisciplinas()) / 20) * 4.5);
+                row.createCell(4).setCellValue((Calculo.calculoHorasSemestre(s.getDisciplinas())*20));
                 row.createCell(5).setCellValue(s.getValHoraAula());
 
-                double valorMensalHorista = (((Calculo.calculoHorasSemestre(s.getDisciplinas())-s.getHorasMensalista()) / 20) * 4.5) * s.getValHoraAula();
+                double valorMensalHorista = (((Calculo.calculoHorasSemestre(s.getDisciplinas())) *4.5)) * s.getValHoraAula();
                 row.createCell(6).setCellValue(valorMensalHorista);
                 row.createCell(7).setCellValue(s.getSalario());
                 double umSexto = valorMensalHorista / 6;
@@ -243,9 +244,10 @@ public class TelaGeraPlanilhaFolhaProfessores extends javax.swing.JDialog {
                 double gratificacao = Calculo.calculoGratificacaoHorista(s.getPorcentGratifica(), valorMensalHorista+s.getSalario());
                 row.createCell(9).setCellValue(gratificacao);
                 row.createCell(10).setCellValue(s.getValAjudaCusto());
+                row.createCell(11).setCellValue(s.getComissao());
                 double total = Calculo.calculoHorista(s.getDisciplinas(), s.getValHoraAula(),
-                        s.getValAjudaCusto(), s.getPorcentGratifica(), s.getHorasMensalista(), s.getSalario());
-                row.createCell(11).setCellValue(total);
+                        s.getValAjudaCusto(), s.getPorcentGratifica(), s.getHorasMensalista(), s.getSalario(), s.getComissao());
+                row.createCell(12).setCellValue(total);
                 valorGeral += total;
 
 //                row.createCell(12).setCellValue("adiantamentos");
@@ -260,7 +262,7 @@ public class TelaGeraPlanilhaFolhaProfessores extends javax.swing.JDialog {
 
         row = sheet1.createRow(row.getRowNum() + 1);
 
-        row.createCell(11).setCellValue(valorGeral);
+        row.createCell(12).setCellValue(valorGeral);
 //        row.createCell(11).setCellStyle(estilo);
 
         JFileChooser fc = new JFileChooser();

@@ -6,9 +6,13 @@
 
 package br.os.rh.disciplina;
 
+import br.os.rh.curso.CursoDAO;
+import br.os.rh.semestre.Semestre;
+import br.os.rh.semestre.SemestreDAO;
 import br.os.rh.util.GenericDAO;
 import br.os.rh.util.HibernateUtil;
 import java.util.List;
+import javax.swing.JOptionPane;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -52,4 +56,27 @@ public class DisciplinaDAO extends GenericDAO<Disciplina>{
             atualizar(d);
         }
     }
+    
+    public List<Disciplina> listarPorCurso() {
+        List<Disciplina> lista = null;
+        
+        
+        SemestreDAO sDAO = new SemestreDAO();
+        
+        try {
+            this.setSessao(HibernateUtil.getSessionFactory().openSession());
+            setTransacao(getSessao().beginTransaction());
+            lista = this.getSessao().createCriteria(Disciplina.class).add(Restrictions.in("semestre", 
+                    sDAO.listarPorCurso())).list();
+            //sessao.close();
+        } catch (Throwable e) {
+            if (getTransacao().isActive()) {
+                getTransacao().rollback();
+            }
+            JOptionPane.showMessageDialog(null, "Não foi possível listar: " + e.getMessage());
+        }
+        return lista;
+    }
+    
+    
 }

@@ -5,6 +5,8 @@
  */
 package br.os.rh.telas;
 
+import br.os.rh.curso.Curso;
+import br.os.rh.curso.CursoDAO;
 import br.os.rh.usuario.Usuario;
 import br.os.rh.usuario.UsuarioDAO;
 import br.os.rh.usuario.UsuarioTableModel;
@@ -28,6 +30,7 @@ public class TelaUsuario extends javax.swing.JDialog {
         setModal(true);
         setLocationRelativeTo(null);
         limpaCampos();
+
     }
 
     /**
@@ -53,7 +56,10 @@ public class TelaUsuario extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         tfSenha = new javax.swing.JPasswordField();
         tfConfirmaSenha = new javax.swing.JPasswordField();
-        chbAdministrado = new javax.swing.JCheckBox();
+        jLabel4 = new javax.swing.JLabel();
+        cbTipo = new javax.swing.JComboBox();
+        jLabel6 = new javax.swing.JLabel();
+        tfNome = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -64,15 +70,18 @@ public class TelaUsuario extends javax.swing.JDialog {
         jLabel5.setText("CADASTRO DE USUÁRIO");
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel1.setText("Login:*");
+        jPanel5.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
 
         tfLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tfLoginActionPerformed(evt);
             }
         });
+        jPanel5.add(tfLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 201, -1));
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/novo_1.png"))); // NOI18N
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -80,6 +89,7 @@ public class TelaUsuario extends javax.swing.JDialog {
                 jButton5ActionPerformed(evt);
             }
         });
+        jPanel5.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 180, 48, -1));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/save_1.png"))); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -87,6 +97,7 @@ public class TelaUsuario extends javax.swing.JDialog {
                 jButton1ActionPerformed(evt);
             }
         });
+        jPanel5.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 180, 48, -1));
 
         btRemover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/remove_1.png"))); // NOI18N
         btRemover.setEnabled(false);
@@ -95,6 +106,7 @@ public class TelaUsuario extends javax.swing.JDialog {
                 btRemoverActionPerformed(evt);
             }
         });
+        jPanel5.add(btRemover, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 180, 48, -1));
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/procurar_1.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -102,6 +114,7 @@ public class TelaUsuario extends javax.swing.JDialog {
                 jButton3ActionPerformed(evt);
             }
         });
+        jPanel5.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 180, 48, -1));
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/SA.png"))); // NOI18N
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -109,79 +122,40 @@ public class TelaUsuario extends javax.swing.JDialog {
                 jButton4ActionPerformed(evt);
             }
         });
+        jPanel5.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 180, 48, 39));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Senha:*");
+        jPanel5.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText("Confimar Senha:*");
+        jPanel5.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 120, -1, -1));
+        jPanel5.add(tfSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 201, -1));
+        jPanel5.add(tfConfirmaSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, 201, -1));
 
-        chbAdministrado.setBackground(new java.awt.Color(255, 255, 255));
-        chbAdministrado.setText("Administrador");
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel4.setText("Tipo:*");
+        jPanel5.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, -1, -1));
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(tfLogin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfSenha, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(tfConfirmaSenha, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(chbAdministrado)
-                                    .addComponent(jLabel3))
-                                .addGap(105, 105, 105)))))
-                .addContainerGap())
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chbAdministrado))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btRemover, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfConfirmaSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
+        cbTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione", "Administrador", "Coordenador de Curso", "RH", "Secretária Professores", " " }));
+        cbTipo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbTipoMouseClicked(evt);
+            }
+        });
+        jPanel5.add(cbTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, 201, -1));
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel6.setText("Nome:*");
+        jPanel5.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        tfNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfNomeActionPerformed(evt);
+            }
+        });
+        jPanel5.add(tfNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 450, -1));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -199,8 +173,8 @@ public class TelaUsuario extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -224,21 +198,28 @@ public class TelaUsuario extends javax.swing.JDialog {
         tfLogin.setText("");
         tfSenha.setText("");
         tfConfirmaSenha.setText("");
+        cbTipo.setSelectedIndex(0);
         u = new Usuario();
         btRemover.setEnabled(false);
-        chbAdministrado.setSelected(false);
+        tfNome.setText("");
+        
     }
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         limpaCampos();
     }//GEN-LAST:event_jButton5ActionPerformed
-    
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (Util.chkVazio(tfLogin.getText(),tfSenha.getText(),tfConfirmaSenha.getText())) {
+        if (Util.chkVazio(tfLogin.getText(), tfSenha.getText(), tfConfirmaSenha.getText(), tfNome.getText())
+                && cbTipo.getSelectedIndex() > 0) {
             if (tfSenha.getText().equals(tfConfirmaSenha.getText())) {
-                
+
                 u.setLogin(tfLogin.getText());
                 u.setSenha(tfSenha.getText());
-                u.setAdministrador(chbAdministrado.isSelected());
+                u.setNome(tfNome.getText());
+                if (cbTipo.getSelectedIndex() == 1) {
+                    u.setAdministrador(true);
+                }
+                u.setTipo(cbTipo.getSelectedItem().toString());
 
                 UsuarioDAO dao = new UsuarioDAO();
                 dao.salvar(u);
@@ -249,7 +230,7 @@ public class TelaUsuario extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(rootPane, "Confirmação de Senha não confere com a Senha");
             }
 
-        } 
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverActionPerformed
@@ -269,11 +250,16 @@ public class TelaUsuario extends javax.swing.JDialog {
 
         Object o = TelaPesquisa.exibeTela(utm, "Usuario");
 
-        if (o != null) {        
+        if (o != null) {
             u = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
 
             tfLogin.setText(u.getLogin());
-            chbAdministrado.setSelected(u.isAdministrador());
+            tfNome.setText(u.getNome());
+            if(u.isAdministrador()){
+                cbTipo.setSelectedIndex(1);
+            } else {
+                cbTipo.setSelectedItem(u.getTipo());
+            }
 
             btRemover.setEnabled(true);
         }
@@ -282,6 +268,15 @@ public class TelaUsuario extends javax.swing.JDialog {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void cbTipoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbTipoMouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_cbTipoMouseClicked
+
+    private void tfNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNomeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfNomeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -320,7 +315,7 @@ public class TelaUsuario extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btRemover;
-    private javax.swing.JCheckBox chbAdministrado;
+    private javax.swing.JComboBox cbTipo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -328,11 +323,14 @@ public class TelaUsuario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPasswordField tfConfirmaSenha;
     private javax.swing.JTextField tfLogin;
+    private javax.swing.JTextField tfNome;
     private javax.swing.JPasswordField tfSenha;
     // End of variables declaration//GEN-END:variables
 }

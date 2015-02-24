@@ -6,15 +6,17 @@
 
 package br.os.rh.util;
 
+import br.os.rh.periodo.Periodo;
 import br.os.rh.usuario.Usuario;
 
 /**
  *
  * @author 'Pedro
  */
-public class UsuarioAtivo {
+public class Ativo {
     
     private static Usuario usuario;
+    private static Periodo periodo;
 
     /**
      * @return the usuario
@@ -28,6 +30,14 @@ public class UsuarioAtivo {
      */
     public static void setUsuario(Usuario aUsuario) {
         usuario = aUsuario;
+    }
+
+    public static Periodo getPeriodo() {
+        return periodo;
+    }
+
+    public static void setPeriodo(Periodo periodo) {
+        Ativo.periodo = periodo;
     }
 
   

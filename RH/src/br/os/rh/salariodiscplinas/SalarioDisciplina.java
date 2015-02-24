@@ -40,7 +40,7 @@ public class SalarioDisciplina {
     @ManyToOne
     private Disciplina disciplina;
 
-    @OneToMany(mappedBy = "salarioDisciplina", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "salarioDisciplina", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<SalarioDisciplinaHorario> sdh;
     /**
              * @return the id
@@ -133,8 +133,9 @@ public class SalarioDisciplina {
         return true;
     }
 
-     
-    
-   
+    @Override
+    public String toString() {
+        return "SalarioDisciplina{" + "id=" + id + ", salario=" + salario + ", disciplina=" + disciplina + ", sdh=" + sdh + '}';
+    }
 
 }

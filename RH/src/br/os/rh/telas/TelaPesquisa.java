@@ -249,7 +249,7 @@ public class TelaPesquisa extends javax.swing.JDialog {
     }//GEN-LAST:event_btSelecionarActionPerformed
 
     private void tbPesquisaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPesquisaMouseClicked
-        if (evt.getClickCount() == 2) {
+       if (evt.getClickCount() == 2) {
             btSelecionarActionPerformed(null);
         }
     }//GEN-LAST:event_tbPesquisaMouseClicked

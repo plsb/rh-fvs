@@ -63,6 +63,8 @@ public class Salario implements Comparable<Salario>{
     private List<SalarioDisciplina> disciplinas;
 
     private int horasMensalista;
+    
+    private double comissao;
 
     /**
      * @return the id
@@ -213,21 +215,68 @@ public class Salario implements Comparable<Salario>{
         this.professor = professor;
     }
 
+    public double getComissao() {
+        return comissao;
+    }
+
+    public void setComissao(double comissao) {
+        this.comissao = comissao;
+    }
+
+    @Override
+    public String toString() {
+        return funcionario.getNome() + ", " + periodo.getDescricao();
+    }
+
+    /**
+     * @return the disciplinas
+     */
+    public List<SalarioDisciplina> getDisciplinas() {
+        return disciplinas;
+    }
+
+    /**
+     * @param disciplinas the disciplinas to set
+     */
+    public void setDisciplinas(List<SalarioDisciplina> disciplinas) {
+        this.disciplinas = disciplinas;
+    }
+
+    /**
+     * @return the horasMensalista
+     */
+    public int getHorasMensalista() {
+        return horasMensalista;
+    }
+
+    /**
+     * @param horasMensalista the horasMensalista to set
+     */
+    public void setHorasMensalista(int horasMensalista) {
+        this.horasMensalista = horasMensalista;
+    }
+
+    @Override
+    public int compareTo(Salario o) {
+        return funcionario.getNome().compareTo(o.funcionario.getNome());
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 29 * hash + this.id;
-        hash = 29 * hash + (int) (Double.doubleToLongBits(this.salario) ^ (Double.doubleToLongBits(this.salario) >>> 32));
-        hash = 29 * hash + (int) (Double.doubleToLongBits(this.porcentGratifica) ^ (Double.doubleToLongBits(this.porcentGratifica) >>> 32));
-        hash = 29 * hash + (int) (Double.doubleToLongBits(this.valAjudaCusto) ^ (Double.doubleToLongBits(this.valAjudaCusto) >>> 32));
-        hash = 29 * hash + (int) (Double.doubleToLongBits(this.salarioBase) ^ (Double.doubleToLongBits(this.salarioBase) >>> 32));
-        hash = 29 * hash + Objects.hashCode(this.tipoRegime);
-        hash = 29 * hash + (int) (Double.doubleToLongBits(this.valHoraAula) ^ (Double.doubleToLongBits(this.valHoraAula) >>> 32));
-        hash = 29 * hash + Objects.hashCode(this.periodo);
-        hash = 29 * hash + Objects.hashCode(this.funcionario);
-        hash = 29 * hash + (this.professor ? 1 : 0);
-        hash = 29 * hash + Objects.hashCode(this.disciplinas);
-        hash = 29 * hash + this.horasMensalista;
+        hash = 59 * hash + this.id;
+        hash = 59 * hash + (int) (Double.doubleToLongBits(this.salario) ^ (Double.doubleToLongBits(this.salario) >>> 32));
+        hash = 59 * hash + (int) (Double.doubleToLongBits(this.porcentGratifica) ^ (Double.doubleToLongBits(this.porcentGratifica) >>> 32));
+        hash = 59 * hash + (int) (Double.doubleToLongBits(this.valAjudaCusto) ^ (Double.doubleToLongBits(this.valAjudaCusto) >>> 32));
+        hash = 59 * hash + (int) (Double.doubleToLongBits(this.salarioBase) ^ (Double.doubleToLongBits(this.salarioBase) >>> 32));
+        hash = 59 * hash + Objects.hashCode(this.tipoRegime);
+        hash = 59 * hash + (int) (Double.doubleToLongBits(this.valHoraAula) ^ (Double.doubleToLongBits(this.valHoraAula) >>> 32));
+        hash = 59 * hash + Objects.hashCode(this.periodo);
+        hash = 59 * hash + Objects.hashCode(this.funcionario);
+        hash = 59 * hash + (this.professor ? 1 : 0);
+        hash = 59 * hash + Objects.hashCode(this.disciplinas);
+        hash = 59 * hash + this.horasMensalista;
+        hash = 59 * hash + (int) (Double.doubleToLongBits(this.comissao) ^ (Double.doubleToLongBits(this.comissao) >>> 32));
         return hash;
     }
 
@@ -276,46 +325,10 @@ public class Salario implements Comparable<Salario>{
         if (this.horasMensalista != other.horasMensalista) {
             return false;
         }
+        if (Double.doubleToLongBits(this.comissao) != Double.doubleToLongBits(other.comissao)) {
+            return false;
+        }
         return true;
     }
 
-    @Override
-    public String toString() {
-        return funcionario.getNome() + ", " + periodo.getDescricao();
-    }
-
-    /**
-     * @return the disciplinas
-     */
-    public List<SalarioDisciplina> getDisciplinas() {
-        return disciplinas;
-    }
-
-    /**
-     * @param disciplinas the disciplinas to set
-     */
-    public void setDisciplinas(List<SalarioDisciplina> disciplinas) {
-        this.disciplinas = disciplinas;
-    }
-
-    /**
-     * @return the horasMensalista
-     */
-    public int getHorasMensalista() {
-        return horasMensalista;
-    }
-
-    /**
-     * @param horasMensalista the horasMensalista to set
-     */
-    public void setHorasMensalista(int horasMensalista) {
-        this.horasMensalista = horasMensalista;
-    }
-
-    @Override
-    public int compareTo(Salario o) {
-        return funcionario.getNome().compareTo(o.funcionario.getNome());
-    }
-
-   
 }
