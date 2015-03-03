@@ -5,7 +5,7 @@
  */
 package br.os.rh.util;
 
-import br.os.rh.salariodiscplinas.SalarioDisciplina;
+import br.os.rh.lotacaodiscplinas.LotacaoDisciplina;
 import java.util.List;
 
 /**
@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class Calculo {
 
-    public static double calculoSalarioMensalMensalista(List<SalarioDisciplina> disciplinas,
+    public static double calculoSalarioMensalMensalista(List<LotacaoDisciplina> disciplinas,
             int horasMensalista, double vHoraAula) {
         double horasMensaisMensalista = horasMensalista / 20;
         double totalMesMensalista = horasMensaisMensalista * 4;
@@ -22,7 +22,7 @@ public class Calculo {
         return horaAulaMesMensalista * vHoraAula;
     }
 
-    public static double calculoMensalistaHorista(List<SalarioDisciplina> disciplinas,
+    public static double calculoMensalistaHorista(List<LotacaoDisciplina> disciplinas,
             int horasMensalista, double vHoraAula, double ajudaCusto,
             double porcentagemGrat) {
         int ch = calculoHorasSemestre(disciplinas);
@@ -52,7 +52,7 @@ public class Calculo {
         return (porc * (remuneracaoMensal + valorMensalista)) / 100;
     }
 
-    public static int calculoHorasSemestre(List<SalarioDisciplina> disciplinas, int... chMensalista) {
+    public static int calculoHorasSemestre(List<LotacaoDisciplina> disciplinas, int... chMensalista) {
         int ch = 0;
 
 //        for (int i = 0; i < disciplinas.size(); i++) {
@@ -73,7 +73,7 @@ public class Calculo {
         return ch;
     }
 
-    public static double calculoHorista(List<SalarioDisciplina> disciplinas,
+    public static double calculoHorista(List<LotacaoDisciplina> disciplinas,
             double vHoraAula, double ajudaCusto,
             double porcentagemGrat, int horasMensalista, double salarioMensalista, double comissao) {
         if (((calculoHorasSemestre(disciplinas)*20) - horasMensalista) > 0) {

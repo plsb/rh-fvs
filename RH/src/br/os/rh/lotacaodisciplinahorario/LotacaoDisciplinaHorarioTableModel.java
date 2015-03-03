@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.os.rh.salariodisciplinahorario;
+package br.os.rh.lotacaodisciplinahorario;
 
-import br.os.rh.salariodiscplinas.*;
 import br.os.rh.disciplina.*;
 import br.os.rh.curso.Curso;
 import br.os.rh.util.Util;
@@ -18,17 +17,17 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author JOABB
  */
-public class SalarioDisciplinaHorarioTableModel extends AbstractTableModel {
+public class LotacaoDisciplinaHorarioTableModel extends AbstractTableModel {
 
-    private String[] nomeColunas = {"Código", "Horario", "Dia Semana"};
-    private List<SalarioDisciplinaHorario> sdh;
+    private String[] nomeColunas = {"Código", "Horario", "Qtd. Horas","Dia Semana"};
+    private List<LotacaoDisciplinaHorario> sdh;
 
     /**
      * Construtor sobrecarregado.
      *
      * @param lista List(Editora).
      */
-    public SalarioDisciplinaHorarioTableModel(List<SalarioDisciplinaHorario> lista) {
+    public LotacaoDisciplinaHorarioTableModel(List<LotacaoDisciplinaHorario> lista) {
         sdh = new ArrayList(new HashSet(lista));
         this.sdh.clear();
         this.sdh.addAll(lista);
@@ -65,13 +64,15 @@ public class SalarioDisciplinaHorarioTableModel extends AbstractTableModel {
      */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        SalarioDisciplinaHorario s = sdh.get(rowIndex);
+        LotacaoDisciplinaHorario s = sdh.get(rowIndex);
         switch (columnIndex) {
             case 0:
                 return Util.decimalFormat().format(s.getId());
             case 1:
                 return s.getHorario().getDescricao();
             case 2:
+                return s.getHorario().getQtdHora();
+            case 3:
                 return s.getDiaSemana();
 
         }
@@ -93,6 +94,8 @@ public class SalarioDisciplinaHorarioTableModel extends AbstractTableModel {
                 return nomeColunas[1];
             case 2:
                 return nomeColunas[2];
+            case 3:
+                return nomeColunas[3];
             
         }
         return null;

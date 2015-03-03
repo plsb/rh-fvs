@@ -19,10 +19,10 @@ import br.os.rh.horario.Horario;
 import br.os.rh.horario.HorarioDAO;
 import br.os.rh.horario.HorarioTableModel;
 import br.os.rh.periodo.Periodo;
-import br.os.rh.salariodisciplinahorario.SalarioDisciplinaHorario;
-import br.os.rh.salariodisciplinahorario.SalarioDisciplinaHorarioDAO;
-import br.os.rh.salariodisciplinahorario.SalarioDisciplinaHorarioTableModel;
-import br.os.rh.salariodiscplinas.SalarioDisciplina;
+import br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorario;
+import br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorarioDAO;
+import br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorarioTableModel;
+import br.os.rh.lotacaodiscplinas.LotacaoDisciplina;
 import br.os.rh.util.Util;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +34,13 @@ import javax.swing.JOptionPane;
  */
 public class TelaSalarioDisciplina extends javax.swing.JDialog {
 
-    private static SalarioDisciplina sd;
-    private static SalarioDisciplinaHorario sdh = new SalarioDisciplinaHorario();
-    private List<SalarioDisciplina> listaSaDi;
+    private static LotacaoDisciplina sd;
+    private static LotacaoDisciplinaHorario sdh = new LotacaoDisciplinaHorario();
+    private List<LotacaoDisciplina> listaSaDi;
 //    private Funcionario f;
 //    private Periodo p;
 
-    public static SalarioDisciplina chamaTela(List<SalarioDisciplina> sdlist) {
+    public static LotacaoDisciplina chamaTela(List<LotacaoDisciplina> sdlist) {
 
         TelaSalarioDisciplina tsd = new TelaSalarioDisciplina(sdlist);
         tsd.setVisible(true);
@@ -50,13 +50,14 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
     /**
      * Creates new form TelaCidade
      */
-    public TelaSalarioDisciplina(List<SalarioDisciplina> sdlist) {
+    public TelaSalarioDisciplina(List<LotacaoDisciplina> sdlist) {
         initComponents();
-        listaSaDi = sdlist;
-        sd = new SalarioDisciplina();
+        listaSaDi = new ArrayList<>();
+        listaSaDi.addAll(sdlist);
+        sd = new LotacaoDisciplina();
         setModal(true);
         setLocationRelativeTo(null);
-        sd.setSdh(new ArrayList<SalarioDisciplinaHorario>());
+        sd.setSdh(new ArrayList<LotacaoDisciplinaHorario>());
         preencheTabela();
     }
 
@@ -70,9 +71,7 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
         for (int i = 0; i < listaSaDi.size(); i++) {
             for (int j = 0; j < listaSaDi.get(i).getSdh().size(); j++) {
                 if (sdh.getDiaSemana().equals(listaSaDi.get(i).getSdh().get(j).getDiaSemana())
-                        &&
-                        sdh.getHorario().equals(listaSaDi.get(i).getSdh().get(j).getHorario())
-                        ) {
+                        && sdh.getHorario().equals(listaSaDi.get(i).getSdh().get(j).getHorario())) {
                     return true;
                 }
             }
@@ -82,7 +81,7 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
     }
 
     private void preencheTabela() {
-        SalarioDisciplinaHorarioTableModel sdh = new SalarioDisciplinaHorarioTableModel(sd.getSdh());
+        LotacaoDisciplinaHorarioTableModel sdh = new LotacaoDisciplinaHorarioTableModel(sd.getSdh());
         tb.setModel(sdh);
     }
 
@@ -102,11 +101,9 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
         jButton4 = new javax.swing.JButton();
         tfDisciplina = new javax.swing.JTextField();
         jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         cbDiaSemana = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
-        jButton6 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         tfHorario = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -153,13 +150,6 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
             }
         });
 
-        jButton8.setText("+");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
-
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -167,13 +157,6 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText("Dia da Semana: *");
-
-        jButton6.setText("+");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
 
         jButton2.setText("...");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -210,16 +193,13 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(tfHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton6)
-                        .addGap(32, 32, 32)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(cbDiaSemana, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton1)))))
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(cbDiaSemana, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(79, 79, 79)
+                .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -233,7 +213,6 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfHorario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2)
-                    .addComponent(jButton6)
                     .addComponent(cbDiaSemana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -268,8 +247,7 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
                         .addComponent(tfDisciplina)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton8))
+                        .addGap(47, 47, 47))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -285,8 +263,7 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton7)
-                    .addComponent(jButton8))
+                    .addComponent(jButton7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(8, 8, 8)
@@ -299,7 +276,7 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
         );
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setText("CADASTRO DE SALARIO DISCIPLINA");
+        jLabel5.setText("LOTAÇÃO DISCIPLINA");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -352,12 +329,6 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfHorarioActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-        TelaHorario th = new TelaHorario();
-        th.setVisible(true);
-    }//GEN-LAST:event_jButton6ActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         HorarioDAO dao = new HorarioDAO();
@@ -380,7 +351,7 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
         DisciplinaDAO dao = new DisciplinaDAO();
-        List<Disciplina> lista = dao.listar();
+        List<Disciplina> lista = dao.listarPorCurso();
         DisciplinaTableModel stm = new DisciplinaTableModel(lista);
         Object o = TelaPesquisa.exibeTela(stm, "Disciplina");
         Disciplina d;
@@ -391,22 +362,18 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
-        TelaDisciplina td = new TelaDisciplina();
-        td.setVisible(true);
-    }//GEN-LAST:event_jButton8ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         if (!tfHorario.getText().equals("") && cbDiaSemana.getSelectedIndex() != 0) {
             sdh.setDiaSemana(cbDiaSemana.getSelectedItem().toString());
             if (choqueHorario()) {
                 JOptionPane.showMessageDialog(rootPane, "Existe Choque de Horário!");
-            } else {
-                
+            }/* else if (!verificaHorasDsciplina(sdh,sd.getSdh())) {
+                JOptionPane.showMessageDialog(rootPane, "Horas da disciplina ultrapassa CH da Mesma!");
+            } */else {
+                listaSaDi.add(sd);
                 sd.getSdh().add(sdh);
-                sdh = new SalarioDisciplinaHorario();
+                sdh = new LotacaoDisciplinaHorario();
                 tfHorario.setText("");
                 cbDiaSemana.setSelectedIndex(0);
             }
@@ -458,9 +425,7 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -473,4 +438,17 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
     private javax.swing.JTextField tfDisciplina;
     private javax.swing.JTextField tfHorario;
     // End of variables declaration//GEN-END:variables
+
+    private boolean verificaHorasDsciplina(LotacaoDisciplinaHorario sdh, List<LotacaoDisciplinaHorario> lista) {
+        int soma=sdh.getHorario().getQtdHora();
+        int chSemana = sd.getDisciplina().getHoras()/20;
+        for (int i = 0; i < lista.size(); i++) {
+                soma+=lista.get(i).getHorario().getQtdHora();
+        }
+        if(soma<=chSemana){
+            return true; // pode ser adicionado
+        } else {
+            return false;
+        }
+    }
 }

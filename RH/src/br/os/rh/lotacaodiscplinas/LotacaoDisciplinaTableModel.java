@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.os.rh.horario;
+package br.os.rh.lotacaodiscplinas;
 
-import br.os.rh.estado.*;
+import br.os.rh.disciplina.*;
+import br.os.rh.curso.Curso;
 import br.os.rh.util.Util;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,20 +17,20 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author JOABB
  */
-public class HorarioTableModel extends AbstractTableModel {
+public class LotacaoDisciplinaTableModel extends AbstractTableModel {
 
-    private String[] nomeColunas = {"Código", "Descrição", "Turno", "H.I.", "H.F."};
-    private List<Horario> horarios;
+    private String[] nomeColunas = {"Código", "Descrição", "Semestre", "Curso"};
+    private List<LotacaoDisciplina> disciplinas;
 
     /**
      * Construtor sobrecarregado.
      *
      * @param lista List(Editora).
      */
-    public HorarioTableModel(List<Horario> lista) {
-        horarios = new ArrayList(new HashSet(lista));
-        this.horarios.clear();
-        this.horarios.addAll(lista);
+    public LotacaoDisciplinaTableModel(List<LotacaoDisciplina> lista) {
+        disciplinas = new ArrayList(new HashSet(lista));
+        // this.disciplinas.clear();
+        //this.disciplinas.addAll(lista);
         //Collections.sort(cursos);
         super.fireTableDataChanged();
     }
@@ -41,7 +42,7 @@ public class HorarioTableModel extends AbstractTableModel {
      */
     @Override
     public int getRowCount() {
-        return horarios.size();
+        return disciplinas.size();
     }
 
     /**
@@ -63,18 +64,17 @@ public class HorarioTableModel extends AbstractTableModel {
      */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Horario horario = horarios.get(rowIndex);
+        LotacaoDisciplina disciplina = disciplinas.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return Util.decimalFormat().format(horario.getId());
+                return Util.decimalFormat().format(disciplina.getId());
             case 1:
-                return horario.getDescricao();
+                return disciplina.getDisciplina().getDescricao();
             case 2:
-                return horario.getTurno().getDescricao();
+                return disciplina.getDisciplina().getSemestre().getDescricao();
             case 3:
-                return horario.getHoraInicial();
-            case 4:
-                return horario.getHoraFinal();
+                return disciplina.getDisciplina().getSemestre().getCurso().getSigla();
+            
         }
         return null;
     }
@@ -96,8 +96,7 @@ public class HorarioTableModel extends AbstractTableModel {
                 return nomeColunas[2];
             case 3:
                 return nomeColunas[3];
-            case 4:
-                return nomeColunas[4];
+            
         }
         return null;
     }

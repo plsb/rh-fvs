@@ -18,7 +18,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class FuncionarioTableModel extends AbstractTableModel {
 
-    private String[] nomeColunas = {"Código", "Nome", "Titulação", "Cidade", "Ativo"};
+    private String[] nomeColunas = {"Código", "Nome", "Professor?", "Titulação", "Cidade", "Ativo?"};
     private List<Funcionario> funcionarios;
 
     /**
@@ -70,10 +70,12 @@ public class FuncionarioTableModel extends AbstractTableModel {
             case 1:
                 return func.getNome();
             case 2:
-                return func.getTitulacao().getDescricao();
+                return func.isProfessoString();
             case 3:
-                return func.getCidade().getDescricao() + " - " + func.getCidade().getEstado().getDescricao();
+                return func.getTitulacao().getDescricao();
             case 4:
+                return func.getCidade().getDescricao() + " - " + func.getCidade().getEstado().getDescricao();
+            case 5:
                 return func.isAtivoString();
 
         }
@@ -99,6 +101,8 @@ public class FuncionarioTableModel extends AbstractTableModel {
                 return nomeColunas[3];
             case 4:
                 return nomeColunas[4];
+            case 5:
+                return nomeColunas[5];
         }
         return null;
     }

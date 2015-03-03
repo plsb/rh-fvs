@@ -17,10 +17,10 @@ import br.os.rh.periodo.PeriodoTableModel;
 import br.os.rh.salario.Salario;
 import br.os.rh.salario.SalarioDAO;
 import br.os.rh.salario.SalarioTableModel;
-import br.os.rh.salariodisciplinahorario.SalarioDisciplinaHorarioDAO;
-import br.os.rh.salariodiscplinas.SalarioDisciplina;
-import br.os.rh.salariodiscplinas.SalarioDisciplinaDAO;
-import br.os.rh.salariodiscplinas.SalarioDisciplinaTableModel;
+import br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorarioDAO;
+import br.os.rh.lotacaodiscplinas.LotacaoDisciplina;
+import br.os.rh.lotacaodiscplinas.LotacaoDisciplinaDAO;
+import br.os.rh.lotacaodiscplinas.LotacaoDisciplinaTableModel;
 import br.os.rh.util.Ativo;
 import br.os.rh.util.Calculo;
 import br.os.rh.util.FormataTamanhoColunasJTable;
@@ -41,8 +41,8 @@ import javax.swing.JTable;
 public class TelaSalario extends javax.swing.JDialog {
 
     private Salario salario;
-    private List<SalarioDisciplina> disciplinas;
-    private List<SalarioDisciplina> disciplinasSerExcluidas;
+    private List<LotacaoDisciplina> disciplinas;
+    private List<LotacaoDisciplina> disciplinasSerExcluidas;
 
     private double calculo() {
         int horasMensalista = 0;
@@ -170,7 +170,7 @@ public class TelaSalario extends javax.swing.JDialog {
     }
 
     private void preencheTabelaDisciplinas() {
-        SalarioDisciplinaTableModel dtm = new SalarioDisciplinaTableModel(disciplinas);
+        LotacaoDisciplinaTableModel dtm = new LotacaoDisciplinaTableModel(disciplinas);
         tbDisciplinas.setModel(dtm);
         calculaHorasMostraJLabel();
     }
@@ -498,8 +498,8 @@ public class TelaSalario extends javax.swing.JDialog {
         chbProfessor.setSelected(false);
         pnTelaSalario.setEnabled(false);
         salario = new Salario();
-        disciplinas = new ArrayList<SalarioDisciplina>();
-        disciplinasSerExcluidas = new ArrayList<SalarioDisciplina>();
+        disciplinas = new ArrayList<LotacaoDisciplina>();
+        disciplinasSerExcluidas = new ArrayList<LotacaoDisciplina>();
         pnTelaSalario.setVisible(false);
         setSize(670, 230);
         preencheTabelaDisciplinas();
@@ -541,14 +541,14 @@ public class TelaSalario extends javax.swing.JDialog {
 
         dao.salvar(salario);
         for (int i = 0; i < disciplinas.size(); i++) {
-            SalarioDisciplinaDAO sDAO = new SalarioDisciplinaDAO();
-            disciplinas.get(i).setSalario(salario);
+            LotacaoDisciplinaDAO sDAO = new LotacaoDisciplinaDAO();
+//            disciplinas.get(i).setSalario(salario);
             sDAO.salvar(disciplinas.get(i));
 
         }
         for (int i = 0; i < disciplinas.size(); i++) {
             for (int j = 0; j < disciplinas.get(i).getSdh().size(); j++) {
-                SalarioDisciplinaHorarioDAO sdhDAO = new SalarioDisciplinaHorarioDAO();
+                LotacaoDisciplinaHorarioDAO sdhDAO = new LotacaoDisciplinaHorarioDAO();
                 disciplinas.get(i).getSdh().get(j).setSalarioDisciplina(disciplinas.get(i));
                 sdhDAO.salvar(disciplinas.get(i).getSdh().get(j));
             }
@@ -556,7 +556,7 @@ public class TelaSalario extends javax.swing.JDialog {
         }
         //disciplinas removidas
         for (int i = 0; i < disciplinasSerExcluidas.size(); i++) {
-            SalarioDisciplinaDAO sDAO = new SalarioDisciplinaDAO();
+            LotacaoDisciplinaDAO sDAO = new LotacaoDisciplinaDAO();
             sDAO.remover(disciplinasSerExcluidas.get(i));
         }
 
@@ -607,8 +607,8 @@ public class TelaSalario extends javax.swing.JDialog {
 
     private void btRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverActionPerformed
         SalarioDAO dao = new SalarioDAO();
-        SalarioDisciplinaDAO sdDAO = new SalarioDisciplinaDAO();
-        SalarioDisciplinaHorarioDAO sdhDAO = new SalarioDisciplinaHorarioDAO();
+        LotacaoDisciplinaDAO sdDAO = new LotacaoDisciplinaDAO();
+        LotacaoDisciplinaHorarioDAO sdhDAO = new LotacaoDisciplinaHorarioDAO();
         for (int i = 0; i < disciplinas.size(); i++) {
             for (int j = 0; j < disciplinas.get(i).getSdh().size(); j++) {
                 sdhDAO.remover(disciplinas.get(i).getSdh().get(j));
@@ -661,7 +661,7 @@ public class TelaSalario extends javax.swing.JDialog {
                 if (salario.getTipoRegime().equals("Horista")) {
                     tfSalario.setEnabled(false);
                 }
-                SalarioDisciplinaDAO sdDAO = new SalarioDisciplinaDAO();
+                LotacaoDisciplinaDAO sdDAO = new LotacaoDisciplinaDAO();
                 disciplinas = new ArrayList<>(new HashSet(sdDAO.pesquisaSalario(salario)));//salario.getDisciplinas();
                 chbProfessor.setSelected(salario.isProfessor());
                 chbProfessorActionPerformed(null);
@@ -750,7 +750,7 @@ public class TelaSalario extends javax.swing.JDialog {
 //            DisciplinaTableModel ptm = new DisciplinaTableModel(lista);
 //            Object o = TelaPesquisa.exibeTela(ptm, "Disciplina");
             Disciplina d = new Disciplina();
-            SalarioDisciplina sd = new SalarioDisciplina();
+            LotacaoDisciplina sd = new LotacaoDisciplina();
             sd = TelaSalarioDisciplina.chamaTela(disciplinas);
 
             if (sd != null) {
@@ -834,8 +834,8 @@ public class TelaSalario extends javax.swing.JDialog {
                         }
                     }
                 } else if (o != null) {
-                    SalarioDisciplinaDAO sdDAO = new SalarioDisciplinaDAO();
-                    SalarioDisciplina salario = new SalarioDisciplina();
+                    LotacaoDisciplinaDAO sdDAO = new LotacaoDisciplinaDAO();
+                    LotacaoDisciplina salario = new LotacaoDisciplina();
                     salario = sdDAO.pesquisaId(Integer.valueOf(String.valueOf(o)));
                     removeDisciplinas(salario);
 
@@ -856,7 +856,7 @@ public class TelaSalario extends javax.swing.JDialog {
         lblSalarioBruto.setText("R$ " + calculoString());
     }//GEN-LAST:event_tfComissaoFocusLost
 
-    public void removeDisciplinas(SalarioDisciplina salario) {
+    public void removeDisciplinas(LotacaoDisciplina salario) {
         int i = -1;
         for (int j = 0; j < disciplinas.size(); j++) {
             if (disciplinas.get(j).getId() == salario.getId()) {

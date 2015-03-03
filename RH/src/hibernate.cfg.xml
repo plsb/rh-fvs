@@ -24,10 +24,11 @@
         <mapping class="br.os.rh.semestre.Semestre"/>
         <mapping class="br.os.rh.salario.Salario"/>
         <mapping class="br.os.rh.funcionario.Funcionario"/>
-        <mapping class="br.os.rh.salariodiscplinas.SalarioDisciplina"/>
+        <mapping class="br.os.rh.lotacaodiscplinas.LotacaoDisciplina"/>
         <mapping class="br.os.rh.turno.Turno"/>
         <mapping class="br.os.rh.horario.Horario"/>
-        <mapping class="br.os.rh.salariodisciplinahorario.SalarioDisciplinaHorario"/>
+        <mapping class="br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorario"/>
+        <mapping class="br.os.rh.lotacao.Lotacao"/>
                   
     </session-factory>
 </hibernate-configuration>

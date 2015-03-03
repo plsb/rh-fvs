@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.os.rh.salariodiscplinas;
+package br.os.rh.lotacaodiscplinas;
 
+import br.os.rh.lotacao.Lotacao;
 import br.os.rh.disciplina.Disciplina;
 import br.os.rh.horario.Horario;
 import br.os.rh.salario.Salario;
-import br.os.rh.salariodisciplinahorario.SalarioDisciplinaHorario;
+import br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorario;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -28,20 +29,20 @@ import javax.persistence.OneToMany;
  * @author 'Pedro
  */
 @Entity
-public class SalarioDisciplina {
+public class LotacaoDisciplina {
 
     @Id
     @GeneratedValue
     private int id;
-
+ 
     @ManyToOne
-    private Salario salario;
+    private Lotacao lotacao;
 
     @ManyToOne
     private Disciplina disciplina;
 
     @OneToMany(mappedBy = "salarioDisciplina", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    private List<SalarioDisciplinaHorario> sdh;
+    private List<LotacaoDisciplinaHorario> sdh;
     /**
              * @return the id
              */
@@ -55,20 +56,6 @@ public class SalarioDisciplina {
      */
     public void setId(int id) {
         this.id = id;
-    }
-
-    /**
-     * @return the salario
-     */
-    public Salario getSalario() {
-        return salario;
-    }
-
-    /**
-     * @param salario the salario to set
-     */
-    public void setSalario(Salario salario) {
-        this.salario = salario;
     }
 
     /**
@@ -88,24 +75,32 @@ public class SalarioDisciplina {
     /**
      * @return the sdh
      */
-    public List<SalarioDisciplinaHorario> getSdh() {
+    public List<LotacaoDisciplinaHorario> getSdh() {
         return sdh;
     }
 
     /**
      * @param sdh the sdh to set
      */
-    public void setSdh(List<SalarioDisciplinaHorario> sdh) {
+    public void setSdh(List<LotacaoDisciplinaHorario> sdh) {
         this.sdh = sdh;
+    }
+
+    public Lotacao getLotacao() {
+        return lotacao;
+    }
+
+    public void setLotacao(Lotacao lotacao) {
+        this.lotacao = lotacao;
     }
 
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 37 * hash + this.id;
-        hash = 37 * hash + Objects.hashCode(this.salario);
-        hash = 37 * hash + Objects.hashCode(this.disciplina);
-        hash = 37 * hash + Objects.hashCode(this.sdh);
+        hash = 97 * hash + this.id;
+        hash = 97 * hash + Objects.hashCode(this.lotacao);
+        hash = 97 * hash + Objects.hashCode(this.disciplina);
+        hash = 97 * hash + Objects.hashCode(this.sdh);
         return hash;
     }
 
@@ -117,11 +112,11 @@ public class SalarioDisciplina {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final SalarioDisciplina other = (SalarioDisciplina) obj;
+        final LotacaoDisciplina other = (LotacaoDisciplina) obj;
         if (this.id != other.id) {
             return false;
         }
-        if (!Objects.equals(this.salario, other.salario)) {
+        if (!Objects.equals(this.lotacao, other.lotacao)) {
             return false;
         }
         if (!Objects.equals(this.disciplina, other.disciplina)) {
@@ -135,7 +130,7 @@ public class SalarioDisciplina {
 
     @Override
     public String toString() {
-        return "SalarioDisciplina{" + "id=" + id + ", salario=" + salario + ", disciplina=" + disciplina + ", sdh=" + sdh + '}';
+        return "SalarioDisciplina{" + "id=" + id + ", lotacao=" + lotacao + ", disciplina=" + disciplina + ", sdh=" + sdh + '}';
     }
 
 }

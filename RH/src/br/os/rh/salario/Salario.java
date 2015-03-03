@@ -7,7 +7,7 @@ package br.os.rh.salario;
 
 import br.os.rh.funcionario.Funcionario;
 import br.os.rh.periodo.Periodo;
-import br.os.rh.salariodiscplinas.SalarioDisciplina;
+import br.os.rh.lotacaodiscplinas.LotacaoDisciplina;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -58,9 +58,8 @@ public class Salario implements Comparable<Salario>{
 
     private boolean professor;
 
-    @OneToMany(mappedBy = "salario")
-    
-    private List<SalarioDisciplina> disciplinas;
+//    @OneToMany(mappedBy = "salario")    
+//    private List<SalarioDisciplina> disciplinas;
 
     private int horasMensalista;
     
@@ -231,16 +230,16 @@ public class Salario implements Comparable<Salario>{
     /**
      * @return the disciplinas
      */
-    public List<SalarioDisciplina> getDisciplinas() {
-        return disciplinas;
-    }
-
-    /**
-     * @param disciplinas the disciplinas to set
-     */
-    public void setDisciplinas(List<SalarioDisciplina> disciplinas) {
-        this.disciplinas = disciplinas;
-    }
+//    public List<SalarioDisciplina> getDisciplinas() {
+//        return disciplinas;
+//    }
+//
+//    /**
+//     * @param disciplinas the disciplinas to set
+//     */
+//    public void setDisciplinas(List<SalarioDisciplina> disciplinas) {
+//        this.disciplinas = disciplinas;
+//    }
 
     /**
      * @return the horasMensalista
@@ -274,7 +273,7 @@ public class Salario implements Comparable<Salario>{
         hash = 59 * hash + Objects.hashCode(this.periodo);
         hash = 59 * hash + Objects.hashCode(this.funcionario);
         hash = 59 * hash + (this.professor ? 1 : 0);
-        hash = 59 * hash + Objects.hashCode(this.disciplinas);
+        
         hash = 59 * hash + this.horasMensalista;
         hash = 59 * hash + (int) (Double.doubleToLongBits(this.comissao) ^ (Double.doubleToLongBits(this.comissao) >>> 32));
         return hash;
@@ -319,9 +318,7 @@ public class Salario implements Comparable<Salario>{
         if (this.professor != other.professor) {
             return false;
         }
-        if (!Objects.equals(this.disciplinas, other.disciplinas)) {
-            return false;
-        }
+        
         if (this.horasMensalista != other.horasMensalista) {
             return false;
         }

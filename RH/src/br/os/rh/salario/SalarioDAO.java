@@ -8,7 +8,7 @@ package br.os.rh.salario;
 import br.os.rh.disciplina.Disciplina;
 import br.os.rh.funcionario.Funcionario;
 import br.os.rh.periodo.Periodo;
-import br.os.rh.salariodiscplinas.SalarioDisciplina;
+import br.os.rh.lotacaodiscplinas.LotacaoDisciplina;
 import br.os.rh.util.Ativo;
 import br.os.rh.util.GenericDAO;
 import br.os.rh.util.HibernateUtil;
@@ -70,16 +70,16 @@ public class SalarioDAO extends GenericDAO<Salario> {
         List<Salario> salarios = (List<Salario>) getSessao().createCriteria(Salario.class).
                 add(Restrictions.eq("periodo", p)).list();
 
-        List<SalarioDisciplina> listaSalaDis = new ArrayList<>();
+        List<LotacaoDisciplina> listaSalaDis = new ArrayList<>();
         if (salarios.size() > 0) {
-             listaSalaDis = (List<SalarioDisciplina>) getSessao().createCriteria(SalarioDisciplina.class).
+             listaSalaDis = (List<LotacaoDisciplina>) getSessao().createCriteria(LotacaoDisciplina.class).
                     add(Restrictions.in("salario", salarios)).
                     add(Restrictions.eq("disciplina", d)).list();
         }
 
         List<Salario> salarioReturn = new ArrayList<Salario>();
         for (int i = 0; i < listaSalaDis.size(); i++) {
-            salarioReturn.add(listaSalaDis.get(i).getSalario());
+//            salarioReturn.add(listaSalaDis.get(i).getSalario());
         }
 
         getSessao().close();

@@ -186,6 +186,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         mMovimentacao.setText("Movimentação");
 
         mmLotacao.setText("Lotação");
+        mmLotacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mmLotacaoActionPerformed(evt);
+            }
+        });
         mMovimentacao.add(mmLotacao);
 
         mmSalario.setText("Salário");
@@ -293,6 +298,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
         TelaSemestre ts = new TelaSemestre();
         ts.setVisible(true);
     }//GEN-LAST:event_mmSemestreActionPerformed
+
+    private void mmLotacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmLotacaoActionPerformed
+        // TODO add your handling code here:
+        TelaLotacao tl = new TelaLotacao();
+        tl.setVisible(true);
+    }//GEN-LAST:event_mmLotacaoActionPerformed
 
     /**
      * @param args the command line arguments

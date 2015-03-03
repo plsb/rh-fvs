@@ -7,11 +7,14 @@
 package br.os.rh.horario;
 
 import br.os.rh.turno.Turno;
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -30,6 +33,12 @@ public class Horario {
     private Turno turno;
     
     private int qtdHora;
+    
+    @Temporal(TemporalType.TIME)
+    private Date horaInicial;
+    
+    @Temporal(TemporalType.TIME)
+    private Date horaFinal;
 
     /**
      * @return the id
@@ -86,13 +95,31 @@ public class Horario {
         this.qtdHora = qtdHora;
     }
 
+    public Date getHoraInicial() {
+        return horaInicial;
+    }
+
+    public void setHoraInicial(Date horaInicial) {
+        this.horaInicial = horaInicial;
+    }
+
+    public Date getHoraFinal() {
+        return horaFinal;
+    }
+
+    public void setHoraFinal(Date horaFinal) {
+        this.horaFinal = horaFinal;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 79 * hash + this.id;
-        hash = 79 * hash + Objects.hashCode(this.descricao);
-        hash = 79 * hash + Objects.hashCode(this.turno);
-        hash = 79 * hash + this.qtdHora;
+        int hash = 5;
+        hash = 13 * hash + this.id;
+        hash = 13 * hash + Objects.hashCode(this.descricao);
+        hash = 13 * hash + Objects.hashCode(this.turno);
+        hash = 13 * hash + this.qtdHora;
+        hash = 13 * hash + Objects.hashCode(this.horaInicial);
+        hash = 13 * hash + Objects.hashCode(this.horaFinal);
         return hash;
     }
 
@@ -114,9 +141,17 @@ public class Horario {
         if (!Objects.equals(this.turno, other.turno)) {
             return false;
         }
+        if (this.qtdHora != other.qtdHora) {
+            return false;
+        }
+        if (!Objects.equals(this.horaInicial, other.horaInicial)) {
+            return false;
+        }
+        if (!Objects.equals(this.horaFinal, other.horaFinal)) {
+            return false;
+        }
         return true;
     }
-    
     
     
 }
