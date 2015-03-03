@@ -10,6 +10,7 @@ import br.os.rh.cidade.Cidade;
 import br.os.rh.util.GenericDAO;
 import br.os.rh.util.HibernateUtil;
 import java.util.List;
+import javax.swing.JOptionPane;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -27,6 +28,10 @@ public class FuncionarioDAO extends GenericDAO<Funcionario>{
     public boolean salvar(Funcionario funcionario){
         if(funcionario.getId()==0){
             funcionario.setAtivo(true);
+            if(checkExists("codigoPonto", funcionario.getCodigoPonto()).size()>0){
+                JOptionPane.showMessageDialog(null, "Código de Ponto Já Cadastrado!");
+                return false;
+            }
             adicionar(funcionario);
         } else {
             atualizar(funcionario);
@@ -45,6 +50,18 @@ public class FuncionarioDAO extends GenericDAO<Funcionario>{
         getSessao().close();
         return funcionarios;
     }
+    
+    public List<Funcionario> pesquisaDescricaoEq(String text) {
+        setSessao(HibernateUtil.getSessionFactory().openSession());
+        setTransacao(getSessao().beginTransaction());
+        
+        List <Funcionario> funcionarios = (List<Funcionario>) getSessao().createCriteria(Funcionario.class).
+                add(Restrictions.eq("nome", text)).
+                addOrder(Order.asc("nome")).list();
+        
+        getSessao().close();
+        return funcionarios;
+    }
 
     public Funcionario pesquisaId(Integer id) {
         setSessao(HibernateUtil.getSessionFactory().openSession());
@@ -57,5 +74,21 @@ public class FuncionarioDAO extends GenericDAO<Funcionario>{
         return funcionario;
     }
     
+    public List<Funcionario> listarAtivo() {
+        List<Funcionario> lista = null;
+        try {
+            this.setSessao(HibernateUtil.getSessionFactory().openSession());
+            setTransacao(getSessao().beginTransaction());
+            lista = this.getSessao().createCriteria(Funcionario.class).
+                    add(Restrictions.eq("ativo", true)).list();
+            //sessao.close();
+        } catch (Throwable e) {
+            if (getTransacao().isActive()) {
+                getTransacao().rollback();
+            }
+            JOptionPane.showMessageDialog(null, "Não foi possível listar: " + e.getMessage());
+        }
+        return lista;
+    }
     
 }

@@ -231,24 +231,24 @@ public class TelaGeraPlanilhaFolhaProfessores extends javax.swing.JDialog {
 
                 row.createCell(0).setCellValue(s.getFuncionario().getNome());
                 row.createCell(1).setCellValue(s.getFuncionario().getTitulacao().getDescricao());
-                row.createCell(2).setCellValue(s.getDisciplinas().get(0).getDisciplina().getSemestre().getCurso().getSigla());
+//                row.createCell(2).setCellValue(s.getDisciplinas().get(0).getDisciplina().getSemestre().getCurso().getSigla());
                 row.createCell(3).setCellValue(s.getFuncionario().getCidade().getDescricao());
-                row.createCell(4).setCellValue((Calculo.calculoHorasSemestre(s.getDisciplinas())*20));
+//                row.createCell(4).setCellValue((Calculo.calculoHorasSemestre(s.getDisciplinas())*20));
                 row.createCell(5).setCellValue(s.getValHoraAula());
 
-                double valorMensalHorista = (((Calculo.calculoHorasSemestre(s.getDisciplinas())) *4.5)) * s.getValHoraAula();
-                row.createCell(6).setCellValue(valorMensalHorista);
-                row.createCell(7).setCellValue(s.getSalario());
-                double umSexto = valorMensalHorista / 6;
-                row.createCell(8).setCellValue(umSexto);
-                double gratificacao = Calculo.calculoGratificacaoHorista(s.getPorcentGratifica(), valorMensalHorista+s.getSalario());
-                row.createCell(9).setCellValue(gratificacao);
-                row.createCell(10).setCellValue(s.getValAjudaCusto());
-                row.createCell(11).setCellValue(s.getComissao());
-                double total = Calculo.calculoHorista(s.getDisciplinas(), s.getValHoraAula(),
-                        s.getValAjudaCusto(), s.getPorcentGratifica(), s.getHorasMensalista(), s.getSalario(), s.getComissao());
-                row.createCell(12).setCellValue(total);
-                valorGeral += total;
+//                double valorMensalHorista = (((Calculo.calculoHorasSemestre(s.getDisciplinas())) *4.5)) * s.getValHoraAula();
+//                row.createCell(6).setCellValue(valorMensalHorista);
+//                row.createCell(7).setCellValue(s.getSalario());
+//                double umSexto = valorMensalHorista / 6;
+//                row.createCell(8).setCellValue(umSexto);
+//                double gratificacao = Calculo.calculoGratificacaoHorista(s.getPorcentGratifica(), valorMensalHorista+s.getSalario());
+//                row.createCell(9).setCellValue(gratificacao);
+//                row.createCell(10).setCellValue(s.getValAjudaCusto());
+//                row.createCell(11).setCellValue(s.getComissao());
+//                double total = Calculo.calculoHorista(s.getDisciplinas(), s.getValHoraAula(),
+//                        s.getValAjudaCusto(), s.getPorcentGratifica(), s.getHorasMensalista(), s.getSalario(), s.getComissao());
+//                row.createCell(12).setCellValue(total);
+//                valorGeral += total;
 
 //                row.createCell(12).setCellValue("adiantamentos");
 //                row.createCell(13).setCellValue("desconto");

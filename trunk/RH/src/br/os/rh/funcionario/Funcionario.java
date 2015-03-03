@@ -48,6 +48,10 @@ public class Funcionario {
     private Titulacao titulacao;
     
     private boolean ativo;
+    
+    private boolean professor;
+    
+    private int codigoPonto;
 
     /**
      * @return the id
@@ -182,6 +186,29 @@ public class Funcionario {
         this.ativo = ativo;
     }
 
+    public boolean isProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(boolean professor) {
+        this.professor = professor;
+    }
+
+    public String isProfessoString() {
+        if(ativo==true){
+            return "Sim";
+        } 
+        return "Não";
+    }
+
+    public int getCodigoPonto() {
+        return codigoPonto;
+    }
+
+    public void setCodigoPonto(int codigoPonto) {
+        this.codigoPonto = codigoPonto;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -194,6 +221,8 @@ public class Funcionario {
         hash = 83 * hash + Objects.hashCode(this.cidade);
         hash = 83 * hash + Objects.hashCode(this.titulacao);
         hash = 83 * hash + (this.ativo ? 1 : 0);
+        hash = 83 * hash + (this.professor ? 1 : 0);
+        hash = 83 * hash + this.codigoPonto;
         return hash;
     }
 
@@ -233,10 +262,15 @@ public class Funcionario {
         if (this.ativo != other.ativo) {
             return false;
         }
+        if (this.professor != other.professor) {
+            return false;
+        }
+        if (this.codigoPonto != other.codigoPonto) {
+            return false;
+        }
         return true;
     }
 
-    
     
     
     

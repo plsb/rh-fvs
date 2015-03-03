@@ -15,6 +15,9 @@ import br.os.rh.turno.Turno;
 import br.os.rh.turno.TurnoDAO;
 import br.os.rh.turno.TurnoTableModel;
 import br.os.rh.util.Util;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -60,6 +63,10 @@ public class TelaHorario extends javax.swing.JDialog {
         jButton6 = new javax.swing.JButton();
         tfqdtHoras = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        tfHoraInicio = new javax.swing.JFormattedTextField();
+        tfHoraFim = new javax.swing.JFormattedTextField();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -147,6 +154,34 @@ public class TelaHorario extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Quant. Horas:*");
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel4.setText("Hr. Inicio:*");
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel6.setText("Hr. Fim:*");
+
+        try {
+            tfHoraInicio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        tfHoraInicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfHoraInicioActionPerformed(evt);
+            }
+        });
+        tfHoraInicio.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tfHoraInicioFocusLost(evt);
+            }
+        });
+
+        try {
+            tfHoraFim.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -166,19 +201,28 @@ public class TelaHorario extends javax.swing.JDialog {
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(tfTurno, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton6))
-                            .addComponent(jLabel2)
-                            .addComponent(tfqdtHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel3)
+                        .addGroup(jPanel5Layout.createSequentialGroup()
+                            .addComponent(tfTurno, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jButton6))
+                        .addGroup(jPanel5Layout.createSequentialGroup()
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(tfqdtHoras, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel4)
+                                .addComponent(tfHoraInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(25, 25, 25)
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel6)
+                                .addComponent(tfHoraFim, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(16, 16, 16))))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -189,9 +233,15 @@ public class TelaHorario extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tfDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tfqdtHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfqdtHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfHoraInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfHoraFim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -255,6 +305,8 @@ public class TelaHorario extends javax.swing.JDialog {
         tfqdtHoras.setText("");
         horario = new Horario();
         btRemover.setEnabled(false);
+        tfHoraInicio.setText("");
+        tfHoraFim.setText("");
     }
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         limpaCampos();
@@ -262,15 +314,36 @@ public class TelaHorario extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (Util.chkVazio(tfDescricao.getText(), tfTurno.getText())) {
+            if(!tfHoraFim.getText().equals("  :  ")
+                && !tfHoraInicio.getText().equals("  :  ")){
+                
+            
 
             horario.setDescricao(tfDescricao.getText());
             horario.setQtdHora(Integer.parseInt(tfqdtHoras.getText()));
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                Date d = sdf.parse(tfHoraInicio.getText());
+                horario.setHoraInicial(d);
+            } catch (ParseException e) {
+                
+            }
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                Date d = sdf.parse(tfHoraFim.getText());
+                horario.setHoraFinal(d);
+            } catch (ParseException e) {
+                
+            }
 
             HorarioDAO dao = new HorarioDAO();
             dao.salvar(horario);
             limpaCampos();
 
             JOptionPane.showMessageDialog(rootPane, "Cadastro Efetuado");
+            } else {
+                JOptionPane.showMessageDialog(null, "Preencha todos os campos com '*'!");
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -298,6 +371,8 @@ public class TelaHorario extends javax.swing.JDialog {
             tfDescricao.setText(horario.getDescricao());
             tfTurno.setText(horario.getTurno().getDescricao());
             tfqdtHoras.setText(String.valueOf(horario.getQtdHora()));
+            tfHoraInicio.setText(String.valueOf(horario.getHoraInicial()));
+            tfHoraFim.setText(String.valueOf(horario.getHoraFinal()));
 
             btRemover.setEnabled(true);
         }
@@ -335,6 +410,15 @@ public class TelaHorario extends javax.swing.JDialog {
     private void tfqdtHorasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfqdtHorasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfqdtHorasActionPerformed
+
+    private void tfHoraInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfHoraInicioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfHoraInicioActionPerformed
+
+    private void tfHoraInicioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfHoraInicioFocusLost
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_tfHoraInicioFocusLost
 
     /**
      * @param args the command line arguments
@@ -382,10 +466,14 @@ public class TelaHorario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JTextField tfDescricao;
+    private javax.swing.JFormattedTextField tfHoraFim;
+    private javax.swing.JFormattedTextField tfHoraInicio;
     private javax.swing.JTextField tfTurno;
     private javax.swing.JTextField tfqdtHoras;
     // End of variables declaration//GEN-END:variables

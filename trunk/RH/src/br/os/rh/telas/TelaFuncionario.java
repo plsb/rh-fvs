@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.os.rh.telas;
 
 import br.os.rh.cidade.Cidade;
@@ -37,7 +36,9 @@ import javax.swing.JOptionPane;
  * @author JOABB
  */
 public class TelaFuncionario extends javax.swing.JDialog {
+
     private Funcionario funcionario;
+
     /**
      * Creates new form TelaDisciplina
      */
@@ -46,7 +47,8 @@ public class TelaFuncionario extends javax.swing.JDialog {
         setModal(true);
         setLocationRelativeTo(null);
         limpaCampos();
-        
+        tfCodMarcarPonto.setDocument(new OnlyNumberField(5));
+
     }
 
     /**
@@ -83,7 +85,10 @@ public class TelaFuncionario extends javax.swing.JDialog {
         tfTelefone = new javax.swing.JFormattedTextField();
         tfBairro = new javax.swing.JTextField();
         tfEmail = new javax.swing.JTextField();
+        chbProfessor = new javax.swing.JCheckBox();
         chbAtivo = new javax.swing.JCheckBox();
+        tfCodMarcarPonto = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -233,6 +238,15 @@ public class TelaFuncionario extends javax.swing.JDialog {
         jPanel5.add(tfBairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 190, -1));
         jPanel5.add(tfEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 460, -1));
 
+        chbProfessor.setBackground(new java.awt.Color(255, 255, 255));
+        chbProfessor.setText("Professor");
+        chbProfessor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbProfessorActionPerformed(evt);
+            }
+        });
+        jPanel5.add(chbProfessor, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 10, -1, -1));
+
         chbAtivo.setBackground(new java.awt.Color(255, 255, 255));
         chbAtivo.setText("Ativo");
         chbAtivo.addActionListener(new java.awt.event.ActionListener() {
@@ -241,6 +255,11 @@ public class TelaFuncionario extends javax.swing.JDialog {
             }
         });
         jPanel5.add(chbAtivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, -1, -1));
+        jPanel5.add(tfCodMarcarPonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, 190, -1));
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel10.setText("Cód. Marcar Ponto:*");
+        jPanel5.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 220, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("CADASTRO DE FUNCIONÁRIO");
@@ -284,9 +303,9 @@ public class TelaFuncionario extends javax.swing.JDialog {
     private void tfNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNomeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfNomeActionPerformed
-    private void limpaCampos(){
+    private void limpaCampos() {
         tfNome.setText("");
-        funcionario= new Funcionario();
+        funcionario = new Funcionario();
         btRemover.setEnabled(false);
         tfEndereco.setText("");
         tfBairro.setText("");
@@ -294,17 +313,19 @@ public class TelaFuncionario extends javax.swing.JDialog {
         tfTelefone.setText("");
         tfEmail.setText("");
         tfTitulacao.setText("");
+        chbProfessor.setSelected(true);
         chbAtivo.setSelected(true);
-             
+        tfCodMarcarPonto.setText("");
+
     }
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         limpaCampos();
     }//GEN-LAST:event_jButton5ActionPerformed
-    
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (Util.chkVazio(tfBairro.getText(),tfTitulacao.getText(),tfNome.getText(),
-                tfCidade.getText(),tfEndereco.getText())){
-            
+        if (Util.chkVazio(tfBairro.getText(), tfTitulacao.getText(), tfNome.getText(),
+                tfCidade.getText(), tfEndereco.getText(), tfCodMarcarPonto.getText())) {
+
             funcionario.setNome(tfNome.getText());
             funcionario.setBairro(tfBairro.getText());
             funcionario.setEndereco(tfEndereco.getText());
@@ -312,10 +333,14 @@ public class TelaFuncionario extends javax.swing.JDialog {
             funcionario.setTelefone(tfTelefone.getText().replaceAll("\\D*", ""));
             FuncionarioDAO dao = new FuncionarioDAO();
             funcionario.setAtivo(chbAtivo.isSelected());
-            dao.salvar(funcionario);
-            limpaCampos();
+            funcionario.setProfessor(chbProfessor.isSelected());
+            funcionario.setCodigoPonto(Integer.parseInt(tfCodMarcarPonto.getText()));
+            if (dao.salvar(funcionario)) {
 
-            JOptionPane.showMessageDialog(rootPane, "Cadastro Efetuado");
+                limpaCampos();
+
+                JOptionPane.showMessageDialog(rootPane, "Cadastro Efetuado");
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -323,20 +348,20 @@ public class TelaFuncionario extends javax.swing.JDialog {
         FuncionarioDAO dao = new FuncionarioDAO();
         dao.remover(funcionario);
         limpaCampos();
-        
+
         JOptionPane.showMessageDialog(rootPane, "Funcionário Excluída");
     }//GEN-LAST:event_btRemoverActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         FuncionarioDAO dao = new FuncionarioDAO();
-        List <Funcionario> funcionarios = (!tfNome.getText().isEmpty() ? dao.pesquisaDescricao(tfNome.getText())
-            : dao.listar());
+        List<Funcionario> funcionarios = (!tfNome.getText().isEmpty() ? dao.pesquisaDescricao(tfNome.getText())
+                : dao.listar());
 
         FuncionarioTableModel ctm = new FuncionarioTableModel(funcionarios);
 
         Object o = TelaPesquisa.exibeTela(ctm, "Funcionário");
 
-        if (o != null){
+        if (o != null) {
             funcionario = new Funcionario();
             funcionario = dao.pesquisaId(Integer.valueOf(String.valueOf(o)));
 
@@ -347,7 +372,9 @@ public class TelaFuncionario extends javax.swing.JDialog {
             tfTitulacao.setText(funcionario.getTitulacao().getDescricao());
             tfTelefone.setText(funcionario.getTelefone());
             tfEmail.setText(funcionario.getEmail());
+            chbProfessor.setSelected(funcionario.isProfessor());
             chbAtivo.setSelected(funcionario.isAtivo());
+            tfCodMarcarPonto.setText(String.valueOf(funcionario.getCodigoPonto()));
 
             btRemover.setEnabled(true);
         }
@@ -410,6 +437,10 @@ public class TelaFuncionario extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfCidadeActionPerformed
 
+    private void chbProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbProfessorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chbProfessorActionPerformed
+
     private void chbAtivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbAtivoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_chbAtivoActionPerformed
@@ -452,6 +483,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btRemover;
     private javax.swing.JCheckBox chbAtivo;
+    private javax.swing.JCheckBox chbProfessor;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -461,6 +493,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -472,6 +505,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JTextField tfBairro;
     private javax.swing.JTextField tfCidade;
+    private javax.swing.JTextField tfCodMarcarPonto;
     private javax.swing.JTextField tfEmail;
     private javax.swing.JTextField tfEndereco;
     private javax.swing.JTextField tfNome;

@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 
-package br.os.rh.salariodisciplinahorario;
+package br.os.rh.lotacaodisciplinahorario;
 
 import br.os.rh.funcionario.Funcionario;
 import br.os.rh.horario.Horario;
 import br.os.rh.periodo.Periodo;
 import br.os.rh.salario.Salario;
-import br.os.rh.salariodiscplinas.SalarioDisciplina;
+import br.os.rh.lotacaodiscplinas.LotacaoDisciplina;
 import br.os.rh.util.GenericDAO;
 import br.os.rh.util.HibernateUtil;
 import java.util.ArrayList;
@@ -22,13 +22,13 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author 'Pedro
  */
-public class SalarioDisciplinaHorarioDAO extends GenericDAO<SalarioDisciplinaHorario>{
+public class LotacaoDisciplinaHorarioDAO extends GenericDAO<LotacaoDisciplinaHorario>{
 
-    public SalarioDisciplinaHorarioDAO() {
-        super(SalarioDisciplinaHorario.class);
+    public LotacaoDisciplinaHorarioDAO() {
+        super(LotacaoDisciplinaHorario.class);
     }
 
-    public void salvar(SalarioDisciplinaHorario get) {
+    public void salvar(LotacaoDisciplinaHorario get) {
         if(get.getId()==0){
             adicionar(get);
         } else {
@@ -44,11 +44,11 @@ public class SalarioDisciplinaHorarioDAO extends GenericDAO<SalarioDisciplinaHor
                 add(Restrictions.eq("funcionario", f)).
                 add(Restrictions.eq("periodo", p)).list();
         
-        List<SalarioDisciplina> sdLista = new ArrayList<SalarioDisciplina>( new HashSet(
-                getSessao().createCriteria(SalarioDisciplina.class).
+        List<LotacaoDisciplina> sdLista = new ArrayList<LotacaoDisciplina>( new HashSet(
+                getSessao().createCriteria(LotacaoDisciplina.class).
                 add(Restrictions.in("salario", salarios)).list()));
         
-        List<SalarioDisciplinaHorario> sdhLista = (List<SalarioDisciplinaHorario>) getSessao().createCriteria(SalarioDisciplina.class).
+        List<LotacaoDisciplinaHorario> sdhLista = (List<LotacaoDisciplinaHorario>) getSessao().createCriteria(LotacaoDisciplina.class).
                 add(Restrictions.in("salarioDisciplina", sdLista)).
                 add(Restrictions.eq("horario",h)).
                 add(Restrictions.eq("diaSemana", ds)).list();

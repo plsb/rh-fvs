@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-package br.os.rh.salariodisciplinahorario;
+package br.os.rh.lotacaodisciplinahorario;
 
 import br.os.rh.horario.Horario;
-import br.os.rh.salariodiscplinas.SalarioDisciplina;
+import br.os.rh.lotacaodiscplinas.LotacaoDisciplina;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,14 +20,14 @@ import javax.persistence.ManyToOne;
  * @author 'Pedro
  */
 @Entity
-public class SalarioDisciplinaHorario {
+public class LotacaoDisciplinaHorario {
     
     @Id
     @GeneratedValue
     private int id;
     
     @ManyToOne
-    private SalarioDisciplina salarioDisciplina;
+    private LotacaoDisciplina salarioDisciplina;
     
     @ManyToOne
     private Horario horario;
@@ -51,14 +51,14 @@ public class SalarioDisciplinaHorario {
     /**
      * @return the salarioDisciplina
      */
-    public SalarioDisciplina getSalarioDisciplina() {
+    public LotacaoDisciplina getSalarioDisciplina() {
         return salarioDisciplina;
     }
 
     /**
      * @param salarioDisciplina the salarioDisciplina to set
      */
-    public void setSalarioDisciplina(SalarioDisciplina salarioDisciplina) {
+    public void setSalarioDisciplina(LotacaoDisciplina salarioDisciplina) {
         this.salarioDisciplina = salarioDisciplina;
     }
 
@@ -108,7 +108,7 @@ public class SalarioDisciplinaHorario {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final SalarioDisciplinaHorario other = (SalarioDisciplinaHorario) obj;
+        final LotacaoDisciplinaHorario other = (LotacaoDisciplinaHorario) obj;
         if (this.id != other.id) {
             return false;
         }

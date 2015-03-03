@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.os.rh.salariodiscplinas;
+package br.os.rh.lotacao;
 
-import br.os.rh.disciplina.*;
-import br.os.rh.curso.Curso;
+import br.os.rh.horario.*;
+import br.os.rh.estado.*;
 import br.os.rh.util.Util;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,20 +17,20 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author JOABB
  */
-public class SalarioDisciplinaTableModel extends AbstractTableModel {
+public class LotacaoTableModel extends AbstractTableModel {
 
-    private String[] nomeColunas = {"Código", "Descrição", "Hora/Aula", "Semestre","Curso", "Horário"};
-    private List<SalarioDisciplina> disciplinas;
+    private String[] nomeColunas = {"Código", "Professor", "Período"};
+    private List<Lotacao> lotacoes;
 
     /**
      * Construtor sobrecarregado.
      *
      * @param lista List(Editora).
      */
-    public SalarioDisciplinaTableModel(List<SalarioDisciplina> lista) {
-        disciplinas = new ArrayList(new HashSet(lista));
-        // this.disciplinas.clear();
-        //this.disciplinas.addAll(lista);
+    public LotacaoTableModel(List<Lotacao> lista) {
+        lotacoes = new ArrayList(new HashSet(lista));
+        this.lotacoes.clear();
+        this.lotacoes.addAll(lista);
         //Collections.sort(cursos);
         super.fireTableDataChanged();
     }
@@ -42,7 +42,7 @@ public class SalarioDisciplinaTableModel extends AbstractTableModel {
      */
     @Override
     public int getRowCount() {
-        return disciplinas.size();
+        return lotacoes.size();
     }
 
     /**
@@ -64,21 +64,15 @@ public class SalarioDisciplinaTableModel extends AbstractTableModel {
      */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        SalarioDisciplina disciplina = disciplinas.get(rowIndex);
+        Lotacao lotacao = lotacoes.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return Util.decimalFormat().format(disciplina.getId());
+                return Util.decimalFormat().format(lotacao.getId());
             case 1:
-                return disciplina.getDisciplina().getDescricao();
+                return lotacao.getProfessor().getNome();
             case 2:
-                return disciplina.getDisciplina().getHoras();
-            case 3:
-                return disciplina.getDisciplina().getSemestre().getDescricao();
-            case 4:
-                return disciplina.getDisciplina().getSemestre().getCurso().getSigla();
-            case 5:
-                return disciplina.getSdh().toString();
-
+                return lotacao.getPeriodo().getDescricao();
+            
         }
         return null;
     }
@@ -98,13 +92,7 @@ public class SalarioDisciplinaTableModel extends AbstractTableModel {
                 return nomeColunas[1];
             case 2:
                 return nomeColunas[2];
-            case 3:
-                return nomeColunas[3];
-            case 4:
-                return nomeColunas[4];
-            case 5:
-                return nomeColunas[5];
-
+            
         }
         return null;
     }

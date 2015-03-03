@@ -67,39 +67,39 @@ public class Principal {
             if (s.isProfessor() && s.getFuncionario().isAtivo()) {
                 row = sheet1.createRow(i);
 
-                row.createCell(0).setCellValue(s.getFuncionario().getNome());
-                row.createCell(1).setCellValue(s.getFuncionario().getTitulacao().getDescricao());
-                row.createCell(2).setCellValue(s.getDisciplinas().get(0).getDisciplina().getSemestre().getCurso().getSigla());
-                row.createCell(3).setCellValue(s.getFuncionario().getCidade().getDescricao());
-                row.createCell(4).setCellValue((Calculo.calculoHorasSemestre(s.getDisciplinas()) / 20) * 4.5);
-                row.createCell(5).setCellValue(s.getValHoraAula());
-                if (s.getTipoRegime().equals("Mensalista/Horista")) {
-                    double valorHorista = ((((Calculo.calculoHorasSemestre(s.getDisciplinas(), s.getHorasMensalista()) / 20) * 4.5)) * s.getValHoraAula());
-                    row.createCell(6).setCellValue(valorHorista);
-                    double valorMensalista = (Calculo.calculoSalarioMensalMensalista(s.getDisciplinas(), s.getHorasMensalista(),
-                            s.getValHoraAula()));
-                    row.createCell(7).setCellValue(valorMensalista);
-                    row.createCell(8).setCellValue(valorHorista / 6);
-                    row.createCell(9).setCellValue(Calculo.calculoGratificacaoHorista(s.getPorcentGratifica(), valorHorista + valorMensalista));
-                    row.createCell(10).setCellValue(s.getValAjudaCusto());
-                    double total = Calculo.calculoMensalistaHorista(s.getDisciplinas(), s.getHorasMensalista(), s.getValHoraAula(),
-                            s.getValAjudaCusto(), s.getPorcentGratifica());
-                    row.createCell(11).setCellValue(total);
-                    valorGeral += total;
-                } else {
-                    double valorMensalHorista = ((Calculo.calculoHorasSemestre(s.getDisciplinas()) / 20) * 4.5) * s.getValHoraAula();
-                    row.createCell(6).setCellValue(valorMensalHorista);
-                    row.createCell(7).setCellValue("0");
-                    double umSexto = valorMensalHorista / 6;
-                    row.createCell(8).setCellValue(umSexto);
-                    double gratificacao = Calculo.calculoGratificacaoHorista(s.getPorcentGratifica(), valorMensalHorista);
-                    row.createCell(9).setCellValue(Calculo.calculoGratificacaoHorista(s.getPorcentGratifica(), valorMensalHorista));
-                    row.createCell(10).setCellValue(s.getValAjudaCusto());
-//                    double total = Calculo.calculoHorista(s.getDisciplinas(), s.getValHoraAula(),
+//                row.createCell(0).setCellValue(s.getFuncionario().getNome());
+//                row.createCell(1).setCellValue(s.getFuncionario().getTitulacao().getDescricao());
+//                row.createCell(2).setCellValue(s.getDisciplinas().get(0).getDisciplina().getSemestre().getCurso().getSigla());
+//                row.createCell(3).setCellValue(s.getFuncionario().getCidade().getDescricao());
+//                row.createCell(4).setCellValue((Calculo.calculoHorasSemestre(s.getDisciplinas()) / 20) * 4.5);
+//                row.createCell(5).setCellValue(s.getValHoraAula());
+//                if (s.getTipoRegime().equals("Mensalista/Horista")) {
+//                    double valorHorista = ((((Calculo.calculoHorasSemestre(s.getDisciplinas(), s.getHorasMensalista()) / 20) * 4.5)) * s.getValHoraAula());
+//                    row.createCell(6).setCellValue(valorHorista);
+//                    double valorMensalista = (Calculo.calculoSalarioMensalMensalista(s.getDisciplinas(), s.getHorasMensalista(),
+//                            s.getValHoraAula()));
+//                    row.createCell(7).setCellValue(valorMensalista);
+//                    row.createCell(8).setCellValue(valorHorista / 6);
+//                    row.createCell(9).setCellValue(Calculo.calculoGratificacaoHorista(s.getPorcentGratifica(), valorHorista + valorMensalista));
+//                    row.createCell(10).setCellValue(s.getValAjudaCusto());
+//                    double total = Calculo.calculoMensalistaHorista(s.getDisciplinas(), s.getHorasMensalista(), s.getValHoraAula(),
 //                            s.getValAjudaCusto(), s.getPorcentGratifica());
 //                    row.createCell(11).setCellValue(total);
 //                    valorGeral += total;
-                }
+//                } else {
+//                    double valorMensalHorista = ((Calculo.calculoHorasSemestre(s.getDisciplinas()) / 20) * 4.5) * s.getValHoraAula();
+//                    row.createCell(6).setCellValue(valorMensalHorista);
+//                    row.createCell(7).setCellValue("0");
+//                    double umSexto = valorMensalHorista / 6;
+//                    row.createCell(8).setCellValue(umSexto);
+//                    double gratificacao = Calculo.calculoGratificacaoHorista(s.getPorcentGratifica(), valorMensalHorista);
+//                    row.createCell(9).setCellValue(Calculo.calculoGratificacaoHorista(s.getPorcentGratifica(), valorMensalHorista));
+//                    row.createCell(10).setCellValue(s.getValAjudaCusto());
+////                    double total = Calculo.calculoHorista(s.getDisciplinas(), s.getValHoraAula(),
+////                            s.getValAjudaCusto(), s.getPorcentGratifica());
+////                    row.createCell(11).setCellValue(total);
+////                    valorGeral += total;
+//                }
 
 //                row.createCell(12).setCellValue("adiantamentos");
 //                row.createCell(13).setCellValue("desconto");
