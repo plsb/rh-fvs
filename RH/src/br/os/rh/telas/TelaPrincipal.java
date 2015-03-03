@@ -23,6 +23,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         permissaoAdm();
         permissaoRH();
         permissaoCoordenador();
+        permissaoSecretaria();
         setTitle("OSRH");
         preencheLabel();
     }
@@ -35,6 +36,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
         
     }
+    
+    private void permissaoSecretaria(){
+        if (Ativo.getUsuario().getTipo().equals("Secretária Professores")) {
+            mCadastro.setVisible(false);
+            mRelatorios.setVisible(false);
+            mmPontoProfessores.setVisible(true);
+        }
+        
+    }
+    
     private void preencheLabel(){
        String str = "Usuário: "+Ativo.getUsuario().getNome()+
                " | Tipo: "+Ativo.getUsuario().getTipo();
@@ -56,6 +67,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         mmCurso.setVisible(false);
         mmLotacao.setVisible(false);
         mmSemestre.setVisible(false);
+        mmPontoProfessores.setVisible(false);
     }
 
     private void permissaoAdm() {
@@ -106,6 +118,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         mMovimentacao = new javax.swing.JMenu();
         mmLotacao = new javax.swing.JMenuItem();
         mmSalario = new javax.swing.JMenuItem();
+        mmPontoProfessores = new javax.swing.JMenuItem();
         mRelatorios = new javax.swing.JMenu();
         mmRelProfLotacao = new javax.swing.JMenuItem();
         mmRelPlanilhaProfessores = new javax.swing.JMenuItem();
@@ -200,6 +213,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         mMovimentacao.add(mmSalario);
+
+        mmPontoProfessores.setText("Ponto Professores");
+        mmPontoProfessores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mmPontoProfessoresActionPerformed(evt);
+            }
+        });
+        mMovimentacao.add(mmPontoProfessores);
 
         jMenuBar1.add(mMovimentacao);
 
@@ -305,6 +326,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
         tl.setVisible(true);
     }//GEN-LAST:event_mmLotacaoActionPerformed
 
+    private void mmPontoProfessoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmPontoProfessoresActionPerformed
+        // TODO add your handling code here:
+        TelaMarcarPonto tmp = new TelaMarcarPonto();
+        tmp.setVisible(true);
+    }//GEN-LAST:event_mmPontoProfessoresActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -354,6 +381,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mmHorarios;
     private javax.swing.JMenuItem mmLotacao;
     private javax.swing.JMenuItem mmPeriodo;
+    private javax.swing.JMenuItem mmPontoProfessores;
     private javax.swing.JMenuItem mmRelPlanilhaProfessores;
     private javax.swing.JMenuItem mmRelProfLotacao;
     private javax.swing.JMenuItem mmSalario;
