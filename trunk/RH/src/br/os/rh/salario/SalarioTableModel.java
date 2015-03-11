@@ -21,7 +21,7 @@ import javax.swing.table.AbstractTableModel;
 
 public class SalarioTableModel extends AbstractTableModel {
 
-    private String[] nomeColunas = {"Código", "Funcionario", "Período"};
+    private String[] nomeColunas = {"Código", "Funcionario", "Período", "É Professor?"};
     private List<Salario> salarios;
 
     /**
@@ -74,6 +74,8 @@ public class SalarioTableModel extends AbstractTableModel {
                 return func.getFuncionario().getNome();
             case 2:
                 return func.getPeriodoTexto();
+            case 3:
+                return func.getFuncionario().isProfessoString();
            
         }
         return null;
@@ -94,6 +96,8 @@ public class SalarioTableModel extends AbstractTableModel {
                 return nomeColunas[1];
             case 2:
                 return nomeColunas[2];
+            case 3:
+                return nomeColunas[3];
             
         }
         return null;
