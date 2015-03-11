@@ -74,13 +74,14 @@ public class FuncionarioDAO extends GenericDAO<Funcionario>{
         return funcionario;
     }
     
-    public List<Funcionario> listarAtivo() {
+    public List<Funcionario> listarProfessorAtivo() {
         List<Funcionario> lista = null;
         try {
             this.setSessao(HibernateUtil.getSessionFactory().openSession());
             setTransacao(getSessao().beginTransaction());
             lista = this.getSessao().createCriteria(Funcionario.class).
-                    add(Restrictions.eq("ativo", true)).list();
+                    add(Restrictions.eq("ativo", true)).
+                    add(Restrictions.eq("professor", true)).list();
             //sessao.close();
         } catch (Throwable e) {
             if (getTransacao().isActive()) {

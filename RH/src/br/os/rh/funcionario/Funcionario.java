@@ -52,6 +52,8 @@ public class Funcionario {
     private boolean professor;
     
     private int codigoPonto;
+    
+    private String caminhoFoto;
 
     /**
      * @return the id
@@ -195,7 +197,7 @@ public class Funcionario {
     }
 
     public String isProfessoString() {
-        if(ativo==true){
+        if(professor==true){
             return "Sim";
         } 
         return "Não";
@@ -271,7 +273,12 @@ public class Funcionario {
         return true;
     }
 
-    
-    
-    
+    public String getCaminhoFoto() {
+        return caminhoFoto;
+    }
+
+    public void setCaminhoFoto(String caminhoFoto) {
+        this.caminhoFoto = caminhoFoto;
+    }
+
 }

@@ -33,9 +33,6 @@ public class Salario implements Comparable<Salario>{
     private int id;
 
     @Column(length = 45)
-    private double salario;
-
-    @Column(length = 45)
     private double porcentGratifica;
 
     @Column(length = 45)
@@ -77,20 +74,6 @@ public class Salario implements Comparable<Salario>{
      */
     public void setId(int id) {
         this.id = id;
-    }
-
-    /**
-     * @return the salario
-     */
-    public double getSalario() {
-        return salario;
-    }
-
-    /**
-     * @param salario the salario to set
-     */
-    public void setSalario(double salario) {
-        this.salario = salario;
     }
 
     /**
@@ -264,7 +247,7 @@ public class Salario implements Comparable<Salario>{
     public int hashCode() {
         int hash = 7;
         hash = 59 * hash + this.id;
-        hash = 59 * hash + (int) (Double.doubleToLongBits(this.salario) ^ (Double.doubleToLongBits(this.salario) >>> 32));
+        
         hash = 59 * hash + (int) (Double.doubleToLongBits(this.porcentGratifica) ^ (Double.doubleToLongBits(this.porcentGratifica) >>> 32));
         hash = 59 * hash + (int) (Double.doubleToLongBits(this.valAjudaCusto) ^ (Double.doubleToLongBits(this.valAjudaCusto) >>> 32));
         hash = 59 * hash + (int) (Double.doubleToLongBits(this.salarioBase) ^ (Double.doubleToLongBits(this.salarioBase) >>> 32));
@@ -291,9 +274,7 @@ public class Salario implements Comparable<Salario>{
         if (this.id != other.id) {
             return false;
         }
-        if (Double.doubleToLongBits(this.salario) != Double.doubleToLongBits(other.salario)) {
-            return false;
-        }
+       
         if (Double.doubleToLongBits(this.porcentGratifica) != Double.doubleToLongBits(other.porcentGratifica)) {
             return false;
         }

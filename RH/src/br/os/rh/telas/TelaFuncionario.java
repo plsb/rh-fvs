@@ -8,28 +8,31 @@ package br.os.rh.telas;
 import br.os.rh.cidade.Cidade;
 import br.os.rh.cidade.CidadeDAO;
 import br.os.rh.cidade.CidadeTableModel;
-import br.os.rh.curso.Curso;
-import br.os.rh.curso.CursoDAO;
-import br.os.rh.curso.CursoTableModel;
-import br.os.rh.disciplina.Disciplina;
-import br.os.rh.disciplina.DisciplinaDAO;
-import br.os.rh.disciplina.DisciplinaTableModel;
-import br.os.rh.estado.Estado;
-import br.os.rh.estado.EstadoDAO;
-import br.os.rh.estado.EstadoTableModel;
 import br.os.rh.funcionario.Funcionario;
 import br.os.rh.funcionario.FuncionarioDAO;
 import br.os.rh.funcionario.FuncionarioTableModel;
-import br.os.rh.semestre.Semestre;
-import br.os.rh.semestre.SemestreDAO;
-import br.os.rh.semestre.SemestreTableModel;
 import br.os.rh.titulacao.Titulacao;
 import br.os.rh.titulacao.TitulacaoDAO;
 import br.os.rh.titulacao.TitulacaoTableModel;
 import br.os.rh.util.OnlyNumberField;
 import br.os.rh.util.Util;
+import java.awt.Image;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -38,6 +41,7 @@ import javax.swing.JOptionPane;
 public class TelaFuncionario extends javax.swing.JDialog {
 
     private Funcionario funcionario;
+    private String caminhoFoto;
 
     /**
      * Creates new form TelaDisciplina
@@ -89,6 +93,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
         chbAtivo = new javax.swing.JCheckBox();
         tfCodMarcarPonto = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
+        lblFoto = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -107,7 +112,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
                 tfNomeActionPerformed(evt);
             }
         });
-        jPanel5.add(tfNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 44, 463, -1));
+        jPanel5.add(tfNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 44, 340, -1));
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/novo_1.png"))); // NOI18N
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -183,7 +188,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
                 tfEnderecoActionPerformed(evt);
             }
         });
-        jPanel5.add(tfEndereco, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 91, 463, -1));
+        jPanel5.add(tfEndereco, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 91, 340, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel4.setText("Endereço:*");
@@ -245,7 +250,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
                 chbProfessorActionPerformed(evt);
             }
         });
-        jPanel5.add(chbProfessor, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 10, -1, -1));
+        jPanel5.add(chbProfessor, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 10, -1, -1));
 
         chbAtivo.setBackground(new java.awt.Color(255, 255, 255));
         chbAtivo.setText("Ativo");
@@ -254,12 +259,24 @@ public class TelaFuncionario extends javax.swing.JDialog {
                 chbAtivoActionPerformed(evt);
             }
         });
-        jPanel5.add(chbAtivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, -1, -1));
+        jPanel5.add(chbAtivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 10, -1, -1));
         jPanel5.add(tfCodMarcarPonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, 190, -1));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel10.setText("Cód. Marcar Ponto:*");
         jPanel5.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 220, -1, -1));
+
+        lblFoto.setBackground(new java.awt.Color(51, 51, 51));
+        lblFoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFoto.setText("* Foto");
+        lblFoto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblFoto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblFoto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblFotoMouseClicked(evt);
+            }
+        });
+        jPanel5.add(lblFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 10, 90, 100));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("CADASTRO DE FUNCIONÁRIO");
@@ -316,7 +333,8 @@ public class TelaFuncionario extends javax.swing.JDialog {
         chbProfessor.setSelected(true);
         chbAtivo.setSelected(true);
         tfCodMarcarPonto.setText("");
-
+        caminhoFoto = "";
+        lblFoto.setIcon(null);
     }
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         limpaCampos();
@@ -324,7 +342,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (Util.chkVazio(tfBairro.getText(), tfTitulacao.getText(), tfNome.getText(),
-                tfCidade.getText(), tfEndereco.getText(), tfCodMarcarPonto.getText())) {
+                tfCidade.getText(), tfEndereco.getText(), tfCodMarcarPonto.getText(), caminhoFoto)) {
 
             funcionario.setNome(tfNome.getText());
             funcionario.setBairro(tfBairro.getText());
@@ -335,6 +353,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
             funcionario.setAtivo(chbAtivo.isSelected());
             funcionario.setProfessor(chbProfessor.isSelected());
             funcionario.setCodigoPonto(Integer.parseInt(tfCodMarcarPonto.getText()));
+            funcionario.setCaminhoFoto(caminhoFoto);
             if (dao.salvar(funcionario)) {
 
                 limpaCampos();
@@ -376,6 +395,11 @@ public class TelaFuncionario extends javax.swing.JDialog {
             chbAtivo.setSelected(funcionario.isAtivo());
             tfCodMarcarPonto.setText(String.valueOf(funcionario.getCodigoPonto()));
 
+            if (funcionario.getCaminhoFoto() != null) {
+                if (!funcionario.getCaminhoFoto().equals("")) {
+                    carregarFoto(funcionario.getCaminhoFoto());
+                }
+            }
             btRemover.setEnabled(true);
         }
 
@@ -445,6 +469,53 @@ public class TelaFuncionario extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_chbAtivoActionPerformed
 
+    private void lblFotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFotoMouseClicked
+        // TODO add your handling code here:
+
+        JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileNameExtensionFilter("JPG, GIF, PNG E BMP", "jpg", "gif", "png", "bmp"));
+        int res = fc.showOpenDialog(null);
+
+        if (res == JFileChooser.APPROVE_OPTION) {
+            File arquivo = fc.getSelectedFile();
+
+            caminhoFoto = arquivo.getPath();
+            try {
+                moveFile(caminhoFoto, "C:\\Users\\'Pedro\\Documents\\NetBeansProjects\\rh-fvs\\RH\\fotos");
+            } catch (IOException ex) {
+                Logger.getLogger(TelaFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            carregarFoto(caminhoFoto);
+        } else {
+            System.out.println("Você não selecionou nenhum arquivo.");
+        }
+
+    }//GEN-LAST:event_lblFotoMouseClicked
+
+    public static void moveFile(String from, String to) throws FileNotFoundException, IOException {
+
+        File source = new File(from);
+        File destination = new File(to);
+
+        FileChannel sourceChannel = null;
+        FileChannel destinationChannel = null;
+
+        try {
+            sourceChannel = new FileInputStream(source).getChannel();
+            destinationChannel = new FileOutputStream(destination).getChannel();
+            sourceChannel.transferTo(0, sourceChannel.size(),
+                    destinationChannel);
+        } finally {
+            if (sourceChannel != null && sourceChannel.isOpen()) {
+                sourceChannel.close();
+            }
+            if (destinationChannel != null && destinationChannel.isOpen()) {
+                destinationChannel.close();
+            }
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -503,6 +574,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JLabel lblFoto;
     private javax.swing.JTextField tfBairro;
     private javax.swing.JTextField tfCidade;
     private javax.swing.JTextField tfCodMarcarPonto;
@@ -512,4 +584,13 @@ public class TelaFuncionario extends javax.swing.JDialog {
     private javax.swing.JFormattedTextField tfTelefone;
     private javax.swing.JTextField tfTitulacao;
     // End of variables declaration//GEN-END:variables
+
+    private void carregarFoto(String path) {
+        caminhoFoto = path;
+
+        ImageIcon imagem = new ImageIcon(caminhoFoto);
+
+        Image img = imagem.getImage().getScaledInstance(lblFoto.getWidth() + 2, lblFoto.getHeight() + 2, Image.SCALE_DEFAULT);
+        lblFoto.setIcon(new ImageIcon(img));
+    }
 }

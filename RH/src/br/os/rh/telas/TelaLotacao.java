@@ -13,19 +13,21 @@ import br.os.rh.funcionario.FuncionarioTableModel;
 import br.os.rh.lotacao.Lotacao;
 import br.os.rh.lotacao.LotacaoDAO;
 import br.os.rh.lotacao.LotacaoTableModel;
-import br.os.rh.salario.Salario;
-import br.os.rh.salario.SalarioDAO;
 import br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorario;
 import br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorarioDAO;
 import br.os.rh.lotacaodiscplinas.LotacaoDisciplina;
 import br.os.rh.lotacaodiscplinas.LotacaoDisciplinaDAO;
 import br.os.rh.lotacaodiscplinas.LotacaoDisciplinaTableModel;
+import br.os.rh.salario.Salario;
+import br.os.rh.salario.SalarioDAO;
 import br.os.rh.util.Ativo;
 import groovy.lang.Closure;
 import groovy.swing.SwingBuilder;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -78,7 +80,6 @@ public class TelaLotacao extends javax.swing.JDialog {
         jButton4 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbDisciplinas = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
@@ -87,7 +88,9 @@ public class TelaLotacao extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         ltotal = new javax.swing.JLabel();
         lSemanais1 = new javax.swing.JLabel();
+        lblFoto = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -98,7 +101,7 @@ public class TelaLotacao extends javax.swing.JDialog {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel1.setText("Nome:*");
-        jPanel5.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+        jPanel5.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, -1));
 
         jButton7.setText("...");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -106,7 +109,7 @@ public class TelaLotacao extends javax.swing.JDialog {
                 jButton7ActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 30, 35, -1));
+        jPanel5.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 50, 35, -1));
 
         tfFuncionario.setEnabled(false);
         tfFuncionario.addActionListener(new java.awt.event.ActionListener() {
@@ -114,7 +117,7 @@ public class TelaLotacao extends javax.swing.JDialog {
                 tfFuncionarioActionPerformed(evt);
             }
         });
-        jPanel5.add(tfFuncionario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 320, -1));
+        jPanel5.add(tfFuncionario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 320, -1));
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/novo_1.png"))); // NOI18N
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -148,10 +151,6 @@ public class TelaLotacao extends javax.swing.JDialog {
         });
         jPanel5.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 320, -1, -1));
 
-        jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel2.setText("jLabel2");
-        jPanel5.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 30, -1, -1));
-
         tbDisciplinas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -170,11 +169,11 @@ public class TelaLotacao extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(tbDisciplinas);
 
-        jPanel5.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 590, 230));
+        jPanel5.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 590, 190));
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel3.setText("Disciplinas:*");
-        jPanel5.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
+        jPanel5.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
 
         jButton2.setText("+");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -182,7 +181,7 @@ public class TelaLotacao extends javax.swing.JDialog {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 80, 40, -1));
+        jPanel5.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 120, 40, -1));
 
         jButton6.setText("-");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -190,7 +189,7 @@ public class TelaLotacao extends javax.swing.JDialog {
                 jButton6ActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 120, 40, -1));
+        jPanel5.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 150, 40, -1));
 
         jLabel4.setText("** CLique duas vezes no registro para obter informações extras");
         jPanel5.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, -1, -1));
@@ -201,8 +200,24 @@ public class TelaLotacao extends javax.swing.JDialog {
         lSemanais1.setText("Semanal:");
         jPanel5.add(lSemanais1, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 290, -1, -1));
 
+        lblFoto.setBackground(new java.awt.Color(51, 51, 51));
+        lblFoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFoto.setText("* Foto");
+        lblFoto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblFoto.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblFoto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblFotoMouseClicked(evt);
+            }
+        });
+        jPanel5.add(lblFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 10, 90, 100));
+
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("LOTAÇÃO");
+
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel2.setText("jLabel2");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -211,17 +226,20 @@ public class TelaLotacao extends javax.swing.JDialog {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(9, 9, 9)
-                .addComponent(jLabel5)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -243,7 +261,7 @@ public class TelaLotacao extends javax.swing.JDialog {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
         FuncionarioDAO dao = new FuncionarioDAO();
-        List<Funcionario> lista = dao.listarAtivo();
+        List<Funcionario> lista = dao.listarProfessorAtivo();
         FuncionarioTableModel stm = new FuncionarioTableModel(lista);
         Object o = TelaPesquisa.exibeTela(stm, "Funcionário");
         Funcionario f;
@@ -260,9 +278,11 @@ public class TelaLotacao extends javax.swing.JDialog {
                 disciplinas = new ArrayList(new HashSet(sDAO.pesquisaLotacao(lotacao)));
                 preencheTabelaDisciplinas();
                 calculaHoras();
+                carregarFoto(lotacao.getProfessor().getCaminhoFoto());
             } else if (f.isAtivo()) {
                 lotacao.setProfessor(f);
                 tfFuncionario.setText(f.getNome());
+                carregarFoto(f.getCaminhoFoto());
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Funcionário Não está Ativo!");
             }
@@ -270,6 +290,15 @@ public class TelaLotacao extends javax.swing.JDialog {
 
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void carregarFoto(String path) {
+        String caminhoFoto = path;
+
+        ImageIcon imagem = new ImageIcon(caminhoFoto);
+
+        Image img = imagem.getImage().getScaledInstance(lblFoto.getWidth() + 2, lblFoto.getHeight() + 2, Image.SCALE_DEFAULT);
+        lblFoto.setIcon(new ImageIcon(img));
+    }
+    
     private void tfFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfFuncionarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfFuncionarioActionPerformed
@@ -298,7 +327,8 @@ public class TelaLotacao extends javax.swing.JDialog {
         disciplinas = new ArrayList(new HashSet(sDAO.pesquisaLotacao(lotacao)));
         preencheTabelaDisciplinas();
         tfFuncionario.setText(lotacao.getProfessor().getNome());
-
+        
+        carregarFoto(lotacao.getProfessor().getCaminhoFoto());
         calculaHoras();
 
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -463,6 +493,10 @@ public class TelaLotacao extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_tbDisciplinasMouseClicked
 
+    private void lblFotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFotoMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblFotoMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -515,6 +549,7 @@ public class TelaLotacao extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lSemanais1;
+    private javax.swing.JLabel lblFoto;
     private javax.swing.JLabel ltotal;
     private javax.swing.JTable tbDisciplinas;
     private javax.swing.JTextField tfFuncionario;
@@ -528,6 +563,7 @@ public class TelaLotacao extends javax.swing.JDialog {
         preencheTabelaDisciplinas();
         ltotal.setText("Total: ");
         lSemanais1.setText("Semanal: ");
+        carregarFoto("");
 
     }
 
