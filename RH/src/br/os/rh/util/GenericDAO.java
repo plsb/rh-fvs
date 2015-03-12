@@ -41,8 +41,8 @@ public abstract class GenericDAO<T> {
 
            
         } catch (HibernateException e) {
-           // JOptionPane.showMessageDialog(null, "Não foi possível inserir " + entity.getClass()
-           //         + ". Erro: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Não foi possível inserir " + entity.getClass()
+                    + ". Erro: " + e.getMessage());
             return false;
         } finally {
             getSessao().close();
@@ -59,8 +59,8 @@ public abstract class GenericDAO<T> {
             this.getTransacao().commit();
             
         } catch (HibernateException e) {
-          //  JOptionPane.showMessageDialog(null, "Não foi possível atualizar " + entity.getClass()
-           //         + ". Erro: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Não foi possível atualizar " + entity.getClass()
+                    + ". Erro: " + e.getMessage());
             return false;
         } finally {
             getSessao().close();

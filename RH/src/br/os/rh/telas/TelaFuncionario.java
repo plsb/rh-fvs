@@ -42,6 +42,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
 
     private Funcionario funcionario;
     private String caminhoFoto;
+//     private byte[] bArquivoFoto;
 
     /**
      * Creates new form TelaDisciplina
@@ -333,7 +334,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
         chbProfessor.setSelected(true);
         chbAtivo.setSelected(true);
         tfCodMarcarPonto.setText("");
-        caminhoFoto = "";
+//        caminhoFoto = "";
         lblFoto.setIcon(null);
     }
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -342,7 +343,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (Util.chkVazio(tfBairro.getText(), tfTitulacao.getText(), tfNome.getText(),
-                tfCidade.getText(), tfEndereco.getText(), tfCodMarcarPonto.getText(), caminhoFoto)) {
+                tfCidade.getText(), tfEndereco.getText(), tfCodMarcarPonto.getText()/*, caminhoFoto*/)) {
 
             funcionario.setNome(tfNome.getText());
             funcionario.setBairro(tfBairro.getText());
@@ -471,26 +472,34 @@ public class TelaFuncionario extends javax.swing.JDialog {
 
     private void lblFotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFotoMouseClicked
         // TODO add your handling code here:
+        if (!tfNome.getText().equals("")) {
+            JFileChooser fc = new JFileChooser();
+            fc.setFileFilter(new FileNameExtensionFilter("JPG, GIF, PNG E BMP", "jpg", "gif", "png", "bmp"));
+            int res = fc.showOpenDialog(null);
 
-        JFileChooser fc = new JFileChooser();
-        fc.setFileFilter(new FileNameExtensionFilter("JPG, GIF, PNG E BMP", "jpg", "gif", "png", "bmp"));
-        int res = fc.showOpenDialog(null);
+            if (res == JFileChooser.APPROVE_OPTION) {
+                File arquivo = fc.getSelectedFile();
+                caminhoFoto = arquivo.getPath();
+//                bArquivoFoto = new byte[(int) arquivo.length()]; //arquivo.getPath();
+                try {
+                    String destinoFoto = "\\\\192.168.3.38\\Users\\Public\\fotosRH\\"+tfNome.getText()+".png";
+                    moveFile(caminhoFoto, destinoFoto);
+                    caminhoFoto = destinoFoto;
+//                    FileInputStream fileInputStreamCirculo = new FileInputStream(arquivo);
+//                    fileInputStreamCirculo.read(bArquivoFoto);
+//                    fileInputStreamCirculo.close();
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                    Logger.getLogger(TelaFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
-        if (res == JFileChooser.APPROVE_OPTION) {
-            File arquivo = fc.getSelectedFile();
-
-            caminhoFoto = arquivo.getPath();
-            try {
-                moveFile(caminhoFoto, "C:\\Users\\'Pedro\\Documents\\NetBeansProjects\\rh-fvs\\RH\\fotos");
-            } catch (IOException ex) {
-                Logger.getLogger(TelaFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+                carregarFoto(caminhoFoto);
+            } else {
+                JOptionPane.showMessageDialog(null, "Você não selecionou nenhum arquivo.");
             }
-
-            carregarFoto(caminhoFoto);
         } else {
-            System.out.println("Você não selecionou nenhum arquivo.");
+            JOptionPane.showMessageDialog(null, "Informe o nome do funcionário.");
         }
-
     }//GEN-LAST:event_lblFotoMouseClicked
 
     public static void moveFile(String from, String to) throws FileNotFoundException, IOException {
