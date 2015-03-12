@@ -293,12 +293,14 @@ public class TelaLotacao extends javax.swing.JDialog {
     private void carregarFoto(String path) {
         String caminhoFoto = path;
 
-        ImageIcon imagem = new ImageIcon(caminhoFoto);
+        if (!caminhoFoto.equals("")) {
+            ImageIcon imagem = new ImageIcon(caminhoFoto);
 
-        Image img = imagem.getImage().getScaledInstance(lblFoto.getWidth() + 2, lblFoto.getHeight() + 2, Image.SCALE_DEFAULT);
-        lblFoto.setIcon(new ImageIcon(img));
+            Image img = imagem.getImage().getScaledInstance(lblFoto.getWidth() + 2, lblFoto.getHeight() + 2, Image.SCALE_DEFAULT);
+            lblFoto.setIcon(new ImageIcon(img));
+        }
     }
-    
+
     private void tfFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfFuncionarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfFuncionarioActionPerformed
@@ -327,8 +329,8 @@ public class TelaLotacao extends javax.swing.JDialog {
         disciplinas = new ArrayList(new HashSet(sDAO.pesquisaLotacao(lotacao)));
         preencheTabelaDisciplinas();
         tfFuncionario.setText(lotacao.getProfessor().getNome());
-        
-        carregarFoto(lotacao.getProfessor().getCaminhoFoto());
+
+//        carregarFoto(lotacao.getProfessor().getCaminhoFoto());
         calculaHoras();
 
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -415,8 +417,8 @@ public class TelaLotacao extends javax.swing.JDialog {
                 if (verificaSePodeExcluir(sd)) {
 
                     if (JOptionPane.showConfirmDialog(rootPane, "Deseja excluir a disciplina: "
-                            +sd.getDisciplina().getDescricao(), "Confirmação", JOptionPane.YES_NO_OPTION, 
-                            JOptionPane.INFORMATION_MESSAGE)==JOptionPane.YES_OPTION) {
+                            + sd.getDisciplina().getDescricao(), "Confirmação", JOptionPane.YES_NO_OPTION,
+                            JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
 
                         LotacaoDisciplinaHorarioDAO ldhDAO = new LotacaoDisciplinaHorarioDAO();
                         //remove os horários
@@ -564,6 +566,7 @@ public class TelaLotacao extends javax.swing.JDialog {
         ltotal.setText("Total: ");
         lSemanais1.setText("Semanal: ");
         carregarFoto("");
+        lblFoto.setIcon(null);
 
     }
 
@@ -584,7 +587,7 @@ public class TelaLotacao extends javax.swing.JDialog {
 
     private void removeDisciplina(LotacaoDisciplina sd) {
         for (int i = 0; i < disciplinas.size(); i++) {
-            if(disciplinas.get(i).getId()==sd.getId()){
+            if (disciplinas.get(i).getId() == sd.getId()) {
                 disciplinas.remove(i);
                 return;
             }

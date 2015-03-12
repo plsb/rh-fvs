@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.os.rh.funcionario;
 
 import br.os.rh.cidade.Cidade;
@@ -14,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.swing.ImageIcon;
 import sun.security.util.Length;
 
 /**
@@ -22,37 +22,38 @@ import sun.security.util.Length;
  */
 @Entity
 public class Funcionario {
+
     @Id
     @GeneratedValue
     private int id;
-    
-    @Column(length = 100,nullable = false)
+
+    @Column(length = 100, nullable = false)
     private String nome;
-    
-    @Column(length = 100,nullable=false)
+
+    @Column(length = 100, nullable = false)
     private String endereco;
-    
-    @Column(length = 45,nullable = false)
+
+    @Column(length = 45, nullable = false)
     private String bairro;
-    
+
     @Column(length = 15)
     private String telefone;
-    
+
     @Column(length = 100)
     private String email;
-    
+
     @ManyToOne
     private Cidade cidade;
-    
+
     @ManyToOne
     private Titulacao titulacao;
-    
+
     private boolean ativo;
-    
+
     private boolean professor;
-    
+
     private int codigoPonto;
-    
+
     private String caminhoFoto;
 
     /**
@@ -171,13 +172,13 @@ public class Funcionario {
      * @return the ativo
      */
     public String isAtivoString() {
-        if(ativo==true){
+        if (ativo == true) {
             return "Sim";
-        } 
+        }
         return "Não";
     }
-    
-     public boolean isAtivo() {
+
+    public boolean isAtivo() {
         return ativo;
     }
 
@@ -197,9 +198,9 @@ public class Funcionario {
     }
 
     public String isProfessoString() {
-        if(professor==true){
+        if (professor == true) {
             return "Sim";
-        } 
+        }
         return "Não";
     }
 
@@ -279,6 +280,17 @@ public class Funcionario {
 
     public void setCaminhoFoto(String caminhoFoto) {
         this.caminhoFoto = caminhoFoto;
+    }
+
+    public ImageIcon getFotoAsImageIcon() {
+
+        ImageIcon fotoEspecie = new ImageIcon();
+
+        if (this.getCaminhoFoto() != null) {
+            fotoEspecie = new ImageIcon(this.getCaminhoFoto());
+        }
+
+        return fotoEspecie;
     }
 
 }
