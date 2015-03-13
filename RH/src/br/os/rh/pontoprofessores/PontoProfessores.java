@@ -8,6 +8,7 @@ package br.os.rh.pontoprofessores;
 
 import br.os.rh.funcionario.Funcionario;
 import br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorario;
+import br.os.rh.periodo.Periodo;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -39,6 +40,9 @@ public class PontoProfessores {
     
     @Temporal(TemporalType.TIME)
     private Date horaSaida;
+    
+    @ManyToOne
+    private Periodo periodo;
 
     public int getId() {
         return id;
@@ -80,14 +84,23 @@ public class PontoProfessores {
         this.horaSaida = horaSaida;
     }
 
+    public Periodo getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(Periodo periodo) {
+        this.periodo = periodo;
+    }
+
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 23 * hash + this.id;
-        hash = 23 * hash + Objects.hashCode(this.professor);
-        hash = 23 * hash + Objects.hashCode(this.data);
-        hash = 23 * hash + Objects.hashCode(this.horaEntrada);
-        hash = 23 * hash + Objects.hashCode(this.horaSaida);
+        hash = 83 * hash + this.id;
+        hash = 83 * hash + Objects.hashCode(this.professor);
+        hash = 83 * hash + Objects.hashCode(this.data);
+        hash = 83 * hash + Objects.hashCode(this.horaEntrada);
+        hash = 83 * hash + Objects.hashCode(this.horaSaida);
+        hash = 83 * hash + Objects.hashCode(this.periodo);
         return hash;
     }
 
@@ -115,7 +128,12 @@ public class PontoProfessores {
         if (!Objects.equals(this.horaSaida, other.horaSaida)) {
             return false;
         }
+        if (!Objects.equals(this.periodo, other.periodo)) {
+            return false;
+        }
         return true;
     }
+
+   
   
 }
