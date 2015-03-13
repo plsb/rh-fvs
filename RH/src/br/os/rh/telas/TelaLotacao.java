@@ -369,7 +369,7 @@ public class TelaLotacao extends javax.swing.JDialog {
             DisciplinaDAO dDAO = new DisciplinaDAO();
             Disciplina d = new Disciplina();
             LotacaoDisciplina sd = new LotacaoDisciplina();
-            sd = TelaSalarioDisciplina.chamaTela(disciplinas);
+            sd = TelaLotacaoDisciplina.chamaTela(disciplinas);
 
             if (sd != null) {
 //                d = sd.getDisciplina();
