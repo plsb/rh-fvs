@@ -264,7 +264,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
         jPanel5.add(tfCodMarcarPonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, 190, -1));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel10.setText("Cód. Marcar Ponto:*");
+        jLabel10.setText("Cód. Marcar Ponto:");
         jPanel5.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 220, -1, -1));
 
         lblFoto.setBackground(new java.awt.Color(51, 51, 51));
@@ -343,23 +343,28 @@ public class TelaFuncionario extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (Util.chkVazio(tfBairro.getText(), tfTitulacao.getText(), tfNome.getText(),
-                tfCidade.getText(), tfEndereco.getText(), tfCodMarcarPonto.getText()/*, caminhoFoto*/)) {
+                tfCidade.getText(), tfEndereco.getText(), caminhoFoto)) {
 
-            funcionario.setNome(tfNome.getText());
-            funcionario.setBairro(tfBairro.getText());
-            funcionario.setEndereco(tfEndereco.getText());
-            funcionario.setEmail(tfEmail.getText());
-            funcionario.setTelefone(tfTelefone.getText().replaceAll("\\D*", ""));
-            FuncionarioDAO dao = new FuncionarioDAO();
-            funcionario.setAtivo(chbAtivo.isSelected());
-            funcionario.setProfessor(chbProfessor.isSelected());
-            funcionario.setCodigoPonto(Integer.parseInt(tfCodMarcarPonto.getText()));
-            funcionario.setCaminhoFoto(caminhoFoto);
-            if (dao.salvar(funcionario)) {
+            if (tfCodMarcarPonto.getText().equals("") && chbProfessor.isSelected()) {
+                JOptionPane.showMessageDialog(rootPane, "Informe o Código do Professor!");
+            } else {
 
-                limpaCampos();
+                funcionario.setNome(tfNome.getText());
+                funcionario.setBairro(tfBairro.getText());
+                funcionario.setEndereco(tfEndereco.getText());
+                funcionario.setEmail(tfEmail.getText());
+                funcionario.setTelefone(tfTelefone.getText().replaceAll("\\D*", ""));
+                FuncionarioDAO dao = new FuncionarioDAO();
+                funcionario.setAtivo(chbAtivo.isSelected());
+                funcionario.setProfessor(chbProfessor.isSelected());
+                funcionario.setCodigoPonto(Integer.parseInt(tfCodMarcarPonto.getText()));
+                funcionario.setCaminhoFoto(caminhoFoto);
+                if (dao.salvar(funcionario)) {
 
-                JOptionPane.showMessageDialog(rootPane, "Cadastro Efetuado");
+                    limpaCampos();
+
+                    JOptionPane.showMessageDialog(rootPane, "Cadastro Efetuado");
+                }
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -482,7 +487,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
                 caminhoFoto = arquivo.getPath();
 //                bArquivoFoto = new byte[(int) arquivo.length()]; //arquivo.getPath();
                 try {
-                    String destinoFoto = "\\\\192.168.3.38\\Users\\Public\\fotosRH\\"+tfNome.getText()+".png";
+                    String destinoFoto = "\\\\192.168.3.38\\Users\\Public\\fotosRH\\" + tfNome.getText() + ".png";
                     moveFile(caminhoFoto, destinoFoto);
                     caminhoFoto = destinoFoto;
 //                    FileInputStream fileInputStreamCirculo = new FileInputStream(arquivo);

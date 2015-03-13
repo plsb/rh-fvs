@@ -32,7 +32,7 @@ import javax.swing.JOptionPane;
  *
  * @author JOABB
  */
-public class TelaSalarioDisciplina extends javax.swing.JDialog {
+public class TelaLotacaoDisciplina extends javax.swing.JDialog {
 
     private static LotacaoDisciplina sd;
     private static LotacaoDisciplinaHorario sdh = new LotacaoDisciplinaHorario();
@@ -42,7 +42,7 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
 
     public static LotacaoDisciplina chamaTela(List<LotacaoDisciplina> sdlist) {
 
-        TelaSalarioDisciplina tsd = new TelaSalarioDisciplina(sdlist);
+        TelaLotacaoDisciplina tsd = new TelaLotacaoDisciplina(sdlist);
         tsd.setVisible(true);
         return sd;
     }
@@ -50,7 +50,7 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
     /**
      * Creates new form TelaCidade
      */
-    public TelaSalarioDisciplina(List<LotacaoDisciplina> sdlist) {
+    public TelaLotacaoDisciplina(List<LotacaoDisciplina> sdlist) {
         initComponents();
         listaSaDi = new ArrayList<>();
         listaSaDi.addAll(sdlist);
@@ -61,7 +61,7 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
         preencheTabela();
     }
 
-    public TelaSalarioDisciplina() {
+    public TelaLotacaoDisciplina() {
         initComponents();
     }
 
@@ -401,20 +401,20 @@ public class TelaSalarioDisciplina extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaSalarioDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaLotacaoDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaSalarioDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaLotacaoDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaSalarioDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaLotacaoDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaSalarioDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaLotacaoDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaSalarioDisciplina().setVisible(true);
+                new TelaLotacaoDisciplina().setVisible(true);
             }
         });
     }

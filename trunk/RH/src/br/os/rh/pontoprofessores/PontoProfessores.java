@@ -30,10 +30,7 @@ public class PontoProfessores {
     
     @ManyToOne
     private Funcionario professor;
-    
-    @ManyToOne
-    private LotacaoDisciplinaHorario horario;
-    
+      
     @Temporal(TemporalType.DATE)
     private Date data;
     
@@ -57,14 +54,6 @@ public class PontoProfessores {
 
     public void setProfessor(Funcionario professor) {
         this.professor = professor;
-    }
-
-    public LotacaoDisciplinaHorario getHorario() {
-        return horario;
-    }
-
-    public void setHorario(LotacaoDisciplinaHorario horario) {
-        this.horario = horario;
     }
 
     public Date getData() {
@@ -96,7 +85,6 @@ public class PontoProfessores {
         int hash = 3;
         hash = 23 * hash + this.id;
         hash = 23 * hash + Objects.hashCode(this.professor);
-        hash = 23 * hash + Objects.hashCode(this.horario);
         hash = 23 * hash + Objects.hashCode(this.data);
         hash = 23 * hash + Objects.hashCode(this.horaEntrada);
         hash = 23 * hash + Objects.hashCode(this.horaSaida);
@@ -116,9 +104,6 @@ public class PontoProfessores {
             return false;
         }
         if (!Objects.equals(this.professor, other.professor)) {
-            return false;
-        }
-        if (!Objects.equals(this.horario, other.horario)) {
             return false;
         }
         if (!Objects.equals(this.data, other.data)) {
