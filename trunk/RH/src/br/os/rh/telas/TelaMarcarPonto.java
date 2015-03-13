@@ -7,6 +7,11 @@ package br.os.rh.telas;
 
 import br.os.rh.funcionario.Funcionario;
 import br.os.rh.funcionario.FuncionarioDAO;
+import br.os.rh.pontoprofessores.PontoProfessores;
+import br.os.rh.pontoprofessores.PontoProfessoresDAO;
+import br.os.rh.util.Ativo;
+import br.os.rh.util.Util;
+import groovy.lang.Closure;
 import groovy.swing.SwingBuilder;
 import java.awt.Image;
 import java.text.SimpleDateFormat;
@@ -20,6 +25,8 @@ import javax.swing.JOptionPane;
  * @author 'Pedro
  */
 public class TelaMarcarPonto extends javax.swing.JDialog {
+    
+    private Funcionario f;
 
     /**
      * Creates new form TelaMarcarPonto
@@ -28,29 +35,30 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         initComponents();
         setModal(true);
         setLocationRelativeTo(null);
-
+        
         lblNome.setText("");
         lblCidade.setText("");
         lblTitulacao.setText("");
-
+        
         Thread t = new Thread(new Runnable() {
-
+            
             @Override
             public void run() {
                 while (true) {
                     String fHora = "HH:mm:ss";
                     SimpleDateFormat sdf = new SimpleDateFormat(fHora);
                     Date hour = new Date();
-
+                    
                     String fData = "dd/MM/yy";
                     SimpleDateFormat sdf2 = new SimpleDateFormat(fData);
                     Date day = new Date();
-
+                    
                     lblHora.setText(getDiaSemana() + ", " + sdf2.format(day) + " | " + sdf.format(hour));
                 }
             }
         });
         t.start();
+        limpaCampos();
     }
 
     /**
@@ -126,6 +134,11 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
 
         btMarcarPonto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/confi.gif"))); // NOI18N
         btMarcarPonto.setText("Marcar");
+        btMarcarPonto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btMarcarPontoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -214,7 +227,7 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
             FuncionarioDAO fDAO = new FuncionarioDAO();
-            Funcionario f = null;
+            
             try {
                 f = fDAO.checkExists("codigoPonto", Integer.parseInt(tfCodigo.getText())).get(0);
             } catch (Exception e) {
@@ -225,7 +238,9 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
                     lblNome.setText(f.getNome());
                     lblCidade.setText(f.getCidade().getDescricao() + " - " + f.getCidade().getEstado().getDescricao());
                     lblTitulacao.setText(f.getTitulacao().getDescricao());
+                    btMarcarPonto.setEnabled(true);
                     btMarcarPonto.requestFocus();
+                    
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Funcionário não está ativo!");
                     tfCodigo.setText("");
@@ -236,16 +251,61 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
                 tfCodigo.setText("");
                 tfCodigo.setFocusable(true);
             }
-
+            
         }
     }//GEN-LAST:event_tfCodigoKeyPressed
 
+    private void btMarcarPontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btMarcarPontoActionPerformed
+        // TODO add your handling code here:
+        String senha = TelaPedeSenha.chamaTela();
+        senha = Util.md5(senha);
+        if (senha.equals(Ativo.getUsuario().getSenha())) {
+            PontoProfessoresDAO pDAo = new PontoProfessoresDAO();
+            PontoProfessores p = pDAo.pesquisaPonto(new Date(), f, Ativo.getPeriodo());
+            if (p == null) {
+                p = new PontoProfessores();
+            } else if (p.getHoraEntrada() != null && p.getHoraSaida() != null) {
+                p = new PontoProfessores();
+            }
+            String texto="";
+            p.setProfessor(f);
+            p.setData(new Date());
+            if (p.getHoraEntrada() == null) {
+                p.setHoraEntrada(new Date());
+                texto += "Entrada de "+f.getNome()+", marcada com sucesso!";
+            } else {
+                p.setHoraSaida(new Date());
+                texto += "Saída de "+f.getNome()+", marcada com sucesso!";
+            }
+            p.setPeriodo(Ativo.getPeriodo());
+            pDAo.salvar(p);
+            JOptionPane.showMessageDialog(null, texto);
+            limpaCampos();
+        } else {
+            JOptionPane.showMessageDialog(null, "Senha Incorreta, Impossível Marcar ponto!");
+            limpaCampos();
+        }
+        
+
+    }//GEN-LAST:event_btMarcarPontoActionPerformed
+    
+    private void limpaCampos() {
+        f = null;
+        btMarcarPonto.setEnabled(false);
+        lblCidade.setText("");
+        lblFoto.setIcon(null);
+        lblNome.setText("");
+        lblTitulacao.setText("");
+        tfCodigo.setText("");
+        tfCodigo.requestFocus();
+    }
+    
     private String getDiaSemana() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         int day = cal.get(Calendar.DAY_OF_WEEK);
         switch (day) {
-
+            
             case 1:
                 return "Domingo";
             case 2:
@@ -260,16 +320,16 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
                 return "Sexta";
             case 7:
                 return "Sábado";
-
+            
         }
         return "";
     }
-
+    
     private void carregarFoto(String path) {
         String caminhoFoto = path;
-
+        
         ImageIcon imagem = new ImageIcon(caminhoFoto);
-
+        
         Image img = imagem.getImage().getScaledInstance(lblFoto.getWidth() + 2, lblFoto.getHeight() + 2, Image.SCALE_DEFAULT);
         lblFoto.setIcon(new ImageIcon(img));
     }

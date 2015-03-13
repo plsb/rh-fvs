@@ -29,6 +29,7 @@
         <mapping class="br.os.rh.horario.Horario"/>
         <mapping class="br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorario"/>
         <mapping class="br.os.rh.lotacao.Lotacao"/>
+        <mapping class="br.os.rh.pontoprofessores.PontoProfessores"/>
                   
     </session-factory>
 </hibernate-configuration>
