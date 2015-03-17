@@ -6,9 +6,9 @@
     <session-factory>
         <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://192.168.3.38/rh</property> <!-- 192.168.3.38 !-->
+        <property name="connection.url">jdbc:mysql://localhost/rh</property> <!-- 192.168.3.38 !-->
         <property name="connection.username">root</property>
-        <property name="connection.password">040908</property>
+        <property name="connection.password">root</property>
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
         <property name="generate_statistics">true</property>

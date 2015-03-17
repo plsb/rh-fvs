@@ -11,7 +11,6 @@ import br.os.rh.util.GenericDAO;
 import br.os.rh.util.HibernateUtil;
 import java.util.Date;
 import java.util.List;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -34,16 +33,31 @@ public class PontoProfessoresDAO extends GenericDAO<PontoProfessores> {
                     add(Restrictions.eq("data", data)).
                     add(Restrictions.eq("professor", f)).
                     add(Restrictions.eq("periodo", p)).
-                    addOrder(Order.desc("horaEntrada"))
+                    addOrder(Order.asc("horaEntrada"))
                     .uniqueResult();
         } catch (Exception e) {
             ponto = (PontoProfessores) getSessao().createCriteria(PontoProfessores.class).
                     add(Restrictions.eq("data", data)).
                     add(Restrictions.eq("professor", f)).
                     add(Restrictions.eq("periodo", p)).
-                    addOrder(Order.desc("horaEntrada"))
+                    addOrder(Order.asc("horaEntrada"))
                     .list().get(0);
         }
+
+        getSessao().close();
+        return ponto;
+    }
+
+    public List<PontoProfessores> pesquisaPonto(Date data, Periodo p) {
+        setSessao(HibernateUtil.getSessionFactory().openSession());
+        setTransacao(getSessao().beginTransaction());
+        List<PontoProfessores> ponto = null;
+
+        ponto = (List<PontoProfessores>) getSessao().createCriteria(PontoProfessores.class).
+                add(Restrictions.eq("data", data)).
+                add(Restrictions.eq("periodo", p)).
+                addOrder(Order.asc("horaEntrada"))
+                .list();
 
         getSessao().close();
         return ponto;

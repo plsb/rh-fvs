@@ -25,8 +25,9 @@ import javax.swing.JOptionPane;
  * @author 'Pedro
  */
 public class TelaMarcarPonto extends javax.swing.JDialog {
-    
+
     private Funcionario f;
+    private String justificativa = "";
 
     /**
      * Creates new form TelaMarcarPonto
@@ -35,24 +36,24 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         initComponents();
         setModal(true);
         setLocationRelativeTo(null);
-        
+
         lblNome.setText("");
         lblCidade.setText("");
         lblTitulacao.setText("");
-        
+
         Thread t = new Thread(new Runnable() {
-            
+
             @Override
             public void run() {
                 while (true) {
                     String fHora = "HH:mm:ss";
                     SimpleDateFormat sdf = new SimpleDateFormat(fHora);
                     Date hour = new Date();
-                    
+
                     String fData = "dd/MM/yy";
                     SimpleDateFormat sdf2 = new SimpleDateFormat(fData);
                     Date day = new Date();
-                    
+
                     lblHora.setText(getDiaSemana() + ", " + sdf2.format(day) + " | " + sdf.format(hour));
                 }
             }
@@ -83,12 +84,24 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         lblNome = new javax.swing.JLabel();
         lblTitulacao = new javax.swing.JLabel();
         btMarcarPonto = new javax.swing.JButton();
+        btJustificativa = new javax.swing.JButton();
+        lblJust = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         lblHora = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -139,6 +152,28 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
                 btMarcarPontoActionPerformed(evt);
             }
         });
+        btMarcarPonto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btMarcarPontoKeyPressed(evt);
+            }
+        });
+
+        btJustificativa.setText("F2 -Justificativa");
+        btJustificativa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btJustificativaActionPerformed(evt);
+            }
+        });
+
+        lblJust.setForeground(new java.awt.Color(255, 0, 0));
+        lblJust.setText("Justificativa Adicioada!");
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/erase-icon.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -147,15 +182,21 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addComponent(btJustificativa)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btMarcarPonto))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btMarcarPonto)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tfCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblJust))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -168,39 +209,40 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btMarcarPonto)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btMarcarPonto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btJustificativa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblJust))
         );
+
+        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 39, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("MARCAR PONTO");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, -1, -1));
 
         lblHora.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblHora.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblHora.setText("jLabel1");
+        lblHora.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jPanel1.add(lblHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(259, 11, 280, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblHora)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(lblHora))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
-        );
+        jMenu1.setText("Opções");
+
+        jMenuItem1.setText("Listar Pontos");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -210,9 +252,7 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 2, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
         );
 
         pack();
@@ -227,7 +267,7 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
             FuncionarioDAO fDAO = new FuncionarioDAO();
-            
+
             try {
                 f = fDAO.checkExists("codigoPonto", Integer.parseInt(tfCodigo.getText())).get(0);
             } catch (Exception e) {
@@ -240,7 +280,7 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
                     lblTitulacao.setText(f.getTitulacao().getDescricao());
                     btMarcarPonto.setEnabled(true);
                     btMarcarPonto.requestFocus();
-                    
+
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Funcionário não está ativo!");
                     tfCodigo.setText("");
@@ -251,7 +291,9 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
                 tfCodigo.setText("");
                 tfCodigo.setFocusable(true);
             }
-            
+
+        } else if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_F2) {
+            btJustificativaActionPerformed(null);
         }
     }//GEN-LAST:event_tfCodigoKeyPressed
 
@@ -267,15 +309,17 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
             } else if (p.getHoraEntrada() != null && p.getHoraSaida() != null) {
                 p = new PontoProfessores();
             }
-            String texto="";
+            String texto = "";
             p.setProfessor(f);
             p.setData(new Date());
             if (p.getHoraEntrada() == null) {
                 p.setHoraEntrada(new Date());
-                texto += "Entrada de "+f.getNome()+", marcada com sucesso!";
+                p.setJustEntrada(justificativa);
+                texto += "Entrada de " + f.getNome() + ", marcada com sucesso!";
             } else {
                 p.setHoraSaida(new Date());
-                texto += "Saída de "+f.getNome()+", marcada com sucesso!";
+                p.setJustSaida(justificativa);
+                texto += "Saída de " + f.getNome() + ", marcada com sucesso!";
             }
             p.setPeriodo(Ativo.getPeriodo());
             pDAo.salvar(p);
@@ -285,10 +329,43 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Senha Incorreta, Impossível Marcar ponto!");
             limpaCampos();
         }
-        
+
 
     }//GEN-LAST:event_btMarcarPontoActionPerformed
-    
+
+    private void btJustificativaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btJustificativaActionPerformed
+        // TODO add your handling code here:
+        justificativa = TelaJustificativaPonto.chamaTela();
+        if(!justificativa.equals("")){
+            lblJust.setText("Justificativa Adicioada!");
+        }
+    }//GEN-LAST:event_btJustificativaActionPerformed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_F2) {
+            btJustificativaActionPerformed(null);
+        }
+    }//GEN-LAST:event_formKeyPressed
+
+    private void btMarcarPontoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btMarcarPontoKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_F2) {
+            btJustificativaActionPerformed(null);
+        }
+    }//GEN-LAST:event_btMarcarPontoKeyPressed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        limpaCampos();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        TelaListarPontos tlp = new TelaListarPontos();
+        tlp.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     private void limpaCampos() {
         f = null;
         btMarcarPonto.setEnabled(false);
@@ -298,14 +375,16 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         lblTitulacao.setText("");
         tfCodigo.setText("");
         tfCodigo.requestFocus();
+        justificativa = "";
+        lblJust.setText("");
     }
-    
+
     private String getDiaSemana() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         int day = cal.get(Calendar.DAY_OF_WEEK);
         switch (day) {
-            
+
             case 1:
                 return "Domingo";
             case 2:
@@ -320,16 +399,16 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
                 return "Sexta";
             case 7:
                 return "Sábado";
-            
+
         }
         return "";
     }
-    
+
     private void carregarFoto(String path) {
         String caminhoFoto = path;
-        
+
         ImageIcon imagem = new ImageIcon(caminhoFoto);
-        
+
         Image img = imagem.getImage().getScaledInstance(lblFoto.getWidth() + 2, lblFoto.getHeight() + 2, Image.SCALE_DEFAULT);
         lblFoto.setIcon(new ImageIcon(img));
     }
@@ -370,18 +449,24 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btJustificativa;
     private javax.swing.JButton btMarcarPonto;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JLabel lblCidade;
     private javax.swing.JLabel lblFoto;
     private javax.swing.JLabel lblHora;
+    private javax.swing.JLabel lblJust;
     private javax.swing.JLabel lblNome;
     private javax.swing.JLabel lblTitulacao;
     private javax.swing.JTextField tfCodigo;
