@@ -52,7 +52,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
        if(!Ativo.getUsuario().isAdministrador()){
            str+=" | Período: "+Ativo.getPeriodo().getDescricao();
        }
-       str+=" | Versão 2.1";
+       str+=" | Versão 2.2";
        lblInformativo.setText(str);
     }
 

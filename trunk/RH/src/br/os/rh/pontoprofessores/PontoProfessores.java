@@ -11,6 +11,7 @@ import br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorario;
 import br.os.rh.periodo.Periodo;
 import java.util.Date;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -43,7 +44,27 @@ public class PontoProfessores {
     
     @ManyToOne
     private Periodo periodo;
+    
+    @Column(length = 2000)
+    private String justEntrada;
+    
+    @Column(length = 2000)
+    private String justSaida;
 
+    public String getOpcaoJustEntrada(){
+        if(justEntrada.equals("") | justEntrada.equals(" ")){
+            return "Não";
+        } 
+        return "Sim";
+    }
+    
+    public String getOpcaoJustSaida(){
+        if(justSaida.equals("") | justSaida.equals(" ")){
+            return "Não";
+        } 
+        return "Sim";
+    }
+    
     public int getId() {
         return id;
     }
@@ -92,15 +113,33 @@ public class PontoProfessores {
         this.periodo = periodo;
     }
 
+    public String getJustEntrada() {
+        return justEntrada;
+    }
+
+    public void setJustEntrada(String justEntrada) {
+        this.justEntrada = justEntrada;
+    }
+
+    public String getJustSaida() {
+        return justSaida;
+    }
+
+    public void setJustSaida(String justSaida) {
+        this.justSaida = justSaida;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 83 * hash + this.id;
-        hash = 83 * hash + Objects.hashCode(this.professor);
-        hash = 83 * hash + Objects.hashCode(this.data);
-        hash = 83 * hash + Objects.hashCode(this.horaEntrada);
-        hash = 83 * hash + Objects.hashCode(this.horaSaida);
-        hash = 83 * hash + Objects.hashCode(this.periodo);
+        int hash = 5;
+        hash = 41 * hash + this.id;
+        hash = 41 * hash + Objects.hashCode(this.professor);
+        hash = 41 * hash + Objects.hashCode(this.data);
+        hash = 41 * hash + Objects.hashCode(this.horaEntrada);
+        hash = 41 * hash + Objects.hashCode(this.horaSaida);
+        hash = 41 * hash + Objects.hashCode(this.periodo);
+        hash = 41 * hash + Objects.hashCode(this.justEntrada);
+        hash = 41 * hash + Objects.hashCode(this.justSaida);
         return hash;
     }
 
@@ -131,9 +170,13 @@ public class PontoProfessores {
         if (!Objects.equals(this.periodo, other.periodo)) {
             return false;
         }
+        if (!Objects.equals(this.justEntrada, other.justEntrada)) {
+            return false;
+        }
+        if (!Objects.equals(this.justSaida, other.justSaida)) {
+            return false;
+        }
         return true;
     }
 
-   
-  
 }
