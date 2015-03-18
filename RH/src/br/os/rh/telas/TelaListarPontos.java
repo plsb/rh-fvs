@@ -10,11 +10,23 @@ import br.os.rh.pontoprofessores.PontoProfessores;
 import br.os.rh.pontoprofessores.PontoProfessoresDAO;
 import br.os.rh.pontoprofessores.PontoProfessoresTableModel;
 import br.os.rh.util.Ativo;
+import br.os.rh.util.ConnectionFactory;
+import java.sql.Connection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -30,6 +42,8 @@ public class TelaListarPontos extends javax.swing.JDialog {
         setModal(true);
         setLocationRelativeTo(null);
         preencheTabela(new ArrayList<PontoProfessores>());
+        btImprimir.setEnabled(false);
+        btJustificar.setEnabled(false);
     }
     
     private void preencheTabela(List<PontoProfessores> lista){
@@ -53,8 +67,8 @@ public class TelaListarPontos extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tb = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btJustificar = new javax.swing.JButton();
+        btImprimir = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
 
@@ -97,15 +111,20 @@ public class TelaListarPontos extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(tb);
 
-        jPanel5.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 44, 650, 174));
+        jPanel5.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 650, 174));
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/confi.gif"))); // NOI18N
-        jButton2.setText("Justificar");
-        jPanel5.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 230, -1, -1));
+        btJustificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/confi.gif"))); // NOI18N
+        btJustificar.setText("Justificar");
+        jPanel5.add(btJustificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 230, -1, -1));
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/imprimir2.png"))); // NOI18N
-        jButton3.setText("Imprimir");
-        jPanel5.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 229, -1, -1));
+        btImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/imprimir2.png"))); // NOI18N
+        btImprimir.setText("Imprimir");
+        btImprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btImprimirActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btImprimir, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 229, -1, -1));
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/SA.png"))); // NOI18N
         jButton4.setText("Sair");
@@ -141,6 +160,7 @@ public class TelaListarPontos extends javax.swing.JDialog {
         if (tfDtInicial.getText().equals("  /  /    ")) {
             JOptionPane.showMessageDialog(rootPane, "Informe a Data!");
         } else {
+            
             String dataInicial = "";
             java.sql.Date data=null;
             try {
@@ -154,6 +174,7 @@ public class TelaListarPontos extends javax.swing.JDialog {
             List<PontoProfessores> lista = ppDAO.pesquisaPonto(data, Ativo.getPeriodo());
             if(lista.size()>0){
                 preencheTabela(lista);
+                btImprimir.setEnabled(true);
             } else {
                 JOptionPane.showMessageDialog(null, "Não foram encontrados Pontos!");
                 preencheTabela(new ArrayList<PontoProfessores>());
@@ -166,6 +187,51 @@ public class TelaListarPontos extends javax.swing.JDialog {
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void btImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirActionPerformed
+        // TODO add your handling code here:
+        JasperReport pathjrxml;
+        HashMap parametros = new HashMap();
+        String sql = "", texto = "";
+        if (tfDtInicial.getText().equals("  /  /    ")) {
+            JOptionPane.showMessageDialog(rootPane, "Informe a Data!");
+        } else {
+            
+            String dataInicial = "";
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                java.sql.Date data = new java.sql.Date(format.parse(tfDtInicial.getText()).getTime());
+                dataInicial = String.valueOf(data);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            
+            sql += "where p.data ='" + dataInicial+"'";
+
+            
+            parametros.put("sql", sql);
+            Connection connection = new ConnectionFactory().getConnection();
+        try {
+            JDialog viewer = new JDialog(new javax.swing.JFrame(), "Visualização do Relatório", true);
+            viewer.setSize(1000, 600);
+            viewer.setLocationRelativeTo(null);
+            viewer.setModal(true);
+            pathjrxml = JasperCompileManager.compileReport("relatorios/RelPontoProfessores.jrxml");
+            JasperPrint printReport = JasperFillManager.fillReport(pathjrxml, parametros,
+                    connection);
+            JasperViewer jv = new JasperViewer(printReport, false);
+            viewer.getContentPane().add(jv.getContentPane());
+            viewer.setVisible(true);
+            //JasperExportManager.exportReportToPdfFile(printReport, "src/relatorios/RelAcervo.pdf");
+            
+            //jv.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //dispose();
+        }
+        
+    }//GEN-LAST:event_btImprimirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -203,9 +269,9 @@ public class TelaListarPontos extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btImprimir;
+    private javax.swing.JButton btJustificar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
