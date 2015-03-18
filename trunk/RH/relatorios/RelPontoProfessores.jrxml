@@ -45,7 +45,7 @@ order by p.data,p.horaEntrada;]]>
 		<band height="61" splitType="Stretch">
 			<image>
 				<reportElement uuid="10c4d016-bc11-4a67-836d-44acb8a670f2" x="0" y="0" width="234" height="60"/>
-				<imageExpression><![CDATA["\\imagens\\nexaspng.png"]]></imageExpression>
+				<imageExpression><![CDATA["relatorios\\imagens\\nexaspng.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement uuid="025f0496-c807-4ce0-81d6-697776fb5370" x="193" y="15" width="288" height="33"/>
