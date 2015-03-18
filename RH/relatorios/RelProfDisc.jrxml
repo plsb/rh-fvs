@@ -10,10 +10,10 @@
 	<parameter name="texto" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select distinct(f.id), p.id as periodoid, f.nome, p.descricao from funcionario f
-inner join salario s on s.funcionario_id=f.id
-inner join periodo p on p.id=s.periodo_id
-inner join salariodisciplina sd on sd.salario_id=s.id
-inner join disciplina d on d.id=sd.disciplina_id
+inner join lotacao l on l.professor_id=f.id
+inner join periodo p on p.id=l.periodo_id
+inner join lotacaodisciplina ld on ld.lotacao_id=l.id
+inner join disciplina d on d.id=ld.disciplina_id
 inner join semestre sem on sem.id=d.semestre_id
 where ativo=true  $P!{texto}]]>
 	</queryString>
