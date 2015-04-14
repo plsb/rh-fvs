@@ -3,8 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.os.rh.util;
+
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -219,4 +219,35 @@ public class Util {
     public static void setIcon(Class classe, JFrame jframe) {
         jframe.setIconImage(Toolkit.getDefaultToolkit().getImage(classe.getResource("/fvsosp/imagens/bicoaguia.png")));
     }
+
+    public static String retornarDiaSemana() {
+
+        Calendar objCalendar = Calendar.getInstance();
+        int dia_semana = objCalendar.get(Calendar.DAY_OF_WEEK);
+        switch (dia_semana) {
+            case 1:
+                return "Domingo";
+            case 2:
+                return "Segunda";
+            case 3:
+                return "Terça";
+
+            case 4:
+                return "Quarta";
+
+            case 5:
+                return "Quinta";
+
+            case 6:
+                return "Sexta";
+
+            case 7:
+                return "Sábado";
+
+        }
+
+        return null;
+
+    }
+
 }

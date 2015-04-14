@@ -32,7 +32,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         if (Ativo.getUsuario().getTipo().equals("Coordenador de Curso")) {
             mmDisciplina.setVisible(true);
             mmLotacao.setVisible(true);
-            mRelatorios.setVisible(false);
+            mRelatorios.setVisible(true);
+            mmRelPontosPrrofessoresCompleto.setVisible(true);
         }
         
     }
@@ -40,8 +41,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void permissaoSecretaria(){
         if (Ativo.getUsuario().getTipo().equals("Secretária Professores")) {
             mCadastro.setVisible(false);
-            mRelatorios.setVisible(false);
+            mRelatorios.setVisible(true);
             mmPontoProfessores.setVisible(true);
+            mmRelPontosPrrofessoresCompleto.setVisible(true);
         }
         
     }
@@ -52,7 +54,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
        if(!Ativo.getUsuario().isAdministrador()){
            str+=" | Período: "+Ativo.getPeriodo().getDescricao();
        }
-       str+=" | Versão 2.3";
+       str+=" | Versão 2.6";
        lblInformativo.setText(str);
     }
 
@@ -91,6 +93,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             mmRelPlanilhaProfessores.setVisible(true);
             mmCurso.setVisible(true);
             mmSemestre.setVisible(true);
+            mmRelPontosPrrofessoresCompleto.setVisible(true);
         }
 
     }
@@ -120,9 +123,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         mmLotacao = new javax.swing.JMenuItem();
         mmSalario = new javax.swing.JMenuItem();
         mmPontoProfessores = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         mRelatorios = new javax.swing.JMenu();
         mmRelProfLotacao = new javax.swing.JMenuItem();
         mmRelPlanilhaProfessores = new javax.swing.JMenuItem();
+        mmRelPontosPrrofessoresCompleto = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -223,6 +228,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         mMovimentacao.add(mmPontoProfessores);
 
+        jMenuItem1.setText("Gerar Pontos Automáticos");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        mMovimentacao.add(jMenuItem1);
+
         jMenuBar1.add(mMovimentacao);
 
         mRelatorios.setText("Relatórios");
@@ -242,6 +255,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         mRelatorios.add(mmRelPlanilhaProfessores);
+
+        mmRelPontosPrrofessoresCompleto.setText("Ponto Professores Completo");
+        mmRelPontosPrrofessoresCompleto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mmRelPontosPrrofessoresCompletoActionPerformed(evt);
+            }
+        });
+        mRelatorios.add(mmRelPontosPrrofessoresCompleto);
 
         jMenuBar1.add(mRelatorios);
 
@@ -333,6 +354,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
         tmp.setVisible(true);
     }//GEN-LAST:event_mmPontoProfessoresActionPerformed
 
+    private void mmRelPontosPrrofessoresCompletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmRelPontosPrrofessoresCompletoActionPerformed
+        // TODO add your handling code here:
+        TelaRelatorioPontoCompleto trc = new TelaRelatorioPontoCompleto();
+        trc.setVisible(true);
+    }//GEN-LAST:event_mmRelPontosPrrofessoresCompletoActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        TelaGerarPontosAutomatico tgp = new TelaGerarPontosAutomatico();
+        tgp.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -371,6 +404,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblInformativo;
     private javax.swing.JMenu mCadastro;
@@ -384,6 +418,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mmPeriodo;
     private javax.swing.JMenuItem mmPontoProfessores;
     private javax.swing.JMenuItem mmRelPlanilhaProfessores;
+    private javax.swing.JMenuItem mmRelPontosPrrofessoresCompleto;
     private javax.swing.JMenuItem mmRelProfLotacao;
     private javax.swing.JMenuItem mmSalario;
     private javax.swing.JMenuItem mmSemestre;

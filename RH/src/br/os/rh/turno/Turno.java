@@ -6,10 +6,13 @@
 
 package br.os.rh.turno;
 
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -22,7 +25,13 @@ public class Turno {
     private int id;
     
     private String descricao;
-
+    
+    @Temporal(TemporalType.TIME)
+    private Date horaInicio;
+    
+    @Temporal(TemporalType.TIME)
+    private Date horaFim;  
+    
     /**
      * @return the id
      */
@@ -75,6 +84,22 @@ public class Turno {
             return false;
         }
         return true;
+    }
+
+    public Date getHoraInicio() {
+        return horaInicio;
+    }
+
+    public void setHoraInicio(Date horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public Date getHoraFim() {
+        return horaFim;
+    }
+
+    public void setHoraFim(Date horaFim) {
+        this.horaFim = horaFim;
     }
     
     

@@ -9,6 +9,8 @@ import br.os.rh.funcionario.Funcionario;
 import br.os.rh.funcionario.FuncionarioDAO;
 import br.os.rh.pontoprofessores.PontoProfessores;
 import br.os.rh.pontoprofessores.PontoProfessoresDAO;
+import br.os.rh.turno.Turno;
+import br.os.rh.turno.TurnoDAO;
 import br.os.rh.util.Ativo;
 import br.os.rh.util.Util;
 import groovy.lang.Closure;
@@ -316,6 +318,11 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
                 p.setHoraEntrada(new Date());
                 p.setJustEntrada(justificativa);
                 texto += "Entrada de " + f.getNome() + ", marcada com sucesso!";
+                TurnoDAO tDAO = new TurnoDAO();
+                Turno t = tDAO.verificaTurno();
+                if(t!=null){
+                    p.setTurno(t);
+                }
             } else {
                 p.setHoraSaida(new Date());
                 p.setJustSaida(justificativa);

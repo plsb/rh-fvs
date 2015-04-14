@@ -102,7 +102,7 @@ public abstract class GenericDAO<T> {
         }
         return lista;
     }
-
+    
     /*
      * ao passar uma chave primária
      * ele retorna um objeto referente a chave primária

@@ -10,6 +10,7 @@ import br.os.rh.disciplina.Disciplina;
 import br.os.rh.disciplina.DisciplinaDAO;
 import br.os.rh.lotacao.Lotacao;
 import br.os.rh.salario.Salario;
+import br.os.rh.util.Ativo;
 import br.os.rh.util.GenericDAO;
 import br.os.rh.util.HibernateUtil;
 import java.util.List;
@@ -78,6 +79,18 @@ public class LotacaoDisciplinaDAO extends GenericDAO<LotacaoDisciplina>{
         
         getSessao().close();
         return sDisciplinas;
+    }
+    
+    public List<LotacaoDisciplina> pesquisaPeriodo() {
+        setSessao(HibernateUtil.getSessionFactory().openSession());
+        setTransacao(getSessao().beginTransaction());
+        List<Lotacao> lotacoes = (List<Lotacao>) getSessao().createCriteria(Lotacao.class)
+                .add(Restrictions.eq("periodo", Ativo.getPeriodo())).list();
+        
+        List<LotacaoDisciplina> lotDisc = (List<LotacaoDisciplina>) getSessao().createCriteria(LotacaoDisciplina.class)
+                .add(Restrictions.in("lotacao", lotacoes)).list();
+        getSessao().close(); 
+        return lotDisc;
     }
     
     

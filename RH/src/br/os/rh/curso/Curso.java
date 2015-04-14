@@ -6,6 +6,7 @@
 
 package br.os.rh.curso;
 
+import br.os.rh.turno.Turno;
 import br.os.rh.usuario.Usuario;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -31,7 +32,7 @@ public class Curso {
     
     @ManyToOne
     private Usuario coordenador;
-
+    
     @Override
     public String toString() {
         return "Curso{" + "id=" + id + ", descricao=" + descricao + '}';

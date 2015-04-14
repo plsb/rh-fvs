@@ -31,7 +31,7 @@ public class LotacaoDAO extends GenericDAO<Lotacao> {
     }
 
     public void salvar(Lotacao lotacao) {
-        if (lotacao.getId()==0) {
+        if (lotacao.getId() == 0) {
             adicionar(lotacao);
         } else {
             atualizar(lotacao);
@@ -74,25 +74,26 @@ public class LotacaoDAO extends GenericDAO<Lotacao> {
     }
 
     public List<Lotacao> listarPorCoordenador() {
+        
         setSessao(HibernateUtil.getSessionFactory().openSession());
         setTransacao(getSessao().beginTransaction());
-        
-        
+
         LotacaoDisciplinaDAO sdDAO = new LotacaoDisciplinaDAO();
-        List<LotacaoDisciplina> lSalDisc =  new ArrayList(new HashSet(sdDAO.pesquisaPorCurso()));
-        
+        List<LotacaoDisciplina> lSalDisc = new ArrayList(new HashSet(sdDAO.pesquisaPorCurso()));
+
         List<Integer> lIds = new ArrayList<>();
         for (LotacaoDisciplina s : lSalDisc) {
             lIds.add(s.getLotacao().getId());
         }
-        
+
         List<Lotacao> lotacoes = (List<Lotacao>) getSessao().createCriteria(Lotacao.class).
                 add(Restrictions.in("id", lIds))
-                .add(Restrictions.eq("periodo",Ativo.getPeriodo())).list();
+                .add(Restrictions.eq("periodo", Ativo.getPeriodo())).list();
 
-       
         getSessao().close();
         return lotacoes;
     }
+
+    
 
 }

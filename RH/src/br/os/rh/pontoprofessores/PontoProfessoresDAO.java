@@ -7,6 +7,7 @@ package br.os.rh.pontoprofessores;
 
 import br.os.rh.funcionario.Funcionario;
 import br.os.rh.periodo.Periodo;
+import br.os.rh.turno.Turno;
 import br.os.rh.util.GenericDAO;
 import br.os.rh.util.HibernateUtil;
 import java.util.Date;
@@ -33,14 +34,40 @@ public class PontoProfessoresDAO extends GenericDAO<PontoProfessores> {
                     add(Restrictions.eq("data", data)).
                     add(Restrictions.eq("professor", f)).
                     add(Restrictions.eq("periodo", p)).
-                    addOrder(Order.asc("horaEntrada"))
+                    addOrder(Order.desc("horaEntrada"))
                     .uniqueResult();
         } catch (Exception e) {
             ponto = (PontoProfessores) getSessao().createCriteria(PontoProfessores.class).
                     add(Restrictions.eq("data", data)).
                     add(Restrictions.eq("professor", f)).
                     add(Restrictions.eq("periodo", p)).
-                    addOrder(Order.asc("horaEntrada"))
+                    addOrder(Order.desc("horaEntrada"))
+                    .list().get(0);
+        }
+
+        getSessao().close();
+        return ponto;
+    }
+    
+    public PontoProfessores pesquisaPonto(Date data, Funcionario f, Periodo p, Turno t) {
+        setSessao(HibernateUtil.getSessionFactory().openSession());
+        setTransacao(getSessao().beginTransaction());
+        PontoProfessores ponto = null;
+        try {
+            ponto = (PontoProfessores) getSessao().createCriteria(PontoProfessores.class).
+                    add(Restrictions.eq("data", data)).
+                    add(Restrictions.eq("professor", f)).
+                    add(Restrictions.eq("periodo", p)).
+                    add(Restrictions.eq("turno", t)).
+                    addOrder(Order.desc("horaEntrada"))
+                    .uniqueResult();
+        } catch (Exception e) {
+            ponto = (PontoProfessores) getSessao().createCriteria(PontoProfessores.class).
+                    add(Restrictions.eq("data", data)).
+                    add(Restrictions.eq("professor", f)).
+                    add(Restrictions.eq("periodo", p)).
+                    add(Restrictions.eq("turno", t)).
+                    addOrder(Order.desc("horaEntrada"))
                     .list().get(0);
         }
 
@@ -62,7 +89,7 @@ public class PontoProfessoresDAO extends GenericDAO<PontoProfessores> {
         getSessao().close();
         return ponto;
     }
-
+    
     public void salvar(PontoProfessores p) {
         if (p.getId() == 0) {
             adicionar(p);

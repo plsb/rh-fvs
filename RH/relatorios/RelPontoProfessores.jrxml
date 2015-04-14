@@ -5,7 +5,16 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="sql" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select p.*,f.nome,TIMEDIFF(p.horaSaida,p.horaEntrada) as diferenca from pontoprofessores p
+		<![CDATA[select p.id,p.data,
+case when p.horaEntrada is not null then
+	p.horaEntrada
+else "FALTOU" end as horaEntrada,
+case when p.horaSaida is not null then
+	p.horaSaida
+else "FALTOU" end as horaSaida, p.periodo_id,p.professor_id,p.justEntrada,p.justSaida,f.nome,
+case when TIMEDIFF(p.horaSaida,p.horaEntrada) is not null then
+	TIMEDIFF(p.horaSaida,p.horaEntrada)
+else "--" end as diferenca from pontoprofessores p
 inner join funcionario f on f.id=p.professor_id
 $P!{sql}
 order by p.data,p.horaEntrada;]]>
@@ -16,10 +25,10 @@ order by p.data,p.horaEntrada;]]>
 	<field name="data" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="horaEntrada" class="java.sql.Time">
+	<field name="horaEntrada" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="horaSaida" class="java.sql.Time">
+	<field name="horaSaida" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="periodo_id" class="java.lang.Integer">
@@ -37,7 +46,7 @@ order by p.data,p.horaEntrada;]]>
 	<field name="nome" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="diferenca" class="java.sql.Time"/>
+	<field name="diferenca" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -117,7 +126,7 @@ order by p.data,p.horaEntrada;]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
 			</textField>
-			<textField pattern="HH.mm.ss">
+			<textField pattern="">
 				<reportElement uuid="a7af5355-7a56-431d-8329-a9da6affa5e8" x="357" y="0" width="62" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="11"/>

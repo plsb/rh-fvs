@@ -5,20 +5,15 @@
  */
 package br.os.rh.util;
 
-import br.os.rh.funcionario.Funcionario;
-import br.os.rh.funcionario.FuncionarioDAO;
-import br.os.rh.salario.Salario;
-import br.os.rh.salario.SalarioDAO;
-import static br.os.rh.util.Calculo.calculoHorasSemestre;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.Cell;
+import java.util.Properties;
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  *
@@ -26,98 +21,58 @@ import org.apache.poi.ss.usermodel.Cell;
  */
 public class Principal {
 
-    public static void main(String[] args) throws IOException {
-        HSSFWorkbook wb = new HSSFWorkbook();
-        HSSFSheet sheet1 = wb.createSheet("RH");
+    public static void main(String[] args) {
+        mandarEmail("pedroluis@leaosampaio.edu.br", "pedro040908", "pedrosaraiva@fvs.edu.br", 
+                "Teste", "Testando");
+    }
+    
+    public static void mandarEmail(final String remetente, final String senha, String destinatario,
+            String assunto, String mensagem){
+        
+        Properties props = new Properties();
+        /**
+         * Parâmetros de conexão com servidor Gmail
+         */
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
 
-        SalarioDAO dao = new SalarioDAO();
+        Session session = Session.getDefaultInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(remetente, senha);
+                    }
+                });
 
-        HSSFCellStyle estilo = wb.createCellStyle();
-        //Adicionando bordas
-        estilo.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        estilo.setBottomBorderColor(HSSFColor.BLACK.index);
-        estilo.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        estilo.setTopBorderColor(HSSFColor.BLACK.index);
-        estilo.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        estilo.setRightBorderColor(HSSFColor.BLACK.index);
-        estilo.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        estilo.setLeftBorderColor(HSSFColor.BLACK.index);
-        HSSFRow row = sheet1.createRow(0);
-        row.createCell(0).setCellValue("Nome");
-        row.createCell(1).setCellValue("Titulação");
-        row.createCell(2).setCellValue("Curso");
-        row.createCell(3).setCellValue("Cidade");
-        row.createCell(4).setCellValue("Horas");
-        row.createCell(5).setCellValue("Valor Hora Aula");
-        row.createCell(6).setCellValue("Valor Horista");
-        row.createCell(7).setCellValue("Valor Mensalista");
-        row.createCell(8).setCellValue("1 Sexto");
-        row.createCell(9).setCellValue("Gratificação");
-        row.createCell(10).setCellValue("Ajuda de Custo");
-        row.createCell(11).setCellValue("Total");
-        row.createCell(12).setCellValue("Adiantamentos");
-        row.createCell(13).setCellValue("Descontos");
-        for (int j = 0; j < 14; j++) {
-            row.getCell(j).setCellStyle(estilo);
+        /**
+         * Ativa Debug para sessão
+         */
+        session.setDebug(true);
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(remetente)); //Remetente
+
+            Address[] toUser = InternetAddress //Destinatário(s)
+                    .parse(destinatario);
+
+            message.setRecipients(Message.RecipientType.TO, toUser);
+            message.setSubject(assunto);//Assunto
+            message.setText(mensagem);
+            /**
+             * Método para enviar a mensagem criada
+             */
+            Transport.send(message);
+
+            System.out.println("Feito!!!");
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
         }
-        double valorGeral = 0;
-
-        for (int i = 0; i < dao.listar().size(); i++) {
-            Salario s = dao.listar().get(i);
-            if (s.isProfessor() && s.getFuncionario().isAtivo()) {
-                row = sheet1.createRow(i);
-
-//                row.createCell(0).setCellValue(s.getFuncionario().getNome());
-//                row.createCell(1).setCellValue(s.getFuncionario().getTitulacao().getDescricao());
-//                row.createCell(2).setCellValue(s.getDisciplinas().get(0).getDisciplina().getSemestre().getCurso().getSigla());
-//                row.createCell(3).setCellValue(s.getFuncionario().getCidade().getDescricao());
-//                row.createCell(4).setCellValue((Calculo.calculoHorasSemestre(s.getDisciplinas()) / 20) * 4.5);
-//                row.createCell(5).setCellValue(s.getValHoraAula());
-//                if (s.getTipoRegime().equals("Mensalista/Horista")) {
-//                    double valorHorista = ((((Calculo.calculoHorasSemestre(s.getDisciplinas(), s.getHorasMensalista()) / 20) * 4.5)) * s.getValHoraAula());
-//                    row.createCell(6).setCellValue(valorHorista);
-//                    double valorMensalista = (Calculo.calculoSalarioMensalMensalista(s.getDisciplinas(), s.getHorasMensalista(),
-//                            s.getValHoraAula()));
-//                    row.createCell(7).setCellValue(valorMensalista);
-//                    row.createCell(8).setCellValue(valorHorista / 6);
-//                    row.createCell(9).setCellValue(Calculo.calculoGratificacaoHorista(s.getPorcentGratifica(), valorHorista + valorMensalista));
-//                    row.createCell(10).setCellValue(s.getValAjudaCusto());
-//                    double total = Calculo.calculoMensalistaHorista(s.getDisciplinas(), s.getHorasMensalista(), s.getValHoraAula(),
-//                            s.getValAjudaCusto(), s.getPorcentGratifica());
-//                    row.createCell(11).setCellValue(total);
-//                    valorGeral += total;
-//                } else {
-//                    double valorMensalHorista = ((Calculo.calculoHorasSemestre(s.getDisciplinas()) / 20) * 4.5) * s.getValHoraAula();
-//                    row.createCell(6).setCellValue(valorMensalHorista);
-//                    row.createCell(7).setCellValue("0");
-//                    double umSexto = valorMensalHorista / 6;
-//                    row.createCell(8).setCellValue(umSexto);
-//                    double gratificacao = Calculo.calculoGratificacaoHorista(s.getPorcentGratifica(), valorMensalHorista);
-//                    row.createCell(9).setCellValue(Calculo.calculoGratificacaoHorista(s.getPorcentGratifica(), valorMensalHorista));
-//                    row.createCell(10).setCellValue(s.getValAjudaCusto());
-////                    double total = Calculo.calculoHorista(s.getDisciplinas(), s.getValHoraAula(),
-////                            s.getValAjudaCusto(), s.getPorcentGratifica());
-////                    row.createCell(11).setCellValue(total);
-////                    valorGeral += total;
-//                }
-
-//                row.createCell(12).setCellValue("adiantamentos");
-//                row.createCell(13).setCellValue("desconto");
-                for (int j = 0; j < 14; j++) {
-                    row.getCell(j).setCellStyle(estilo);
-                }
-
-            }
-
-        }
-
-        row = sheet1.createRow(row.getRowNum() + 1);
-
-        row.createCell(11).setCellValue(valorGeral);
-//        row.createCell(11).setCellStyle(estilo);
-
-        FileOutputStream stream = new FileOutputStream("C:\\Users\\'Pedro\\Documents\\NetBeansProjects\\rh-fvs\\RH\\osrh.xls");
-        wb.write(stream);
+        
     }
 
 }

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelPontoProfessores" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="56c7f32a-59d1-4b84-8119-2193c69d5751">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="sql" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["relatorios\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dataini" class="java.lang.String"/>
+	<parameter name="datafin" class="java.lang.String"/>
+	<parameter name="periodo" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select f.*,c.descricao as cidade,e.descricao as estado,t.descricao as titulacao from funcionario f
+inner join cidade c on c.id=f.cidade_id
+inner join estado e on e.id=c.estado_id
+inner join titulacao t on t.id=f.titulacao_id
+where f.ativo=true and f.professor=true and not(f.caminhoFoto=" ") $P!{sql}
+order by f.nome;]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ativo" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bairro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="email" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="endereco" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="telefone" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cidade_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="titulacao_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codigoPonto" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="professor" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="caminhoFoto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cidade" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="titulacao" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="61" splitType="Stretch">
+			<image>
+				<reportElement uuid="10c4d016-bc11-4a67-836d-44acb8a670f2" x="0" y="0" width="234" height="60"/>
+				<imageExpression><![CDATA["relatorios\\imagens\\nexaspng.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="025f0496-c807-4ce0-81d6-697776fb5370" x="193" y="7" width="288" height="33"/>
+				<textElement>
+					<font fontName="Arial" size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ponto dos Professores]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="41e13818-1b85-42df-88c5-ae26e6cce8e8" x="193" y="40" width="238" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["De: "+$P{dataini}+" à "+$P{datafin}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="c1d1e5a3-8c37-421b-9069-cf98e53a8490" x="81" y="0" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Professor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1d1e5a3-8c37-421b-9069-cf98e53a8490" x="331" y="0" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Titulação]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="74" splitType="Stretch">
+			<textField>
+				<reportElement uuid="4ac08539-0205-45af-9697-d971d1a1c875" x="81" y="9" width="250" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4ac08539-0205-45af-9697-d971d1a1c875" x="81" y="29" width="250" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cidade}+" - "+$F{estado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4ac08539-0205-45af-9697-d971d1a1c875" x="331" y="9" width="212" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{titulacao}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement uuid="a1ba7c56-1bfc-4336-9152-3133a0f92f67" x="0" y="60" width="555" height="9"/>
+				<subreportParameter name="datafin">
+					<subreportParameterExpression><![CDATA[$P{datafin}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="codigoprofessor">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="dataini">
+					<subreportParameterExpression><![CDATA[$P{dataini}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="periodo">
+					<subreportParameterExpression><![CDATA[$P{periodo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "RelPontoProfessoresCompleto_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+			<line>
+				<reportElement uuid="e571bd37-838b-471e-ab0b-6d33e94629b0" x="3" y="2" width="543" height="1"/>
+			</line>
+			<image>
+				<reportElement uuid="3177654c-c315-43cb-83a2-850070efe2e5" x="3" y="9" width="93" height="50"/>
+				<imageExpression><![CDATA[$F{caminhoFoto}]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="4" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="43" splitType="Stretch">
+			<textField>
+				<reportElement uuid="9b66f2ee-6c94-4b4b-b2bb-ac0e53a73dfc" x="435" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="69f22275-de03-408e-93c9-a8d574292203" x="515" y="0" width="40" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b9a60993-216d-464e-9325-ae67706130d4" x="448" y="20" width="95" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="4cad396f-d27c-487e-af43-97db745945dc" x="399" y="20" width="49" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Emissão:]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="13" splitType="Stretch"/>
+	</summary>
+</jasperReport>

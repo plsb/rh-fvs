@@ -72,9 +72,15 @@ public class PontoProfessoresTableModel extends AbstractTableModel {
             case 2:
                 return pp.getData();
             case 3:
-                return pp.getHoraEntrada();
+                if(pp.getHoraEntrada()!=null)
+                   return pp.getHoraEntrada(); 
+                else 
+                    return " ";
             case 4:
-                return pp.getHoraSaida();
+                if(pp.getHoraSaida()!=null)
+                    return pp.getHoraSaida();
+                else 
+                    return " ";
             case 5:
                 return pp.getOpcaoJustEntrada();
             case 6:

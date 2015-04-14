@@ -9,6 +9,7 @@ package br.os.rh.pontoprofessores;
 import br.os.rh.funcionario.Funcionario;
 import br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorario;
 import br.os.rh.periodo.Periodo;
+import br.os.rh.turno.Turno;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -50,17 +51,20 @@ public class PontoProfessores {
     
     @Column(length = 2000)
     private String justSaida;
+    
+    @ManyToOne
+    private Turno turno;
 
     public String getOpcaoJustEntrada(){
         if(justEntrada.equals("") | justEntrada.equals(" ")){
-            return "Não";
+            return " ";
         } 
         return "Sim";
     }
     
     public String getOpcaoJustSaida(){
         if(justSaida.equals("") | justSaida.equals(" ")){
-            return "Não";
+            return " ";
         } 
         return "Sim";
     }
@@ -177,6 +181,14 @@ public class PontoProfessores {
             return false;
         }
         return true;
+    }
+
+    public Turno getTurno() {
+        return turno;
+    }
+
+    public void setTurno(Turno turno) {
+        this.turno = turno;
     }
 
 }

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelPontoProfessoresCompleto_subreport1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="224edef8-ef6b-4deb-bb45-beb8fc835740">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="codigoprofessor" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["relatorios\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dataini" class="java.lang.String"/>
+	<parameter name="datafin" class="java.lang.String"/>
+	<parameter name="periodo" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select pp.id,pp.data,
+case when pp.horaEntrada is not null then
+	pp.horaEntrada
+else "FALTOU" end as horaEntrada,
+case when pp.horaSaida is not null then
+	pp.horaSaida
+else "FALTOU" end as horaSaida,
+case when TIMEDIFf(pp.horaSaida,PP.horaEntrada) is not null then
+	TIMEDIFf(pp.horaSaida,PP.horaEntrada)
+else "--" end diferenca,
+CASE WHEN
+case
+when DATE_FORMAT(PP.data,'%w') = 0 then
+(select sum(h.qtdHora) from horario h
+		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
+						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
+						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Domingo" and h.turno_id=pp.turno_id))
+when DATE_FORMAT(PP.data,'%w') = 1 then
+(select sum(h.qtdHora) from horario h
+		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
+						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
+						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Segunda" and h.turno_id=pp.turno_id))
+when DATE_FORMAT(PP.data,'%w') = 2 then
+(select sum(h.qtdHora) from horario h
+		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
+						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
+						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Terça" and h.turno_id=pp.turno_id))
+when DATE_FORMAT(PP.data,'%w') = 3 then
+(select sum(h.qtdHora) from horario h
+		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
+						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
+						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Quarta" and h.turno_id=pp.turno_id))
+when DATE_FORMAT(PP.data,'%w') = 4 then
+(select sum(h.qtdHora) from horario h
+		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
+						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
+						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Quinta"  and h.turno_id=pp.turno_id))
+when DATE_FORMAT(PP.data,'%w') = 5 then
+(select sum(h.qtdHora) from horario h
+		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
+						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
+						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Sexta"  and h.turno_id=pp.turno_id))
+when DATE_FORMAT(PP.data,'%w') = 6 then
+(select sum(h.qtdHora) from horario h
+		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
+						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
+						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Sábado"  and h.turno_id=pp.turno_id))
+end IS NOT NULL THEN
+case
+when DATE_FORMAT(PP.data,'%w') = 0 then
+(select sum(h.qtdHora) from horario h
+		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
+						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
+						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Domingo" and h.turno_id=pp.turno_id))
+when DATE_FORMAT(PP.data,'%w') = 1 then
+(select sum(h.qtdHora) from horario h
+		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
+						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
+						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Segunda" and h.turno_id=pp.turno_id))
+when DATE_FORMAT(PP.data,'%w') = 2 then
+(select sum(h.qtdHora) from horario h
+		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
+						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
+						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Terça" and h.turno_id=pp.turno_id))
+when DATE_FORMAT(PP.data,'%w') = 3 then
+(select sum(h.qtdHora) from horario h
+		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
+						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
+						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Quarta" and h.turno_id=pp.turno_id))
+when DATE_FORMAT(PP.data,'%w') = 4 then
+(select sum(h.qtdHora) from horario h
+		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
+						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
+						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Quinta"  and h.turno_id=pp.turno_id))
+when DATE_FORMAT(PP.data,'%w') = 5 then
+(select sum(h.qtdHora) from horario h
+		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
+						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
+						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Sexta"  and h.turno_id=pp.turno_id))
+when DATE_FORMAT(PP.data,'%w') = 6 then
+(select sum(h.qtdHora) from horario h
+		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
+						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
+						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Sábado"  and h.turno_id=pp.turno_id))
+end
+ELSE "--" END
+as horasATrabalhar, pp.justEntrada, pp.justSaida,
+case
+when DATE_FORMAT(PP.data,'%w') = 0 then
+	"Domingo"
+when DATE_FORMAT(PP.data,'%w') = 1 then
+	"Segunda"
+when DATE_FORMAT(PP.data,'%w') = 2 then
+	"Terça"
+when DATE_FORMAT(PP.data,'%w') = 3 then
+	"Quarta"
+when DATE_FORMAT(PP.data,'%w') = 4 then
+	"Quinta"
+when DATE_FORMAT(PP.data,'%w') = 5 then
+	"Sexta"
+when DATE_FORMAT(PP.data,'%w') = 6 then
+	"Sábado"
+end diasemana
+from pontoprofessores pp
+where pp.professor_id=$P{codigoprofessor} and pp.data between $P{dataini} and $P{datafin} and pp.periodo_id=$P{periodo}
+group by pp.id
+order by pp.data]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="data" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="horaEntrada" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="horaSaida" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="diferenca" class="java.lang.String"/>
+	<field name="horasATrabalhar" class="java.lang.String"/>
+	<field name="justEntrada" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="justSaida" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="diasemana" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="70e5d338-51f9-45da-8e00-fa10802d5657" x="13" y="8" width="67" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="70e5d338-51f9-45da-8e00-fa10802d5657" x="171" y="8" width="79" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hora Entrada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="70e5d338-51f9-45da-8e00-fa10802d5657" x="250" y="8" width="77" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hora Saída]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="70e5d338-51f9-45da-8e00-fa10802d5657" x="327" y="8" width="111" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Horas Trabalhadas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="70e5d338-51f9-45da-8e00-fa10802d5657" x="438" y="8" width="111" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Horas à Trabalhar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="70e5d338-51f9-45da-8e00-fa10802d5657" x="80" y="8" width="67" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dia Semana]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="35" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="3b2eb965-de52-4c68-bdd5-d27c117d8b68" x="13" y="0" width="67" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm.ss">
+				<reportElement uuid="3b2eb965-de52-4c68-bdd5-d27c117d8b68" x="171" y="0" width="79" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horaEntrada}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm.ss">
+				<reportElement uuid="3b2eb965-de52-4c68-bdd5-d27c117d8b68" x="250" y="0" width="77" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horaSaida}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm.ss">
+				<reportElement uuid="3b2eb965-de52-4c68-bdd5-d27c117d8b68" x="327" y="0" width="111" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{diferenca}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3b2eb965-de52-4c68-bdd5-d27c117d8b68" x="438" y="0" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horasATrabalhar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="3b2eb965-de52-4c68-bdd5-d27c117d8b68" x="80" y="0" width="67" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{diasemana}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement uuid="d992d34e-e323-4946-b7b2-b89d866153a9" isPrintRepeatedValues="false" x="13" y="20" width="525" height="10" isRemoveLineWhenBlank="true"/>
+				<subreportParameter name="codigopp">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "RelPontoProfessoresCompleto_Justificativa_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="5" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

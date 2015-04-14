@@ -8,9 +8,11 @@ package br.os.rh.lotacaodisciplinahorario;
 
 import br.os.rh.funcionario.Funcionario;
 import br.os.rh.horario.Horario;
+import br.os.rh.lotacao.Lotacao;
 import br.os.rh.periodo.Periodo;
 import br.os.rh.salario.Salario;
 import br.os.rh.lotacaodiscplinas.LotacaoDisciplina;
+import br.os.rh.util.Ativo;
 import br.os.rh.util.GenericDAO;
 import br.os.rh.util.HibernateUtil;
 import java.util.ArrayList;
@@ -56,6 +58,5 @@ public class LotacaoDisciplinaHorarioDAO extends GenericDAO<LotacaoDisciplinaHor
         getSessao().close();
         return sdhLista.size()>0;
     }
-    
     
 }
