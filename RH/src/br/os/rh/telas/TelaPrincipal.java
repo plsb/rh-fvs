@@ -5,7 +5,16 @@
  */
 package br.os.rh.telas;
 
+import br.os.rh.funcionario.Funcionario;
+import br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorario;
+import br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorarioDAO;
+import br.os.rh.pontoprofessores.PontoProfessores;
+import br.os.rh.pontoprofessores.PontoProfessoresDAO;
 import br.os.rh.util.Ativo;
+import br.os.rh.util.Util;
+import java.util.Calendar;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,6 +27,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
      */
     public TelaPrincipal() {
         initComponents();
+        
         setLocationRelativeTo(null);
         permissaoFalse();
         permissaoAdm();
@@ -26,36 +36,53 @@ public class TelaPrincipal extends javax.swing.JFrame {
         permissaoSecretaria();
         setTitle("OSRH");
         preencheLabel();
+        tfEmail.setVisible(false);
+
+        Thread thread = new Thread(new Runnable() {
+            
+            @Override
+            public void run() {
+                //mandar email
+                tfEmail.setVisible(true);
+                PontoProfessoresDAO ppDAO = new PontoProfessoresDAO();
+                mandarEmail(ppDAO.pesquisaPontoEmail());
+                tfEmail.setVisible(false);
+                //fim mandar email
+            }
+        });
+        thread.start();
     }
-    
-    private void permissaoCoordenador(){
+
+    private void permissaoCoordenador() {
         if (Ativo.getUsuario().getTipo().equals("Coordenador de Curso")) {
             mmDisciplina.setVisible(true);
             mmLotacao.setVisible(true);
             mRelatorios.setVisible(true);
             mmRelPontosPrrofessoresCompleto.setVisible(true);
+
         }
-        
+
     }
-    
-    private void permissaoSecretaria(){
+
+    private void permissaoSecretaria() {
         if (Ativo.getUsuario().getTipo().equals("Secretária Professores")) {
             mCadastro.setVisible(false);
             mRelatorios.setVisible(true);
             mmPontoProfessores.setVisible(true);
             mmRelPontosPrrofessoresCompleto.setVisible(true);
+            mmGerarPontos.setVisible(true);
         }
-        
+
     }
-    
-    private void preencheLabel(){
-       String str = "Usuário: "+Ativo.getUsuario().getNome()+
-               " | Tipo: "+Ativo.getUsuario().getTipo();
-       if(!Ativo.getUsuario().isAdministrador()){
-           str+=" | Período: "+Ativo.getPeriodo().getDescricao();
-       }
-       str+=" | Versão 2.6";
-       lblInformativo.setText(str);
+
+    private void preencheLabel() {
+        String str = "Usuário: " + Ativo.getUsuario().getNome()
+                + " | Tipo: " + Ativo.getUsuario().getTipo();
+        if (!Ativo.getUsuario().isAdministrador()) {
+            str += " | Período: " + Ativo.getPeriodo().getDescricao();
+        }
+        str += " | Versão 2.9";
+        lblInformativo.setText(str);
     }
 
     private void permissaoFalse() {
@@ -71,6 +98,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         mmLotacao.setVisible(false);
         mmSemestre.setVisible(false);
         mmPontoProfessores.setVisible(false);
+        mmGerarPontos.setVisible(false);
     }
 
     private void permissaoAdm() {
@@ -110,6 +138,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lblInformativo = new javax.swing.JLabel();
+        tfEmail = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mCadastro = new javax.swing.JMenu();
         mmCurso = new javax.swing.JMenuItem();
@@ -123,7 +152,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         mmLotacao = new javax.swing.JMenuItem();
         mmSalario = new javax.swing.JMenuItem();
         mmPontoProfessores = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        mmGerarPontos = new javax.swing.JMenuItem();
         mRelatorios = new javax.swing.JMenu();
         mmRelProfLotacao = new javax.swing.JMenuItem();
         mmRelPlanilhaProfessores = new javax.swing.JMenuItem();
@@ -136,11 +165,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/nexaspng maior.png"))); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, 380, 350));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 90, 380, 350));
 
         lblInformativo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblInformativo.setText("jLabel2");
         jPanel1.add(lblInformativo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 510, -1, -1));
+
+        tfEmail.setForeground(new java.awt.Color(255, 0, 0));
+        tfEmail.setText("Enviando E-mail's...");
+        jPanel1.add(tfEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 490, -1, -1));
 
         mCadastro.setText("Cadastros");
 
@@ -228,13 +261,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         mMovimentacao.add(mmPontoProfessores);
 
-        jMenuItem1.setText("Gerar Pontos Automáticos");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        mmGerarPontos.setText("Gerar Pontos Automáticos");
+        mmGerarPontos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                mmGerarPontosActionPerformed(evt);
             }
         });
-        mMovimentacao.add(jMenuItem1);
+        mMovimentacao.add(mmGerarPontos);
 
         jMenuBar1.add(mMovimentacao);
 
@@ -360,11 +393,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         trc.setVisible(true);
     }//GEN-LAST:event_mmRelPontosPrrofessoresCompletoActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void mmGerarPontosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmGerarPontosActionPerformed
         // TODO add your handling code here:
         TelaGerarPontosAutomatico tgp = new TelaGerarPontosAutomatico();
         tgp.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_mmGerarPontosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -404,7 +437,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblInformativo;
     private javax.swing.JMenu mCadastro;
@@ -413,6 +445,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mmCurso;
     private javax.swing.JMenuItem mmDisciplina;
     private javax.swing.JMenuItem mmFuncionario;
+    private javax.swing.JMenuItem mmGerarPontos;
     private javax.swing.JMenuItem mmHorarios;
     private javax.swing.JMenuItem mmLotacao;
     private javax.swing.JMenuItem mmPeriodo;
@@ -423,5 +456,52 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mmSalario;
     private javax.swing.JMenuItem mmSemestre;
     private javax.swing.JMenuItem mmUsuario;
+    private javax.swing.JLabel tfEmail;
     // End of variables declaration//GEN-END:variables
+
+    
+    private void mandarEmail(List<PontoProfessores> pesquisaPontoEmail) {
+        List<PontoProfessores> lista = pesquisaPontoEmail;
+        PontoProfessoresDAO ppDAO = new PontoProfessoresDAO();
+        for (PontoProfessores pontoProfessores : lista) {
+            if (pontoProfessores.getProfessor().getEmail() != null
+                    && !pontoProfessores.getProfessor().getEmail().equals("")
+                    && pontoProfessores.getProfessor().isAtivo()) {
+                Calendar cdtInicial = Util.DateToCalendar(pontoProfessores.getData());
+                Funcionario f = pontoProfessores.getProfessor();
+                String mensagem = "Caro Prof.(a) " + f.getNome() + ";";
+                mensagem += "\n\nNosso sistema informatizado de marcação de frequência não registrou seu ponto nas aulas"
+                        + " do dia " + pontoProfessores.getData() + "(" + Util.retornarDiaSemana(cdtInicial) + "), Período " + pontoProfessores.getPeriodo().getDescricao() + ".";
+
+                mensagem += "\n\nHora Entrada: " + pontoProfessores.getHoraEntrada() + ", Hora Saída: "
+                        + pontoProfessores.getHoraSaida() + ".\n";
+
+                LotacaoDisciplinaHorarioDAO ldDAO = new LotacaoDisciplinaHorarioDAO();
+
+                List<LotacaoDisciplinaHorario> listaLotacao = ldDAO.pesquisaDisciplinasFuncionario(f,
+                        Util.retornarDiaSemana(cdtInicial), Ativo.getPeriodo());
+                if (listaLotacao != null) {
+                    for (LotacaoDisciplinaHorario ldh : listaLotacao) {
+                        mensagem += "\nDisciplina: " + ldh.getSalarioDisciplina().getDisciplina().getDescricao()
+                                + " | Semestre: " + ldh.getSalarioDisciplina().getDisciplina().getSemestre()
+                                + " | Coordenador: " + ldh.getSalarioDisciplina().getDisciplina().getSemestre().getCurso().getCoordenador().getNome();
+                    }
+                }
+
+                mensagem += "\n\nPor favor dirija-se ao coordenador do seu curso a fim de verificar esta ocorrência;";
+                mensagem += "\n\nRH";
+                try {
+                    Util.mandarEmail("recursoshumanos@fvs.edu.br", "rh123456", pontoProfessores.getProfessor().getEmail(),
+                            "Sistema Ponto Eletrônico - FVS", mensagem);
+                    pontoProfessores.setEmail(true);
+                    ppDAO.salvar(pontoProfessores);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(rootPane, "Não foi possível enviar e-mail para: "
+                            + f.getEmail() + "\nMotivo: " + e.getMessage());
+                }
+
+            }
+        }
+    }
+
 }

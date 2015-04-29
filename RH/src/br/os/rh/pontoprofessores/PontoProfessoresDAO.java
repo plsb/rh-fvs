@@ -90,6 +90,21 @@ public class PontoProfessoresDAO extends GenericDAO<PontoProfessores> {
         return ponto;
     }
     
+    public List<PontoProfessores> pesquisaPontoEmail() {
+        setSessao(HibernateUtil.getSessionFactory().openSession());
+        setTransacao(getSessao().beginTransaction());
+        List<PontoProfessores> ponto = null;
+
+        ponto = (List<PontoProfessores>) getSessao().createCriteria(PontoProfessores.class).
+                add(Restrictions.or(Restrictions.isNull("horaEntrada"),Restrictions.isNull("horaSaida")))
+                .add(Restrictions.or(Restrictions.eq("email", false),Restrictions.isNull("email")))
+                .add(Restrictions.lt("data", new Date()))
+                .list();
+
+        getSessao().close();
+        return ponto;
+    }
+    
     public void salvar(PontoProfessores p) {
         if (p.getId() == 0) {
             adicionar(p);

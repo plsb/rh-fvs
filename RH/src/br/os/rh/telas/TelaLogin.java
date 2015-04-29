@@ -5,13 +5,22 @@
  */
 package br.os.rh.telas;
 
+import br.os.rh.funcionario.Funcionario;
+import br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorario;
+import br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorarioDAO;
+import br.os.rh.lotacaodiscplinas.LotacaoDisciplinaDAO;
 import br.os.rh.periodo.Periodo;
 import br.os.rh.periodo.PeriodoDAO;
+import br.os.rh.pontoprofessores.PontoProfessores;
+import br.os.rh.pontoprofessores.PontoProfessoresDAO;
 import br.os.rh.semestre.Semestre;
 import br.os.rh.semestre.SemestreDAO;
 import br.os.rh.usuario.Usuario;
 import br.os.rh.usuario.UsuarioDAO;
 import br.os.rh.util.Ativo;
+import br.os.rh.util.Util;
+import java.util.Calendar;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -66,6 +75,8 @@ public class TelaLogin extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -79,14 +90,21 @@ public class TelaLogin extends javax.swing.JDialog {
             .addGap(0, 194, Short.MAX_VALUE)
         );
 
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, -1, -1));
+
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel1.setText("Usuário");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
+        jPanel1.add(tfLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 204, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel4.setText("Senha");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, -1, -1));
+        jPanel1.add(tfSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 204, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Periodo");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, 100, -1));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/33_32x32.png"))); // NOI18N
         jButton1.setText("Entrar");
@@ -96,6 +114,7 @@ public class TelaLogin extends javax.swing.JDialog {
                 jButton1ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(38, 164, -1, -1));
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/erase-icon.png"))); // NOI18N
         jButton2.setText("Sair");
@@ -105,54 +124,10 @@ public class TelaLogin extends javax.swing.JDialog {
                 jButton2ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(143, 164, 99, 41));
 
         cbPeriodo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione" }));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1)
-                    .addComponent(tfLogin)
-                    .addComponent(jLabel4)
-                    .addComponent(tfSenha)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbPeriodo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(36, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(1, 1, 1)
-                        .addComponent(tfLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel4)
-                        .addGap(6, 6, 6)
-                        .addComponent(tfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jPanel1.add(cbPeriodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, 204, -1));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/nexaspng.png"))); // NOI18N
 
@@ -163,7 +138,8 @@ public class TelaLogin extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,19 +158,20 @@ public class TelaLogin extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         UsuarioDAO dao = new UsuarioDAO();
         Usuario usu = new Usuario();
         usu.setLogin(tfLogin.getText());
         usu.setSenha(tfSenha.getText());
         if (dao.autentica(usu)) {
             Ativo.setUsuario(dao.pesquisaDescricaoEq(usu.getLogin()).get(0));
+            
             if ((!Ativo.getUsuario().isAdministrador()) && (cbPeriodo.getSelectedIndex() == 0)) {
                 JOptionPane.showMessageDialog(rootPane, "Informe o Período!", "Info", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 if (cbPeriodo.getSelectedIndex() > 0) {
                     Ativo.setPeriodo((Periodo) cbPeriodo.getSelectedItem());
                 }
+
                 TelaPrincipal tp = new TelaPrincipal();
                 dispose();
                 tp.setVisible(true);
@@ -253,4 +230,6 @@ public class TelaLogin extends javax.swing.JDialog {
     private javax.swing.JTextField tfLogin;
     private javax.swing.JPasswordField tfSenha;
     // End of variables declaration//GEN-END:variables
+
+    
 }

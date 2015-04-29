@@ -59,4 +59,24 @@ public class LotacaoDisciplinaHorarioDAO extends GenericDAO<LotacaoDisciplinaHor
         return sdhLista.size()>0;
     }
     
+    public List<LotacaoDisciplinaHorario>  pesquisaDisciplinasFuncionario(Funcionario f, String ds, Periodo p) {
+        setSessao(HibernateUtil.getSessionFactory().openSession());
+        setTransacao(getSessao().beginTransaction());
+        
+        List<Lotacao> lotacoes = (List<Lotacao>) getSessao().createCriteria(Lotacao.class).
+                add(Restrictions.eq("professor", f)).
+                add(Restrictions.eq("periodo", p)).list();
+        
+        List<LotacaoDisciplina> sdLista = new ArrayList<LotacaoDisciplina>( new HashSet(
+                getSessao().createCriteria(LotacaoDisciplina.class).
+                add(Restrictions.in("lotacao", lotacoes)).list()));
+        
+        List<LotacaoDisciplinaHorario> sdhLista = (List<LotacaoDisciplinaHorario>) getSessao().createCriteria(LotacaoDisciplinaHorario.class).
+                add(Restrictions.in("salarioDisciplina", sdLista)).
+                add(Restrictions.eq("diaSemana", ds)).list();
+        
+        getSessao().close();
+        return sdhLista;
+    }
+    
 }

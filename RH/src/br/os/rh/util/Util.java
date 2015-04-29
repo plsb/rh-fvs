@@ -19,8 +19,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -220,9 +229,8 @@ public class Util {
         jframe.setIconImage(Toolkit.getDefaultToolkit().getImage(classe.getResource("/fvsosp/imagens/bicoaguia.png")));
     }
 
-    public static String retornarDiaSemana() {
+    public static String retornarDiaSemana(Calendar objCalendar) {
 
-        Calendar objCalendar = Calendar.getInstance();
         int dia_semana = objCalendar.get(Calendar.DAY_OF_WEEK);
         switch (dia_semana) {
             case 1:
@@ -248,6 +256,68 @@ public class Util {
 
         return null;
 
+    }
+
+    public static Calendar DateToCalendar(Date date) {
+        Calendar cal = null;
+        try {
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            date = (Date) formatter.parse(date.toString());
+            cal = Calendar.getInstance();
+            cal.setTime(date);
+        } catch (ParseException e) {
+            System.out.println("Exception :" + e);
+        }
+        return cal;
+    }
+    
+    public static void mandarEmail(final String remetente, final String senha, String destinatario,
+            String assunto, String mensagem){
+        
+        Properties props = new Properties();
+        /**
+         * Parâmetros de conexão com servidor Gmail
+         */
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+
+        Session session = Session.getDefaultInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(remetente, senha);
+                    }
+                });
+
+        /**
+         * Ativa Debug para sessão
+         */
+        session.setDebug(true);
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(remetente)); //Remetente
+
+            Address[] toUser = InternetAddress //Destinatário(s)
+                    .parse(destinatario);
+
+            message.setRecipients(Message.RecipientType.TO, toUser);
+            message.setSubject(assunto);//Assunto
+            message.setText(mensagem);
+            /**
+             * Método para enviar a mensagem criada
+             */
+            Transport.send(message);
+
+            System.out.println("Feito!!!");
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+        
     }
 
 }

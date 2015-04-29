@@ -54,6 +54,8 @@ public class PontoProfessores {
     
     @ManyToOne
     private Turno turno;
+    
+    private boolean email;
 
     public String getOpcaoJustEntrada(){
         if(justEntrada.equals("") | justEntrada.equals(" ")){
@@ -190,5 +192,15 @@ public class PontoProfessores {
     public void setTurno(Turno turno) {
         this.turno = turno;
     }
+
+    public boolean isEmail() {
+        return email;
+    }
+
+    public void setEmail(boolean email) {
+        this.email = email;
+    }
+    
+    
 
 }

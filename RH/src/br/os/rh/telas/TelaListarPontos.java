@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -43,7 +44,7 @@ public class TelaListarPontos extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         preencheTabela(new ArrayList<PontoProfessores>());
         btImprimir.setEnabled(false);
-        btJustificar.setEnabled(false);
+//        btJustificar.setEnabled(false);
     }
     
     private void preencheTabela(List<PontoProfessores> lista){
@@ -115,6 +116,11 @@ public class TelaListarPontos extends javax.swing.JDialog {
 
         btJustificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/confi.gif"))); // NOI18N
         btJustificar.setText("Justificar");
+        btJustificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btJustificarActionPerformed(evt);
+            }
+        });
         jPanel5.add(btJustificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 230, -1, -1));
 
         btImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/imprimir2.png"))); // NOI18N
@@ -232,6 +238,21 @@ public class TelaListarPontos extends javax.swing.JDialog {
         }
         
     }//GEN-LAST:event_btImprimirActionPerformed
+
+    private void btJustificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btJustificarActionPerformed
+        // TODO add your handling code here:
+        int row = tb.getSelectedRow();
+        if (row > -1) { //então tem ítem selecionado
+            Object o = tb.getValueAt(row, 0);
+            PontoProfessoresDAO ppDAO = new PontoProfessoresDAO();
+            TelaJustificaPontoNaoMarcao.chamaTela(ppDAO.checkExists("id", Integer.parseInt(o.toString())).get(0));  
+            List<PontoProfessores> lista = ppDAO.pesquisaPonto( new Date(), Ativo.getPeriodo());
+            preencheTabela(lista);
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Selecione o Ítem!",
+                "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btJustificarActionPerformed
 
     /**
      * @param args the command line arguments

@@ -113,6 +113,9 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 tfCodigoKeyPressed(evt);
             }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfCodigoKeyReleased(evt);
+            }
         });
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -304,8 +307,9 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         String senha = TelaPedeSenha.chamaTela();
         senha = Util.md5(senha);
         if (senha.equals(Ativo.getUsuario().getSenha())) {
+            TurnoDAO tDAO = new TurnoDAO();
             PontoProfessoresDAO pDAo = new PontoProfessoresDAO();
-            PontoProfessores p = pDAo.pesquisaPonto(new Date(), f, Ativo.getPeriodo());
+            PontoProfessores p = pDAo.pesquisaPonto(new Date(), f, Ativo.getPeriodo(), tDAO.verificaTurno());
             if (p == null) {
                 p = new PontoProfessores();
             } else if (p.getHoraEntrada() != null && p.getHoraSaida() != null) {
@@ -317,8 +321,8 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
             if (p.getHoraEntrada() == null) {
                 p.setHoraEntrada(new Date());
                 p.setJustEntrada(justificativa);
+                p.setJustSaida(" ");
                 texto += "Entrada de " + f.getNome() + ", marcada com sucesso!";
-                TurnoDAO tDAO = new TurnoDAO();
                 Turno t = tDAO.verificaTurno();
                 if(t!=null){
                     p.setTurno(t);
@@ -372,6 +376,10 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         TelaListarPontos tlp = new TelaListarPontos();
         tlp.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void tfCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfCodigoKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfCodigoKeyReleased
 
     private void limpaCampos() {
         f = null;
