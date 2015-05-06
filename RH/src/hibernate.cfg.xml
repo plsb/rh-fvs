@@ -30,7 +30,7 @@
         <mapping class="br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorario"/>
         <mapping class="br.os.rh.lotacao.Lotacao"/>
         <mapping class="br.os.rh.pontoprofessores.PontoProfessores"/>
-                  
+        <mapping class="br.edu.feriado.Feriado"/>                  
     </session-factory>
 </hibernate-configuration>
 

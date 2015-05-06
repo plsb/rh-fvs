@@ -45,6 +45,7 @@ public class TelaListarPontos extends javax.swing.JDialog {
         preencheTabela(new ArrayList<PontoProfessores>());
         btImprimir.setEnabled(false);
 //        btJustificar.setEnabled(false);
+        tb.setAutoCreateRowSorter(true);  
     }
     
     private void preencheTabela(List<PontoProfessores> lista){

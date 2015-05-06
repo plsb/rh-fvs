@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
 public class TelaJustificaPontoNaoMarcao extends javax.swing.JDialog {
 
     private static PontoProfessores pp;
-    private boolean mEntrada=false, mSaida=false;
+    private boolean mEntrada = false, mSaida = false;
 
     public static void chamaTela(PontoProfessores pp) {
         TelaJustificaPontoNaoMarcao.pp = pp;
@@ -34,23 +34,38 @@ public class TelaJustificaPontoNaoMarcao extends javax.swing.JDialog {
         initComponents();
         setModal(true);
         setLocationRelativeTo(null);
-        if (pp.getHoraEntrada() != null) {
-            edtHoraEntrada.setText(String.valueOf(pp.getHoraEntrada()));
+        if (pp.isAtestado()) {
+
+            cbAtestado.setSelected(true);
+            cbAtestado.setEnabled(false);
+            mEntrada = true;
+            mSaida = true;
             tfJustEntrada1.setText(pp.getJustEntrada());
             edtHoraEntrada.setEnabled(false);
             tfJustEntrada1.setEnabled(false);
-
-        } else {
-            mEntrada=true;
-        }
-
-        if (pp.getHoraSaida() != null) {
             tfJustSaida.setText(pp.getJustSaida());
             tfJustSaida.setEnabled(false);
-            edtHoraSaida.setText(String.valueOf(pp.getHoraSaida()));
             edtHoraSaida.setEnabled(false);
+
         } else {
-            mSaida=true;
+            if (pp.getHoraEntrada() != null) {
+                edtHoraEntrada.setText(String.valueOf(pp.getHoraEntrada()));
+                tfJustEntrada1.setText(pp.getJustEntrada());
+                edtHoraEntrada.setEnabled(false);
+                tfJustEntrada1.setEnabled(false);
+
+            } else {
+                mEntrada = true;
+            }
+
+            if (pp.getHoraSaida() != null) {
+                tfJustSaida.setText(pp.getJustSaida());
+                tfJustSaida.setEnabled(false);
+                edtHoraSaida.setText(String.valueOf(pp.getHoraSaida()));
+                edtHoraSaida.setEnabled(false);
+            } else {
+                mSaida = true;
+            }
         }
 
     }
@@ -76,6 +91,7 @@ public class TelaJustificaPontoNaoMarcao extends javax.swing.JDialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         tfJustEntrada1 = new javax.swing.JTextArea();
         jButton4 = new javax.swing.JButton();
+        cbAtestado = new javax.swing.JCheckBox();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -136,6 +152,10 @@ public class TelaJustificaPontoNaoMarcao extends javax.swing.JDialog {
         });
         jPanel5.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 240, 80, -1));
 
+        cbAtestado.setBackground(new java.awt.Color(255, 255, 255));
+        cbAtestado.setText("Atestado");
+        jPanel5.add(cbAtestado, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 20, -1, -1));
+
         jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 39, 450, 290));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -158,31 +178,50 @@ public class TelaJustificaPontoNaoMarcao extends javax.swing.JDialog {
 
     private void btJustificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btJustificarActionPerformed
         // TODO add your handling code here:
-        if (edtHoraEntrada.getText().equals("  :  :  ")) {
+        if (cbAtestado.isSelected()) {
+            if (JOptionPane.showConfirmDialog(rootPane, "Confirma Atestado?", "Confirma",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE
+            ) == JOptionPane.NO_OPTION) {
+                cbAtestado.setSelected(false);
+            } else {
+                edtHoraEntrada.setText("");
+                edtHoraSaida.setText("");
+            }
+        }
+        if (edtHoraEntrada.getText().equals("  :  :  ") && cbAtestado.isSelected() == false) {
             JOptionPane.showMessageDialog(rootPane, "Informe a hora de entrada");
-        } else if (edtHoraSaida.getText().equals("  :  :  ")) {
+        } else if (edtHoraSaida.getText().equals("  :  :  ") && cbAtestado.isSelected() == false) {
             JOptionPane.showMessageDialog(rootPane, "Informe a hora de Saída");
         } else {
-            try {
-                DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-                pp.setHoraEntrada(formatter.parse(edtHoraEntrada.getText()));
-                pp.setHoraSaida(formatter.parse(edtHoraSaida.getText()));
-            } catch (Exception e) {
-                
+            if (cbAtestado.isSelected() == false) {
+                //só seta hora se o professor não estiver de atestado
+                try {
+                    DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+                    pp.setHoraEntrada(formatter.parse(edtHoraEntrada.getText()));
+                    pp.setHoraSaida(formatter.parse(edtHoraSaida.getText()));
+                } catch (Exception e) {
+
+                }
             }
             pp.setJustEntrada(tfJustEntrada1.getText());
             pp.setJustSaida(tfJustSaida.getText());
-            
-            if(mEntrada){
-                pp.setJustEntrada(pp.getJustEntrada()+"\n Adicionado Por: "+Ativo.getUsuario().getNome()+
-                        "\n Data: "+new Date());
+            pp.setAtestado(cbAtestado.isSelected());
+
+            if (mEntrada) {
+                if (cbAtestado.isSelected()) {
+                    pp.setJustEntrada(pp.getJustEntrada() + "\n(ATESTADO) ");
+                }
+                pp.setJustEntrada(pp.getJustEntrada() + "\n Adicionado Por: " + Ativo.getUsuario().getNome()
+                        + "\n Data: " + new Date());
             }
-            if(mSaida){
-                pp.setJustSaida(pp.getJustSaida()+"\n Adicionado Por: "+Ativo.getUsuario().getNome()+
-                        "\n Data: "+new Date());
+            if (mSaida) {
+                if (cbAtestado.isSelected()) {
+                    pp.setJustSaida(pp.getJustSaida() + "\n(ATESTADO) ");
+                }
+                pp.setJustSaida(pp.getJustSaida() + "\n Adicionado Por: " + Ativo.getUsuario().getNome()
+                        + "\n Data: " + new Date());
             }
-            
-            
+
             PontoProfessoresDAO ppDAO = new PontoProfessoresDAO();
             ppDAO.salvar(pp);
             JOptionPane.showMessageDialog(rootPane, "Justificativa adicionada com sucesso!");
@@ -234,6 +273,7 @@ public class TelaJustificaPontoNaoMarcao extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btJustificar;
+    private javax.swing.JCheckBox cbAtestado;
     private javax.swing.JFormattedTextField edtHoraEntrada;
     private javax.swing.JFormattedTextField edtHoraSaida;
     private javax.swing.JButton jButton4;

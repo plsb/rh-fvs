@@ -57,7 +57,12 @@ public class PontoProfessores {
     
     private boolean email;
 
+    private boolean atestado;
+            
     public String getOpcaoJustEntrada(){
+        if(isAtestado()){
+            return "ATESTADO";
+        }
         if(justEntrada.equals("") | justEntrada.equals(" ")){
             return " ";
         } 
@@ -65,6 +70,9 @@ public class PontoProfessores {
     }
     
     public String getOpcaoJustSaida(){
+        if(isAtestado()){
+            return "ATESTADO";
+        }
         if(justSaida.equals("") | justSaida.equals(" ")){
             return " ";
         } 
@@ -200,7 +208,13 @@ public class PontoProfessores {
     public void setEmail(boolean email) {
         this.email = email;
     }
-    
-    
 
+    public boolean isAtestado() {
+        return atestado;
+    }
+
+    public void setAtestado(boolean atestado) {
+        this.atestado = atestado;
+    }
+    
 }

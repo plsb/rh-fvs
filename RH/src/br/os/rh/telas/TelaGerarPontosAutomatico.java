@@ -4,6 +4,8 @@
  */
 package br.os.rh.telas;
 
+import br.edu.feriado.Feriado;
+import br.edu.feriado.FeriadoDAO;
 import br.os.rh.curso.Curso;
 import br.os.rh.curso.CursoDAO;
 import br.os.rh.funcionario.Funcionario;
@@ -80,7 +82,7 @@ public class TelaGerarPontosAutomatico extends javax.swing.JDialog {
         Descricao_Biblioteca4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Relatório Ponto Professores Completo");
+        setTitle("Gerar Pontos de Professores");
         setModal(true);
         setResizable(false);
 
@@ -212,42 +214,47 @@ public class TelaGerarPontosAutomatico extends javax.swing.JDialog {
 
             LotacaoDisciplinaDAO lDAO = new LotacaoDisciplinaDAO();
             List<LotacaoDisciplina> listaLotacao = lDAO.pesquisaPeriodo();
+            FeriadoDAO fDAO = new FeriadoDAO();
+
             //System.out.println(Util.retornarDiaSemana());
             while (true) {
-                PontoProfessoresDAO ppDAO = new PontoProfessoresDAO();
-                for (LotacaoDisciplina lotacao : listaLotacao) {
+                if (fDAO.checkExists("data", dataInicial).size() == 0) {
+                    PontoProfessoresDAO ppDAO = new PontoProfessoresDAO();
+                    for (LotacaoDisciplina lotacao : listaLotacao) {
 
-                    for (LotacaoDisciplinaHorario lotacaoDisciplinaH : lotacao.getSdh()) {
-                        if (Util.retornarDiaSemana(cdtInicial).equals(lotacaoDisciplinaH.getDiaSemana())
-                                && lotacao.getLotacao().getProfessor().isAtivo()) {
-                            TurnoDAO tDAO = new TurnoDAO();
-                            Turno t = tDAO.verificaTurno(lotacaoDisciplinaH.getHorario().getHoraInicial());
-                            PontoProfessores pp = ppDAO.pesquisaPonto(dataInicial, lotacao.getLotacao().getProfessor(),
-                                    Ativo.getPeriodo(), t);
-                            if (pp == null) {
-                                
-                                pp = new PontoProfessores();
-                                pp.setData(cdtInicial.getTime());
-                                pp.setJustEntrada(" ");
-                                pp.setJustSaida(" ");
-                                pp.setPeriodo(Ativo.getPeriodo());
-                                pp.setProfessor(lotacao.getLotacao().getProfessor());
-                                pp.setTurno(t);
+                        for (LotacaoDisciplinaHorario lotacaoDisciplinaH : lotacao.getSdh()) {
+                            if (Util.retornarDiaSemana(cdtInicial).equals(lotacaoDisciplinaH.getDiaSemana())
+                                    && lotacao.getLotacao().getProfessor().isAtivo()) {
+                                TurnoDAO tDAO = new TurnoDAO();
+                                Turno t = tDAO.verificaTurno(lotacaoDisciplinaH.getHorario().getHoraInicial());
+                                PontoProfessores pp = ppDAO.pesquisaPonto(dataInicial, lotacao.getLotacao().getProfessor(),
+                                        Ativo.getPeriodo(), t);
+                                //verifica se o ponto é nulo, e se não é feriado
+                                if (pp == null) {
 
-                                ppDAO.salvar(pp);
-                                
+                                    pp = new PontoProfessores();
+                                    pp.setData(cdtInicial.getTime());
+                                    pp.setJustEntrada(" ");
+                                    pp.setJustSaida(" ");
+                                    pp.setPeriodo(Ativo.getPeriodo());
+                                    pp.setProfessor(lotacao.getLotacao().getProfessor());
+                                    pp.setTurno(t);
+
+                                    ppDAO.salvar(pp);
+
+                                }
+
                             }
-
                         }
-                    }
 
+                    }
                 }
-                cdtInicial.add(Calendar.DAY_OF_MONTH,1);
+                cdtInicial.add(Calendar.DAY_OF_MONTH, 1);
                 dataInicial.setDate(dataInicial.getDate() + 1);
                 if (dataInicial.after(dataFinal)) {
                     break;
                 }
-                
+
             }
             JOptionPane.showMessageDialog(rootPane, "Pontos Gerados com Sucesso!");
             tfDataFinal.setText("");
