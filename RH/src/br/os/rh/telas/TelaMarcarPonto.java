@@ -7,20 +7,33 @@ package br.os.rh.telas;
 
 import br.os.rh.funcionario.Funcionario;
 import br.os.rh.funcionario.FuncionarioDAO;
+import br.os.rh.pontoprofessores.HistoricoPontoProfessoresTableModel;
 import br.os.rh.pontoprofessores.PontoProfessores;
 import br.os.rh.pontoprofessores.PontoProfessoresDAO;
 import br.os.rh.turno.Turno;
 import br.os.rh.turno.TurnoDAO;
 import br.os.rh.util.Ativo;
+import br.os.rh.util.Biometria;
 import br.os.rh.util.Util;
+import com.digitalpersona.onetouch.DPFPGlobal;
+import com.digitalpersona.onetouch.DPFPSample;
+import com.digitalpersona.onetouch.capture.DPFPCapture;
+import com.digitalpersona.onetouch.capture.event.DPFPReaderStatusAdapter;
+import com.digitalpersona.onetouch.capture.event.DPFPReaderStatusEvent;
 import groovy.lang.Closure;
 import groovy.swing.SwingBuilder;
 import java.awt.Image;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -30,12 +43,11 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
 
     private Funcionario f;
     private String justificativa = "";
+    List<String> listaHistorico = new ArrayList<String>();
 
-    /**
-     * Creates new form TelaMarcarPonto
-     */
     public TelaMarcarPonto() {
         initComponents();
+
         setModal(true);
         setLocationRelativeTo(null);
 
@@ -64,6 +76,25 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         limpaCampos();
     }
 
+    public static Funcionario localizarPorDigital() throws InterruptedException {
+        //pega a digital...
+        DPFPSample digitalAtual = Biometria.getDigital();
+
+        FuncionarioDAO fDAO = new FuncionarioDAO();
+
+        List<Funcionario> funcionarios = fDAO.listar();
+
+        //loop em busca da digital pega anteriormente nos alunos da base
+        Funcionario funcEncontrado = null;
+        for (Funcionario func : funcionarios) {
+            if (Biometria.compararDigitais(func.getDigital(), digitalAtual)) {
+                funcEncontrado = func;
+                return func;
+            }
+        }
+        return null;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -75,8 +106,6 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        tfCodigo = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         lblFoto = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -85,15 +114,17 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         lblCidade = new javax.swing.JLabel();
         lblNome = new javax.swing.JLabel();
         lblTitulacao = new javax.swing.JLabel();
-        btMarcarPonto = new javax.swing.JButton();
-        btJustificativa = new javax.swing.JButton();
         lblJust = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        historico = new javax.swing.JTable();
+        lblFuncNaoEncontrado = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         lblHora = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        tfCodigo = new javax.swing.JTextField();
+        btSair = new javax.swing.JButton();
+        btMarcarPonto = new javax.swing.JButton();
+        btJustificativa = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -106,17 +137,7 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel1.setText("Código.:");
-
-        tfCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                tfCodigoKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                tfCodigoKeyReleased(evt);
-            }
-        });
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -132,23 +153,88 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         });
         jPanel2.add(lblFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, 90, 100));
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Nome.:");
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Titulação.:");
         jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Cidade.:");
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
 
+        lblCidade.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblCidade.setText("jLabel6");
-        jPanel2.add(lblCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, -1, -1));
+        jPanel2.add(lblCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, -1, -1));
 
+        lblNome.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblNome.setText("jLabel6");
-        jPanel2.add(lblNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, -1, -1));
+        jPanel2.add(lblNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, -1, -1));
 
+        lblTitulacao.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblTitulacao.setText("jLabel6");
-        jPanel2.add(lblTitulacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, -1, -1));
+        jPanel2.add(lblTitulacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, -1, -1));
+
+        jPanel5.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 25, 529, 120));
+
+        lblJust.setForeground(new java.awt.Color(255, 0, 0));
+        lblJust.setText("Justificativa Adicioada!");
+        jPanel5.add(lblJust, new org.netbeans.lib.awtextra.AbsoluteConstraints(429, 0, -1, -1));
+
+        jLabel6.setText("Histórico");
+        jPanel5.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 151, -1, -1));
+
+        historico.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(historico);
+
+        jPanel5.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 530, 120));
+
+        lblFuncNaoEncontrado.setBackground(new java.awt.Color(255, 0, 51));
+        lblFuncNaoEncontrado.setForeground(new java.awt.Color(255, 0, 51));
+        lblFuncNaoEncontrado.setText("Funcionário Não Encontrado!");
+        jPanel5.add(lblFuncNaoEncontrado, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
+
+        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 39, 550, 310));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel5.setText("MARCAR PONTO");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, -1, -1));
+
+        lblHora.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblHora.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblHora.setText("jLabel1");
+        lblHora.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jPanel1.add(lblHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(259, 11, 280, -1));
+
+        tfCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfCodigoKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfCodigoKeyReleased(evt);
+            }
+        });
+        jPanel1.add(tfCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 10, 179, -1));
+
+        btSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/erase-icon.png"))); // NOI18N
+        btSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSairActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 0, -1, -1));
 
         btMarcarPonto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/confi.gif"))); // NOI18N
         btMarcarPonto.setText("Marcar");
@@ -162,6 +248,7 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
                 btMarcarPontoKeyPressed(evt);
             }
         });
+        jPanel1.add(btMarcarPonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 0, -1, -1));
 
         btJustificativa.setText("F2 -Justificativa");
         btJustificativa.addActionListener(new java.awt.event.ActionListener() {
@@ -169,85 +256,7 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
                 btJustificativaActionPerformed(evt);
             }
         });
-
-        lblJust.setForeground(new java.awt.Color(255, 0, 0));
-        lblJust.setText("Justificativa Adicioada!");
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/erase-icon.png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(btJustificativa)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btMarcarPonto))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tfCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblJust))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(tfCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btMarcarPonto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btJustificativa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblJust))
-        );
-
-        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 39, -1, -1));
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setText("MARCAR PONTO");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, -1, -1));
-
-        lblHora.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblHora.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblHora.setText("jLabel1");
-        lblHora.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jPanel1.add(lblHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(259, 11, 280, -1));
-
-        jMenu1.setText("Opções");
-
-        jMenuItem1.setText("Listar Pontos");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem1);
-
-        jMenuBar1.add(jMenu1);
-
-        setJMenuBar(jMenuBar1);
+        jPanel1.add(btJustificativa, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 0, -1, 33));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -257,7 +266,7 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -278,64 +287,45 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
             } catch (Exception e) {
             }
             if (f != null) {
-                if (f.isAtivo()) {
-                    carregarFoto(f.getCaminhoFoto());
-                    lblNome.setText(f.getNome());
-                    lblCidade.setText(f.getCidade().getDescricao() + " - " + f.getCidade().getEstado().getDescricao());
-                    lblTitulacao.setText(f.getTitulacao().getDescricao());
-                    btMarcarPonto.setEnabled(true);
-                    btMarcarPonto.requestFocus();
-
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Funcionário não está ativo!");
-                    tfCodigo.setText("");
-                    tfCodigo.setFocusable(true);
-                }
+                mostraProfessor(f);
             } else {
-                JOptionPane.showMessageDialog(rootPane, "Funcionário não encontrado!");
-                tfCodigo.setText("");
-                tfCodigo.setFocusable(true);
+                JOptionPane.showMessageDialog(rootPane, "Funcionario Não Encontrado!");
             }
-
         } else if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_F2) {
             btJustificativaActionPerformed(null);
         }
     }//GEN-LAST:event_tfCodigoKeyPressed
+
+    public void mostraProfessor(Funcionario f) {
+        if (f != null) {
+            if (f.isAtivo()) {
+                carregarFoto(f.getCaminhoFoto());
+                lblNome.setText(f.getNome());
+                lblCidade.setText(f.getCidade().getDescricao() + " - " + f.getCidade().getEstado().getDescricao());
+                lblTitulacao.setText(f.getTitulacao().getDescricao());
+                btMarcarPonto.setEnabled(true);
+                btMarcarPonto.requestFocus();
+
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Funcionário não está ativo!");
+                tfCodigo.setText("");
+                tfCodigo.setFocusable(true);
+            }
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Funcionário não encontrado!");
+            tfCodigo.setText("");
+            tfCodigo.setFocusable(true);
+        }
+
+    }
+
 
     private void btMarcarPontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btMarcarPontoActionPerformed
         // TODO add your handling code here:
         String senha = TelaPedeSenha.chamaTela();
         senha = Util.md5(senha);
         if (senha.equals(Ativo.getUsuario().getSenha())) {
-            TurnoDAO tDAO = new TurnoDAO();
-            PontoProfessoresDAO pDAo = new PontoProfessoresDAO();
-            PontoProfessores p = pDAo.pesquisaPonto(new Date(), f, Ativo.getPeriodo(), tDAO.verificaTurno());
-            if (p == null) {
-                p = new PontoProfessores();
-            } else if (p.getHoraEntrada() != null && p.getHoraSaida() != null) {
-                p = new PontoProfessores();
-            }
-            String texto = "";
-            p.setProfessor(f);
-            p.setData(new Date());
-            if (p.getHoraEntrada() == null) {
-                p.setHoraEntrada(new Date());
-                p.setJustEntrada(justificativa);
-                p.setJustSaida(" ");
-                texto += "Entrada de " + f.getNome() + ", marcada com sucesso!";
-                Turno t = tDAO.verificaTurno();
-                if(t!=null){
-                    p.setTurno(t);
-                }
-            } else {
-                p.setHoraSaida(new Date());
-                p.setJustSaida(justificativa);
-                texto += "Saída de " + f.getNome() + ", marcada com sucesso!";
-            }
-            p.setPeriodo(Ativo.getPeriodo());
-            pDAo.salvar(p);
-            JOptionPane.showMessageDialog(null, texto);
-            limpaCampos();
+            marcaPonto();
         } else {
             JOptionPane.showMessageDialog(null, "Senha Incorreta, Impossível Marcar ponto!");
             limpaCampos();
@@ -344,10 +334,44 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
 
     }//GEN-LAST:event_btMarcarPontoActionPerformed
 
+    public void marcaPonto() {
+        TurnoDAO tDAO = new TurnoDAO();
+        PontoProfessoresDAO pDAo = new PontoProfessoresDAO();
+        PontoProfessores p = pDAo.pesquisaPonto(new Date(), f, Ativo.getPeriodo(), tDAO.verificaTurno());
+        if (p == null) {
+            p = new PontoProfessores();
+        } else if (p.getHoraEntrada() != null && p.getHoraSaida() != null) {
+            p = new PontoProfessores();
+        }
+        String texto = "";
+        p.setProfessor(f);
+        p.setData(new Date());
+        if (p.getHoraEntrada() == null) {
+            p.setHoraEntrada(new Date());
+            p.setJustEntrada(justificativa);
+            p.setJustSaida(" ");
+            texto += "Entrada de " + f.getNome() + ", marcada com sucesso!";
+            Turno t = tDAO.verificaTurno();
+            if (t != null) {
+                p.setTurno(t);
+            }
+        } else {
+            p.setHoraSaida(new Date());
+            p.setJustSaida(justificativa);
+            texto += "Saída de " + f.getNome() + ", marcada com sucesso!";
+        }
+        listaHistorico.add(0,texto+" | Data: "+new Date());
+        historico.setModel(new HistoricoPontoProfessoresTableModel(listaHistorico));
+        p.setPeriodo(Ativo.getPeriodo());
+        pDAo.salvar(p);
+        
+        limpaCampos();
+    }
+
     private void btJustificativaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btJustificativaActionPerformed
         // TODO add your handling code here:
         justificativa = TelaJustificativaPonto.chamaTela();
-        if(!justificativa.equals("")){
+        if (!justificativa.equals("")) {
             lblJust.setText("Justificativa Adicioada!");
         }
     }//GEN-LAST:event_btJustificativaActionPerformed
@@ -366,16 +390,14 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btMarcarPontoKeyPressed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        limpaCampos();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
+        try {
+            // TODO add your handling code here:
+            limpaCampos();
+        } catch (Exception e) {
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-        TelaListarPontos tlp = new TelaListarPontos();
-        tlp.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+        }
+    }//GEN-LAST:event_btSairActionPerformed
 
     private void tfCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfCodigoKeyReleased
         // TODO add your handling code here:
@@ -383,6 +405,7 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
 
     private void limpaCampos() {
         f = null;
+        tfCodigo.setVisible(false);
         btMarcarPonto.setEnabled(false);
         lblCidade.setText("");
         lblFoto.setIcon(null);
@@ -392,6 +415,42 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         tfCodigo.requestFocus();
         justificativa = "";
         lblJust.setText("");
+        lblFuncNaoEncontrado.setVisible(false);
+        btJustificativa.setVisible(false);
+        btMarcarPonto.setVisible(false);
+        btSair.setVisible(false);
+        Thread t1 = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    f = localizarPorDigital();
+                } catch (Exception e) {
+
+                }
+                if (f == null) {
+                    lblFuncNaoEncontrado.setVisible(true);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(TelaMarcarPonto.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    limpaCampos();
+                } else {
+                    mostraProfessor(f);
+
+                    try {
+                        Thread.sleep(1500); //espera um tempo
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(TelaMarcarPonto.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    marcaPonto();
+                }
+            }
+        });
+        t1.start();
+
     }
 
     private String getDiaSemana() {
@@ -466,20 +525,20 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btJustificativa;
     private javax.swing.JButton btMarcarPonto;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btSair;
+    private javax.swing.JTable historico;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblCidade;
     private javax.swing.JLabel lblFoto;
+    private javax.swing.JLabel lblFuncNaoEncontrado;
     private javax.swing.JLabel lblHora;
     private javax.swing.JLabel lblJust;
     private javax.swing.JLabel lblNome;

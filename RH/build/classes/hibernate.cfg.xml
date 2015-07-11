@@ -31,6 +31,10 @@
         <mapping class="br.os.rh.lotacao.Lotacao"/>
         <mapping class="br.os.rh.pontoprofessores.PontoProfessores"/>
         <mapping class="br.edu.feriado.Feriado"/>                  
+        <mapping class="br.edu.evento.Evento"/>
+        <mapping class="br.edu.eventoitem.EventoItem"/>                  
+        <mapping class="br.edu.eventoponto.EventoPonto"/>
+        
     </session-factory>
 </hibernate-configuration>
 

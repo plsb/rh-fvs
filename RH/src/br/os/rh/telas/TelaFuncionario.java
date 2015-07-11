@@ -14,8 +14,16 @@ import br.os.rh.funcionario.FuncionarioTableModel;
 import br.os.rh.titulacao.Titulacao;
 import br.os.rh.titulacao.TitulacaoDAO;
 import br.os.rh.titulacao.TitulacaoTableModel;
+import br.os.rh.util.Biometria;
 import br.os.rh.util.OnlyNumberField;
 import br.os.rh.util.Util;
+import com.digitalpersona.onetouch.DPFPDataPurpose;
+import com.digitalpersona.onetouch.DPFPFeatureSet;
+import com.digitalpersona.onetouch.DPFPGlobal;
+import com.digitalpersona.onetouch.DPFPSample;
+import com.digitalpersona.onetouch.processing.DPFPEnrollment;
+import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
+import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
@@ -94,6 +102,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
         chbAtivo = new javax.swing.JCheckBox();
         tfCodMarcarPonto = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
+        lblDigital = new javax.swing.JLabel();
         lblFoto = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
@@ -267,6 +276,18 @@ public class TelaFuncionario extends javax.swing.JDialog {
         jLabel10.setText("Cód. Marcar Ponto:");
         jPanel5.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 220, -1, -1));
 
+        lblDigital.setBackground(new java.awt.Color(51, 51, 51));
+        lblDigital.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblDigital.setText("Cad. Digital");
+        lblDigital.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblDigital.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblDigital.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblDigitalMouseClicked(evt);
+            }
+        });
+        jPanel5.add(lblDigital, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 190, 80, 20));
+
         lblFoto.setBackground(new java.awt.Color(51, 51, 51));
         lblFoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblFoto.setText("* Foto");
@@ -336,6 +357,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
         tfCodMarcarPonto.setText("");
 //        caminhoFoto = "";
         lblFoto.setIcon(null);
+        lblDigital.setText("Cad. Digital");
     }
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         limpaCampos();
@@ -407,6 +429,11 @@ public class TelaFuncionario extends javax.swing.JDialog {
                 }
             }
             btRemover.setEnabled(true);
+            if(funcionario.getDigital()!=null){
+                lblDigital.setText("Digital OK");
+            } else {
+                lblDigital.setText("Cad. Digital");
+            }
         }
 
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -477,7 +504,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
 
     private void lblFotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFotoMouseClicked
         // TODO add your handling code here:
-        if (!tfNome.getText().equals("")) {
+         if (!tfNome.getText().equals("")) {
             JFileChooser fc = new JFileChooser();
             fc.setFileFilter(new FileNameExtensionFilter("JPG, GIF, PNG E BMP", "jpg", "gif", "png", "bmp"));
             int res = fc.showOpenDialog(null);
@@ -506,6 +533,48 @@ public class TelaFuncionario extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Informe o nome do funcionário.");
         }
     }//GEN-LAST:event_lblFotoMouseClicked
+
+    private void lblDigitalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDigitalMouseClicked
+        // TODO add your handling code here:
+        try {
+			DPFPFeatureExtraction featureExtractor = DPFPGlobal
+					.getFeatureExtractionFactory().createFeatureExtraction();
+			DPFPEnrollment enrollment = DPFPGlobal.getEnrollmentFactory()
+					.createEnrollment();
+			//4 leituras
+			while (enrollment.getFeaturesNeeded() > 0) {
+				JOptionPane.showMessageDialog(rootPane,
+                                        "(Faltam " + enrollment.getFeaturesNeeded() + " leituras) "
+                                                + "Clique em ok, e insira a digital novamente");
+				DPFPSample sample = Biometria.getDigital();
+				
+				if (sample == null)
+					continue;
+
+				DPFPFeatureSet featureSet;
+				try {
+					featureSet = featureExtractor.createFeatureSet(sample,
+							DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
+				} catch (DPFPImageQualityException e) {
+					JOptionPane.showMessageDialog(rootPane,
+							"Má qualidade: "+e
+									.getCaptureFeedback().toString()+". Tente novamente. \n");
+					continue;
+				}
+
+				enrollment.addFeatures(featureSet);
+			}
+
+			funcionario.setDigital(enrollment.getTemplate());
+			JOptionPane.showMessageDialog(rootPane, "Digital Cadastrada com sucesso!");
+                        lblDigital.setText("Digital OK");
+		} catch (DPFPImageQualityException e) {
+			JOptionPane.showMessageDialog(rootPane,"Falha ao cadastrar digital.\n\n");
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+
+    }//GEN-LAST:event_lblDigitalMouseClicked
 
     public static void moveFile(String from, String to) throws FileNotFoundException, IOException {
 
@@ -588,6 +657,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JLabel lblDigital;
     private javax.swing.JLabel lblFoto;
     private javax.swing.JTextField tfBairro;
     private javax.swing.JTextField tfCidade;

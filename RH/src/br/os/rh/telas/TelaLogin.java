@@ -162,6 +162,7 @@ public class TelaLogin extends javax.swing.JDialog {
         Usuario usu = new Usuario();
         usu.setLogin(tfLogin.getText());
         usu.setSenha(tfSenha.getText());
+        usu.setTipo("ADM");
         if (dao.autentica(usu)) {
             Ativo.setUsuario(dao.pesquisaDescricaoEq(usu.getLogin()).get(0));
             

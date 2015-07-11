@@ -7,6 +7,9 @@ package br.os.rh.funcionario;
 
 import br.os.rh.cidade.Cidade;
 import br.os.rh.titulacao.Titulacao;
+import com.digitalpersona.onetouch.DPFPGlobal;
+import com.digitalpersona.onetouch.DPFPTemplate;
+import java.util.Arrays;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,6 +47,8 @@ public class Funcionario {
 
     @ManyToOne
     private Cidade cidade;
+
+    private byte[] digital;
 
     @ManyToOne
     private Titulacao titulacao;
@@ -214,18 +219,20 @@ public class Funcionario {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 83 * hash + this.id;
-        hash = 83 * hash + Objects.hashCode(this.nome);
-        hash = 83 * hash + Objects.hashCode(this.endereco);
-        hash = 83 * hash + Objects.hashCode(this.bairro);
-        hash = 83 * hash + Objects.hashCode(this.telefone);
-        hash = 83 * hash + Objects.hashCode(this.email);
-        hash = 83 * hash + Objects.hashCode(this.cidade);
-        hash = 83 * hash + Objects.hashCode(this.titulacao);
-        hash = 83 * hash + (this.ativo ? 1 : 0);
-        hash = 83 * hash + (this.professor ? 1 : 0);
-        hash = 83 * hash + this.codigoPonto;
+        int hash = 3;
+        hash = 59 * hash + this.id;
+        hash = 59 * hash + Objects.hashCode(this.nome);
+        hash = 59 * hash + Objects.hashCode(this.endereco);
+        hash = 59 * hash + Objects.hashCode(this.bairro);
+        hash = 59 * hash + Objects.hashCode(this.telefone);
+        hash = 59 * hash + Objects.hashCode(this.email);
+        hash = 59 * hash + Objects.hashCode(this.cidade);
+        hash = 59 * hash + Arrays.hashCode(this.digital);
+        hash = 59 * hash + Objects.hashCode(this.titulacao);
+        hash = 59 * hash + (this.ativo ? 1 : 0);
+        hash = 59 * hash + (this.professor ? 1 : 0);
+        hash = 59 * hash + this.codigoPonto;
+        hash = 59 * hash + Objects.hashCode(this.caminhoFoto);
         return hash;
     }
 
@@ -259,6 +266,9 @@ public class Funcionario {
         if (!Objects.equals(this.cidade, other.cidade)) {
             return false;
         }
+        if (!Arrays.equals(this.digital, other.digital)) {
+            return false;
+        }
         if (!Objects.equals(this.titulacao, other.titulacao)) {
             return false;
         }
@@ -269,6 +279,9 @@ public class Funcionario {
             return false;
         }
         if (this.codigoPonto != other.codigoPonto) {
+            return false;
+        }
+        if (!Objects.equals(this.caminhoFoto, other.caminhoFoto)) {
             return false;
         }
         return true;
@@ -293,4 +306,11 @@ public class Funcionario {
         return fotoEspecie;
     }
 
+    public DPFPTemplate getDigital() {
+        return DPFPGlobal.getTemplateFactory().createTemplate(this.digital);
+    }
+
+    public void setDigital(DPFPTemplate digital) {
+        this.digital = digital.serialize();
+    }
 }

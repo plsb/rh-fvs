@@ -27,7 +27,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
      */
     public TelaPrincipal() {
         initComponents();
-        
+
         setLocationRelativeTo(null);
         permissaoFalse();
         permissaoAdm();
@@ -39,7 +39,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         tfEmail.setVisible(false);
 
         Thread thread = new Thread(new Runnable() {
-            
+
             @Override
             public void run() {
                 //mandar email
@@ -54,24 +54,28 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     private void permissaoCoordenador() {
-        if (Ativo.getUsuario().getTipo().equals("Coordenador de Curso")) {
-            mmDisciplina.setVisible(true);
-            mmLotacao.setVisible(true);
-            mRelatorios.setVisible(true);
-            mmRelPontosPrrofessoresCompleto.setVisible(true);
+        if (!Ativo.getUsuario().isAdministrador()) {
+            if (Ativo.getUsuario().getTipo().equals("Coordenador de Curso")) {
+                mmDisciplina.setVisible(true);
+                mmLotacao.setVisible(true);
+                mRelatorios.setVisible(true);
+                mmRelPontosPrrofessoresCompleto.setVisible(true);
 
+            }
         }
-
     }
+    
 
     private void permissaoSecretaria() {
-        if (Ativo.getUsuario().getTipo().equals("Secretária Professores")) {
-            mCadastro.setVisible(false);
-            mRelatorios.setVisible(true);
-            mmPontoProfessores.setVisible(true);
-            mmRelPontosPrrofessoresCompleto.setVisible(true);
-            menuPontoProfessores.setVisible(true);
-            
+        if (!Ativo.getUsuario().isAdministrador()) {
+            if (Ativo.getUsuario().getTipo().equals("Secretária Professores")) {
+                mCadastro.setVisible(false);
+                mRelatorios.setVisible(true);
+                mmPontoProfessores.setVisible(true);
+                mmRelPontosPrrofessoresCompleto.setVisible(true);
+                menuPontoProfessores.setVisible(true);
+
+            }
         }
 
     }
@@ -116,18 +120,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     private void permissaoRH() {
-        if (Ativo.getUsuario().getTipo().equals("RH")) {
-            mmFuncionario.setVisible(true);
-            mmHorarios.setVisible(true);
-            mmSalario.setVisible(true);
-            mmRelProfLotacao.setVisible(true);
-            mmRelPlanilhaProfessores.setVisible(true);
-            mmCurso.setVisible(true);
-            mmSemestre.setVisible(true);
-            mmRelPontosPrrofessoresCompleto.setVisible(true);
-            mmFeriado.setVisible(true);
-            mmGerarPontos.setVisible(true);
-            menuPontoProfessores.setVisible(true);
+        if (!Ativo.getUsuario().isAdministrador()) {
+            if (Ativo.getUsuario().getTipo().equals("RH")) {
+                mmFuncionario.setVisible(true);
+                mmHorarios.setVisible(true);
+                mmSalario.setVisible(true);
+                mmRelProfLotacao.setVisible(true);
+                mmRelPlanilhaProfessores.setVisible(true);
+                mmCurso.setVisible(true);
+                mmSemestre.setVisible(true);
+                mmRelPontosPrrofessoresCompleto.setVisible(true);
+                mmFeriado.setVisible(true);
+                mmGerarPontos.setVisible(true);
+                menuPontoProfessores.setVisible(true);
+            }
         }
 
     }
@@ -503,7 +509,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel tfEmail;
     // End of variables declaration//GEN-END:variables
 
-    
     private void mandarEmail(List<PontoProfessores> pesquisaPontoEmail) {
         List<PontoProfessores> lista = pesquisaPontoEmail;
         PontoProfessoresDAO ppDAO = new PontoProfessoresDAO();
