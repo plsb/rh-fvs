@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package br.edu.eventoitem;
+package br.edu.eventoponto;
 
 import br.os.rh.util.GenericDAO;
 
@@ -12,10 +12,10 @@ import br.os.rh.util.GenericDAO;
  *
  * @author 'Pedro
  */
-public class EventoItensDAO extends GenericDAO<EventoItem>{
+public class EventoPontoDAO extends GenericDAO<EventoPonto>{
 
-    public EventoItensDAO() {
-        super(EventoItem.class);
+    public EventoPontoDAO() {
+        super(EventoPonto.class);
     }
     
 }

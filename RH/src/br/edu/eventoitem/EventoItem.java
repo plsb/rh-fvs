@@ -96,6 +96,11 @@ public class EventoItem {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return  descricao + " | " + data ;
+    }
     
     
     

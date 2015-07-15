@@ -41,6 +41,7 @@ public abstract class GenericDAO<T> {
 
            
         } catch (HibernateException e) {
+            System.out.println(e.getMessage()+" | "+e.getCause());
             JOptionPane.showMessageDialog(null, "Não foi possível inserir " + entity.getClass()
                     + ". Erro: " + e.getMessage());
             return false;
@@ -102,6 +103,8 @@ public abstract class GenericDAO<T> {
         }
         return lista;
     }
+    
+    
     
     /*
      * ao passar uma chave primária

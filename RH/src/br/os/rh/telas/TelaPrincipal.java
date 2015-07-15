@@ -51,6 +51,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         thread.start();
+        
+        
     }
 
     private void permissaoCoordenador() {
@@ -74,6 +76,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 mmPontoProfessores.setVisible(true);
                 mmRelPontosPrrofessoresCompleto.setVisible(true);
                 menuPontoProfessores.setVisible(true);
+                jMenuItem1.setVisible(false);
+                mmPontoProfessores.setVisible(true);
 
             }
         }
@@ -91,6 +95,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     private void permissaoFalse() {
+        mmPontoEvento.setVisible(false);
+        mmMarcaPontoEvento.setVisible(false);
         mmUsuario.setVisible(false);
         mmPeriodo.setVisible(false);
         mmDisciplina.setVisible(false);
@@ -122,6 +128,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void permissaoRH() {
         if (!Ativo.getUsuario().isAdministrador()) {
             if (Ativo.getUsuario().getTipo().equals("RH")) {
+                mmPontoEvento.setVisible(true);
+                mmMarcaPontoEvento.setVisible(true);
                 mmFuncionario.setVisible(true);
                 mmHorarios.setVisible(true);
                 mmSalario.setVisible(true);
@@ -168,10 +176,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
         mmGerarPontos = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         mmPontoProfessores = new javax.swing.JMenuItem();
+        mmMarcaPontoEvento = new javax.swing.JMenuItem();
         mRelatorios = new javax.swing.JMenu();
         mmRelProfLotacao = new javax.swing.JMenuItem();
         mmRelPlanilhaProfessores = new javax.swing.JMenuItem();
         mmRelPontosPrrofessoresCompleto = new javax.swing.JMenuItem();
+        mmPontoEvento = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -302,6 +312,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         menuPontoProfessores.add(mmPontoProfessores);
 
+        mmMarcaPontoEvento.setText("Marcar Ponto Evento");
+        mmMarcaPontoEvento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mmMarcaPontoEventoActionPerformed(evt);
+            }
+        });
+        menuPontoProfessores.add(mmMarcaPontoEvento);
+
         mMovimentacao.add(menuPontoProfessores);
 
         jMenuBar1.add(mMovimentacao);
@@ -331,6 +349,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         mRelatorios.add(mmRelPontosPrrofessoresCompleto);
+
+        mmPontoEvento.setText("Ponto Evento");
+        mmPontoEvento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mmPontoEventoActionPerformed(evt);
+            }
+        });
+        mRelatorios.add(mmPontoEvento);
 
         jMenuBar1.add(mRelatorios);
 
@@ -446,6 +472,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
         tlp.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void mmMarcaPontoEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmMarcaPontoEventoActionPerformed
+        // TODO add your handling code here:
+        TelaMarcarPontoEvento tmp = new TelaMarcarPontoEvento();
+        tmp.setVisible(true);
+    }//GEN-LAST:event_mmMarcaPontoEventoActionPerformed
+
+    private void mmPontoEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmPontoEventoActionPerformed
+        // TODO add your handling code here:
+        TelaRelatorioPontoEvento trpe = new TelaRelatorioPontoEvento();
+        trpe.setVisible(true);
+    }//GEN-LAST:event_mmPontoEventoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -498,7 +536,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mmGerarPontos;
     private javax.swing.JMenuItem mmHorarios;
     private javax.swing.JMenuItem mmLotacao;
+    private javax.swing.JMenuItem mmMarcaPontoEvento;
     private javax.swing.JMenuItem mmPeriodo;
+    private javax.swing.JMenuItem mmPontoEvento;
     private javax.swing.JMenuItem mmPontoProfessores;
     private javax.swing.JMenuItem mmRelPlanilhaProfessores;
     private javax.swing.JMenuItem mmRelPontosPrrofessoresCompleto;
@@ -513,7 +553,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         List<PontoProfessores> lista = pesquisaPontoEmail;
         PontoProfessoresDAO ppDAO = new PontoProfessoresDAO();
         for (PontoProfessores pontoProfessores : lista) {
-            if (pontoProfessores.getProfessor().getEmail() != null
+            if ((pontoProfessores.getProfessor().getEmail() != null)
                     && !pontoProfessores.getProfessor().getEmail().equals("")
                     && pontoProfessores.getProfessor().isAtivo()) {
                 Calendar cdtInicial = Util.DateToCalendar(pontoProfessores.getData());

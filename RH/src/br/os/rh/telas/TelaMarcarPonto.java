@@ -76,20 +76,23 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         limpaCampos();
     }
 
-    public static Funcionario localizarPorDigital() throws InterruptedException {
+    private static Funcionario localizarPorDigital() throws InterruptedException {
         //pega a digital...
         DPFPSample digitalAtual = Biometria.getDigital();
 
         FuncionarioDAO fDAO = new FuncionarioDAO();
 
-        List<Funcionario> funcionarios = fDAO.listar();
+        List<Funcionario> funcionarios = fDAO.listarDigital();
 
         //loop em busca da digital pega anteriormente nos alunos da base
         Funcionario funcEncontrado = null;
-        for (Funcionario func : funcionarios) {
-            if (Biometria.compararDigitais(func.getDigital(), digitalAtual)) {
-                funcEncontrado = func;
-                return func;
+        for (int i = 0; i < funcionarios.size(); i++) {
+            Funcionario func = funcionarios.get(i);
+            if (func.getDigital() != null) {
+                if (Biometria.compararDigitais(func.getDigital(), digitalAtual)) {
+                    funcEncontrado = func;
+                    return func;
+                }
             }
         }
         return null;
@@ -299,17 +302,32 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
     public void mostraProfessor(Funcionario f) {
         if (f != null) {
             if (f.isAtivo()) {
-                carregarFoto(f.getCaminhoFoto());
+                //carregarFoto(f.getCaminhoFoto());
                 lblNome.setText(f.getNome());
                 lblCidade.setText(f.getCidade().getDescricao() + " - " + f.getCidade().getEstado().getDescricao());
                 lblTitulacao.setText(f.getTitulacao().getDescricao());
                 btMarcarPonto.setEnabled(true);
                 btMarcarPonto.requestFocus();
 
+                try {
+                    Thread.sleep(1500); //espera um tempo
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(TelaMarcarPonto.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                marcaPonto();
+
             } else {
-                JOptionPane.showMessageDialog(rootPane, "Funcionário não está ativo!");
+                lblFuncNaoEncontrado.setText("Funcionário não está ativo!");
+                lblFuncNaoEncontrado.setVisible(true);
+                try {
+                    Thread.sleep(1000); //espera um tempo
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(TelaMarcarPonto.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 tfCodigo.setText("");
                 tfCodigo.setFocusable(true);
+                limpaCampos();
             }
         } else {
             JOptionPane.showMessageDialog(rootPane, "Funcionário não encontrado!");
@@ -360,11 +378,11 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
             p.setJustSaida(justificativa);
             texto += "Saída de " + f.getNome() + ", marcada com sucesso!";
         }
-        listaHistorico.add(0,texto+" | Data: "+new Date());
+        listaHistorico.add(0, texto + " | Data: " + new Date());
         historico.setModel(new HistoricoPontoProfessoresTableModel(listaHistorico));
         p.setPeriodo(Ativo.getPeriodo());
         pDAo.salvar(p);
-        
+
         limpaCampos();
     }
 
@@ -415,6 +433,7 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         tfCodigo.requestFocus();
         justificativa = "";
         lblJust.setText("");
+        lblFuncNaoEncontrado.setText("Funcionário Não Encontrado!");
         lblFuncNaoEncontrado.setVisible(false);
         btJustificativa.setVisible(false);
         btMarcarPonto.setVisible(false);
@@ -439,13 +458,6 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
                 } else {
                     mostraProfessor(f);
 
-                    try {
-                        Thread.sleep(1500); //espera um tempo
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(TelaMarcarPonto.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                    marcaPonto();
                 }
             }
         });

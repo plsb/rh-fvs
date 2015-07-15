@@ -112,6 +112,11 @@ public class Evento {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return descricao + " | " + dataInicial + " à " + dataFinal;
+    }
     
     
     

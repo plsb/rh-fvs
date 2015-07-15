@@ -92,4 +92,20 @@ public class FuncionarioDAO extends GenericDAO<Funcionario>{
         return lista;
     }
     
+    public List<Funcionario> listarDigital() {
+        List<Funcionario> lista = null;
+        try {
+            this.setSessao(HibernateUtil.getSessionFactory().openSession());
+            setTransacao(getSessao().beginTransaction());
+            lista = this.getSessao().createCriteria(Funcionario.class).add(Restrictions.isNotNull("digital")).list();
+            //sessao.close();
+        } catch (Throwable e) {
+            if (getTransacao().isActive()) {
+                getTransacao().rollback();
+            }
+            JOptionPane.showMessageDialog(null, "Não foi possível listar: " + e.getMessage());
+        }
+        return lista;
+    }
+    
 }
