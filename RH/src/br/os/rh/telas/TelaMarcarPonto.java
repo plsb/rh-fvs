@@ -154,33 +154,36 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
                 lblFotoMouseClicked(evt);
             }
         });
-        jPanel2.add(lblFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, 90, 100));
+        jPanel2.add(lblFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 10, 90, 100));
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel2.setText("Nome.:");
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel3.setText("Titulação.:");
         jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel4.setText("Cidade.:");
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
 
-        lblCidade.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblCidade.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lblCidade.setForeground(new java.awt.Color(0, 204, 0));
         lblCidade.setText("jLabel6");
-        jPanel2.add(lblCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, -1, -1));
+        jPanel2.add(lblCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, -1, -1));
 
-        lblNome.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblNome.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lblNome.setForeground(new java.awt.Color(0, 204, 0));
         lblNome.setText("jLabel6");
-        jPanel2.add(lblNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, -1, -1));
+        jPanel2.add(lblNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 10, -1, -1));
 
-        lblTitulacao.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblTitulacao.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lblTitulacao.setForeground(new java.awt.Color(0, 204, 0));
         lblTitulacao.setText("jLabel6");
-        jPanel2.add(lblTitulacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, -1, -1));
+        jPanel2.add(lblTitulacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 40, -1, -1));
 
-        jPanel5.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 25, 529, 120));
+        jPanel5.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 25, 840, 120));
 
         lblJust.setForeground(new java.awt.Color(255, 0, 0));
         lblJust.setText("Justificativa Adicioada!");
@@ -189,6 +192,7 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         jLabel6.setText("Histórico");
         jPanel5.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 151, -1, -1));
 
+        historico.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         historico.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -202,14 +206,15 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         ));
         jScrollPane2.setViewportView(historico);
 
-        jPanel5.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 530, 120));
+        jPanel5.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 840, 120));
 
         lblFuncNaoEncontrado.setBackground(new java.awt.Color(255, 0, 51));
+        lblFuncNaoEncontrado.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblFuncNaoEncontrado.setForeground(new java.awt.Color(255, 0, 51));
         lblFuncNaoEncontrado.setText("Funcionário Não Encontrado!");
         jPanel5.add(lblFuncNaoEncontrado, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
-        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 39, 550, 310));
+        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 39, 860, 310));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("MARCAR PONTO");
@@ -265,7 +270,7 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 863, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -302,7 +307,9 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
     public void mostraProfessor(Funcionario f) {
         if (f != null) {
             if (f.isAtivo()) {
-                //carregarFoto(f.getCaminhoFoto());
+                if(f.getCaminhoFoto()!=null){
+                    carregarFoto(f.getCaminhoFoto());
+                }
                 lblNome.setText(f.getNome());
                 lblCidade.setText(f.getCidade().getDescricao() + " - " + f.getCidade().getEstado().getDescricao());
                 lblTitulacao.setText(f.getTitulacao().getDescricao());
@@ -310,7 +317,7 @@ public class TelaMarcarPonto extends javax.swing.JDialog {
                 btMarcarPonto.requestFocus();
 
                 try {
-                    Thread.sleep(1500); //espera um tempo
+                    Thread.sleep(2500); //espera um tempo
                 } catch (InterruptedException ex) {
                     Logger.getLogger(TelaMarcarPonto.class.getName()).log(Level.SEVERE, null, ex);
                 }

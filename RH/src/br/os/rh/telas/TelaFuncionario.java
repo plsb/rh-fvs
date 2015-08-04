@@ -670,11 +670,11 @@ public class TelaFuncionario extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void carregarFoto(String path) {
-        /*caminhoFoto = path;
+        caminhoFoto = path;
 
         ImageIcon imagem = new ImageIcon(caminhoFoto);
 
         Image img = imagem.getImage().getScaledInstance(lblFoto.getWidth() + 2, lblFoto.getHeight() + 2, Image.SCALE_DEFAULT);
-        lblFoto.setIcon(new ImageIcon(img));*/
+        lblFoto.setIcon(new ImageIcon(img));
     }
 }
