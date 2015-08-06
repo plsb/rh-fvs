@@ -581,7 +581,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 mensagem += "\n\nPor favor dirija-se ao coordenador do seu curso a fim de verificar esta ocorrência;";
                 mensagem += "\n\nRH";
                 try {
-                    Util.mandarEmail("recursoshumanos@fvs.edu.br", "rh123456", pontoProfessores.getProfessor().getEmail(),
+                    Util.mandarEmail("frequenciadocente@fvs.edu.br", "fvs123456", pontoProfessores.getProfessor().getEmail(),
                             "Sistema Ponto Eletrônico - FVS", mensagem);
                     pontoProfessores.setEmail(true);
                     ppDAO.salvar(pontoProfessores);
