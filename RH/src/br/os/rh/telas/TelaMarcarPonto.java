@@ -125,6 +125,10 @@ public class TelaMarcarPonto extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         historico = new javax.swing.JTable();
         lblFuncNaoEncontrado = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         lblHora = new javax.swing.JLabel();
         tfCodigo = new javax.swing.JTextField();
@@ -219,7 +223,23 @@ public class TelaMarcarPonto extends javax.swing.JFrame {
         lblFuncNaoEncontrado.setText("Funcionário Não Encontrado!");
         jPanel5.add(lblFuncNaoEncontrado, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
-        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 39, 860, 440));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel1.setText("Noite: 18h00min às 22h30min");
+        jPanel5.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 520, -1, -1));
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 3, 24)); // NOI18N
+        jLabel7.setText("Horários Marcação de Ponto");
+        jPanel5.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 370, -1));
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel8.setText("Manhã: 6h00min às 13h10min");
+        jPanel5.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 460, -1, -1));
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel9.setText("Tarde: 13h20min às 17h50min");
+        jPanel5.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 490, -1, -1));
+
+        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 39, 860, 560));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("MARCAR PONTO");
@@ -542,11 +562,15 @@ public class TelaMarcarPonto extends javax.swing.JFrame {
     private javax.swing.JButton btMarcarPonto;
     private javax.swing.JButton btSair;
     private javax.swing.JTable historico;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel5;

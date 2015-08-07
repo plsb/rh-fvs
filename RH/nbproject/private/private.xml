@@ -5,6 +5,7 @@
         <group>
             <file>file:/C:/Users/'Pedro/Documents/git/rh-fvs/RH/src/hibernate.cfg.xml</file>
             <file>file:/C:/Users/'Pedro/Documents/git/rh-fvs/RH/src/br/os/rh/telas/TelaPrincipal.java</file>
+            <file>file:/C:/Users/'Pedro/Documents/git/rh-fvs/RH/src/br/os/rh/util/ConnectionFactory.java</file>
             <file>file:/C:/Users/'Pedro/Documents/git/rh-fvs/RH/src/br/os/rh/telas/TelaMarcarPonto.java</file>
         </group>
     </open-files>
