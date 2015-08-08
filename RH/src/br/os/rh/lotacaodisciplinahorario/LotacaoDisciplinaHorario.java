@@ -8,12 +8,15 @@ package br.os.rh.lotacaodisciplinahorario;
 
 import br.os.rh.horario.Horario;
 import br.os.rh.lotacaodiscplinas.LotacaoDisciplina;
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *

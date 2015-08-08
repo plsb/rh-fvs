@@ -129,7 +129,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         if (!Ativo.getUsuario().isAdministrador()) {
             if (Ativo.getUsuario().getTipo().equals("RH")) {
                 mmPontoEvento.setVisible(true);
-                mmLotacao.setVisible(true);
+//                mmLotacao.setVisible(true);
                 mmMarcaPontoEvento.setVisible(true);
                 mmFuncionario.setVisible(true);
                 mmHorarios.setVisible(true);

@@ -11,6 +11,7 @@ import br.os.rh.horario.Horario;
 import br.os.rh.salario.Salario;
 import br.os.rh.lotacaodisciplinahorario.LotacaoDisciplinaHorario;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
@@ -23,6 +24,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -40,6 +43,17 @@ public class LotacaoDisciplina {
 
     @ManyToOne
     private Disciplina disciplina;
+    
+    @Temporal(TemporalType.DATE)
+    private Date dataFinalDisciplina;
+
+    public Date getDataFinalDisciplina() {
+        return dataFinalDisciplina;
+    }
+
+    public void setDataFinalDisciplina(Date dataFinalDisciplina) {
+        this.dataFinalDisciplina = dataFinalDisciplina;
+    }    
 
     @OneToMany(mappedBy = "salarioDisciplina", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<LotacaoDisciplinaHorario> sdh;

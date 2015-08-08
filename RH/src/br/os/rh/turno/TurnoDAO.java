@@ -80,8 +80,8 @@ public class TurnoDAO extends GenericDAO<Turno> {
         Turno turno = null;
         
         turno = (Turno) getSessao().createCriteria(Turno.class).
-                add(Restrictions.ge("horaInicio", hour)).
-                add(Restrictions.le("horaFim", hour)).uniqueResult();
+                add(Restrictions.le("horaInicio", hour)).
+                add(Restrictions.ge("horaFim", hour)).uniqueResult();
         getSessao().close();
         return turno;
         

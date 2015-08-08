@@ -273,7 +273,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
         jPanel5.add(tfCodMarcarPonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, 190, -1));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel10.setText("Cód. Marcar Ponto:");
+        jLabel10.setText("Cód. Marcar Ponto:*");
         jPanel5.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 220, -1, -1));
 
         lblDigital.setBackground(new java.awt.Color(51, 51, 51));
@@ -355,7 +355,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
         chbProfessor.setSelected(true);
         chbAtivo.setSelected(true);
         tfCodMarcarPonto.setText("");
-//        caminhoFoto = "";
+        caminhoFoto = "";
         lblFoto.setIcon(null);
         lblDigital.setText("Cad. Digital");
     }
@@ -365,7 +365,7 @@ public class TelaFuncionario extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (Util.chkVazio(tfBairro.getText(), tfTitulacao.getText(), tfNome.getText(),
-                tfCidade.getText(), tfEndereco.getText()/*, caminhoFoto*/)) {
+                tfCidade.getText(), tfEndereco.getText(), caminhoFoto)) {
 
             if (tfCodMarcarPonto.getText().equals("") && chbProfessor.isSelected()) {
                 JOptionPane.showMessageDialog(rootPane, "Informe o Código do Professor!");

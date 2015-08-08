@@ -25,6 +25,7 @@ import groovy.lang.Closure;
 import groovy.swing.SwingBuilder;
 import java.awt.Image;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -89,6 +90,7 @@ public class TelaLotacao extends javax.swing.JDialog {
         ltotal = new javax.swing.JLabel();
         lSemanais1 = new javax.swing.JLabel();
         lblFoto = new javax.swing.JLabel();
+        jButton8 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
@@ -212,6 +214,14 @@ public class TelaLotacao extends javax.swing.JDialog {
         });
         jPanel5.add(lblFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 10, 90, 100));
 
+        jButton8.setText("Definir Data Fim Disciplina Professor");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, -1, -1));
+
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("LOTAÇÃO");
 
@@ -282,6 +292,7 @@ public class TelaLotacao extends javax.swing.JDialog {
             } else if (f.isAtivo()) {
                 lotacao.setProfessor(f);
                 tfFuncionario.setText(f.getNome());
+
                 carregarFoto(f.getCaminhoFoto());
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Funcionário Não está Ativo!");
@@ -291,14 +302,18 @@ public class TelaLotacao extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void carregarFoto(String path) {
-        String caminhoFoto = path;
+        try {
+            String caminhoFoto = path;
 
-        if (!caminhoFoto.equals("")) {
-            ImageIcon imagem = new ImageIcon(caminhoFoto);
+            if (!caminhoFoto.equals("")) {
+                ImageIcon imagem = new ImageIcon(caminhoFoto);
 
-            Image img = imagem.getImage().getScaledInstance(lblFoto.getWidth() + 2, lblFoto.getHeight() + 2, Image.SCALE_DEFAULT);
-            lblFoto.setIcon(new ImageIcon(img));
+                Image img = imagem.getImage().getScaledInstance(lblFoto.getWidth() + 2, lblFoto.getHeight() + 2, Image.SCALE_DEFAULT);
+                lblFoto.setIcon(new ImageIcon(img));
+            }
+        } catch (Exception e) {
         }
+
     }
 
     private void tfFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfFuncionarioActionPerformed
@@ -488,6 +503,9 @@ public class TelaLotacao extends javax.swing.JDialog {
                     }
                     texto += "\n___________________________________________";
                     texto += "\nHoras Semanais Lotadas:" + soma;
+                    if (sd.getDataFinalDisciplina() != null) {
+                        texto += "\n\n\nUltimo dia Aula Disciplina: " + sd.getDataFinalDisciplina();
+                    }
 
                     TelaInfoExtra.chamaTela(texto);
                 }
@@ -498,6 +516,38 @@ public class TelaLotacao extends javax.swing.JDialog {
     private void lblFotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFotoMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_lblFotoMouseClicked
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        Object o = null;
+        int row = tbDisciplinas.getSelectedRow();
+        if (row > -1) { //então tem ítem selecionado
+            o = tbDisciplinas.getValueAt(row, 0);
+            String codigo = String.valueOf(o);
+            LotacaoDisciplinaDAO ldDAO = new LotacaoDisciplinaDAO();
+            int i = Integer.parseInt(codigo);
+            if (i == 0) {
+                JOptionPane.showMessageDialog(rootPane, "Salve o cadastro e depois defina a data!");
+            } else {
+                int indexDisciplina=-1;
+                for(int j=0;j<disciplinas.size();j++){
+                    if(disciplinas.get(j).getId()==i){
+                        indexDisciplina = j;
+                    }
+                }                 
+                Date data = TelaDefiniDataDisciplina.charamaTela();
+                if (data != null) {
+                    disciplinas.get(indexDisciplina).setDataFinalDisciplina(data);
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Data Não Informada!");
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Selecione o Ítem!",
+                    "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -542,6 +592,7 @@ public class TelaLotacao extends javax.swing.JDialog {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

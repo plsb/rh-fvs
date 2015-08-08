@@ -49,21 +49,23 @@ import net.sf.jasperreports.view.JasperViewer;
  *
  * @author Pedro Saraiva
  */
-public class TelaGerarPontosAutomatico extends javax.swing.JDialog {
+public class TelaDefiniDataDisciplina extends javax.swing.JDialog {
 
-    private Funcionario f;
+    private static Date data = null;
+
+    public static Date charamaTela() {
+        TelaDefiniDataDisciplina tDD = new TelaDefiniDataDisciplina();
+        tDD.setVisible(true);
+        return data;
+    }
 
     /**
      * Creates new form TelaRelatorioAcervo
      */
-    public TelaGerarPontosAutomatico() {
+    public TelaDefiniDataDisciplina() {
         initComponents();
         setModal(true);
         setLocationRelativeTo(null);
-        JOptionPane.showMessageDialog(rootPane, 
-                "Antes de gerar os pontos certifique-se de ter cadastrado os \n"
-                        + "feriados para o semestre, como as datas finais \n"
-                        + "de aulas de algumas disciplinas.");
     }
 
     /**
@@ -82,8 +84,6 @@ public class TelaGerarPontosAutomatico extends javax.swing.JDialog {
         btImprimir = new javax.swing.JButton();
         tfDataInicial = new javax.swing.JFormattedTextField();
         Descricao_Biblioteca3 = new javax.swing.JLabel();
-        tfDataFinal = new javax.swing.JFormattedTextField();
-        Descricao_Biblioteca4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gerar Pontos de Professores");
@@ -105,7 +105,7 @@ public class TelaGerarPontosAutomatico extends javax.swing.JDialog {
         jPanel3.setLayout(null);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setText("GERAR PONTOS AUTOMÁTICOS");
+        jLabel5.setText("DEFINIR DATA FINAL DISCIPLINA");
         jPanel3.add(jLabel5);
         jLabel5.setBounds(0, 10, 360, 17);
 
@@ -127,19 +127,7 @@ public class TelaGerarPontosAutomatico extends javax.swing.JDialog {
         tfDataInicial.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
         Descricao_Biblioteca3.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        Descricao_Biblioteca3.setText("Data Inicial.: *");
-
-        try {
-            tfDataFinal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        tfDataFinal.setToolTipText("Informe a Data Inicial ");
-        tfDataFinal.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
-        tfDataFinal.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-
-        Descricao_Biblioteca4.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        Descricao_Biblioteca4.setText("Data Final.: *");
+        Descricao_Biblioteca3.setText("Data.: *");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -152,13 +140,9 @@ public class TelaGerarPontosAutomatico extends javax.swing.JDialog {
                     .addComponent(Descricao_Biblioteca3)
                     .addComponent(tfDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btImprimir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btSair))
-                    .addComponent(Descricao_Biblioteca4)
-                    .addComponent(tfDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btImprimir)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btSair)
                 .addGap(35, 35, 35))
         );
         jPanel1Layout.setVerticalGroup(
@@ -166,15 +150,9 @@ public class TelaGerarPontosAutomatico extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(Descricao_Biblioteca3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1, 1, 1)
-                        .addComponent(tfDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(Descricao_Biblioteca4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1, 1, 1)
-                        .addComponent(tfDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(Descricao_Biblioteca3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(tfDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btSair)
@@ -202,75 +180,14 @@ public class TelaGerarPontosAutomatico extends javax.swing.JDialog {
 
     private void btImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirActionPerformed
         // TODO add your handling code here:
-        if (!tfDataInicial.equals("  /  /    ") && !tfDataFinal.equals("  /  /    ")) {
-            java.util.Date dataInicial = null, dataFinal = null;
-            Calendar cdtInicial = null, cdtFinal = null;
-            try {
-                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                dataInicial = new java.sql.Date(format.parse(tfDataInicial.getText()).getTime());
-                dataFinal = new java.sql.Date(format.parse(tfDataFinal.getText()).getTime());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            cdtInicial = Util.DateToCalendar(dataInicial);
-            cdtFinal = Util.DateToCalendar(dataFinal);
-
-            LotacaoDisciplinaDAO lDAO = new LotacaoDisciplinaDAO();
-            List<LotacaoDisciplina> listaLotacao = lDAO.pesquisaPeriodo();
-            FeriadoDAO fDAO = new FeriadoDAO();
-
-            //System.out.println(Util.retornarDiaSemana());
-            while (true) {
-                if (fDAO.checkExists("data", dataInicial).size() == 0) {
-                    PontoProfessoresDAO ppDAO = new PontoProfessoresDAO();
-                    for (LotacaoDisciplina lotacao : listaLotacao) {
-                        if(lotacao.getDataFinalDisciplina()!=null){
-                            if(dataInicial.after(lotacao.getDataFinalDisciplina())){
-                                continue;
-                            }
-                        }
-                        for (LotacaoDisciplinaHorario lotacaoDisciplinaH : lotacao.getSdh()) {
-                            if (Util.retornarDiaSemana(cdtInicial).equals(lotacaoDisciplinaH.getDiaSemana())
-                                    && lotacao.getLotacao().getProfessor().isAtivo()) {
-                                TurnoDAO tDAO = new TurnoDAO();
-                                Turno t = tDAO.verificaTurno(lotacaoDisciplinaH.getHorario().getHoraInicial());
-                                PontoProfessores pp = ppDAO.pesquisaPonto(dataInicial, lotacao.getLotacao().getProfessor(),
-                                        Ativo.getPeriodo(), t);
-                                //verifica se o ponto é nulo, e se não é feriado
-                                if (pp == null) {
-
-                                    pp = new PontoProfessores();
-                                    pp.setData(cdtInicial.getTime());
-                                    pp.setJustEntrada(" ");
-                                    pp.setJustSaida(" ");
-                                    pp.setPeriodo(Ativo.getPeriodo());
-                                    pp.setProfessor(lotacao.getLotacao().getProfessor());
-                                    pp.setTurno(t);
-
-                                    ppDAO.salvar(pp);
-
-                                }
-
-                            }
-                        }
-
-                    }
-                }
-                cdtInicial.add(Calendar.DAY_OF_MONTH, 1);
-                dataInicial.setDate(dataInicial.getDate() + 1);
-                if (dataInicial.after(dataFinal)) {
-                    break;
-                }
-
-            }
-            JOptionPane.showMessageDialog(rootPane, "Pontos Gerados com Sucesso!");
-            tfDataFinal.setText("");
-            tfDataInicial.setText("");
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "Informe a Data!");
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            data = new java.sql.Date(format.parse(tfDataInicial.getText()).getTime());
+        } catch (ParseException e) {
+            data = null;
+            e.printStackTrace();
         }
-
+        dispose();
     }//GEN-LAST:event_btImprimirActionPerformed
 
     /**
@@ -291,36 +208,35 @@ public class TelaGerarPontosAutomatico extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaGerarPontosAutomatico.class
+            java.util.logging.Logger.getLogger(TelaDefiniDataDisciplina.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaGerarPontosAutomatico.class
+            java.util.logging.Logger.getLogger(TelaDefiniDataDisciplina.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaGerarPontosAutomatico.class
+            java.util.logging.Logger.getLogger(TelaDefiniDataDisciplina.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaGerarPontosAutomatico.class
+            java.util.logging.Logger.getLogger(TelaDefiniDataDisciplina.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaGerarPontosAutomatico().setVisible(true);
+                new TelaDefiniDataDisciplina().setVisible(true);
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Descricao_Biblioteca3;
-    private javax.swing.JLabel Descricao_Biblioteca4;
     private javax.swing.JButton btImprimir;
     private javax.swing.JButton btSair;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JFormattedTextField tfDataFinal;
     private javax.swing.JFormattedTextField tfDataInicial;
     // End of variables declaration//GEN-END:variables
 
