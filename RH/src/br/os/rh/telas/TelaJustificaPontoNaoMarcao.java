@@ -34,6 +34,7 @@ public class TelaJustificaPontoNaoMarcao extends javax.swing.JDialog {
         initComponents();
         setModal(true);
         setLocationRelativeTo(null);
+        lblPonto.setText(String.valueOf(pp.getId()));
         if (pp.isAtestado()) {
 
             cbAtestado.setSelected(true);
@@ -53,6 +54,12 @@ public class TelaJustificaPontoNaoMarcao extends javax.swing.JDialog {
                 tfJustEntrada1.setText(pp.getJustEntrada());
                 edtHoraEntrada.setEnabled(false);
                 tfJustEntrada1.setEnabled(false);
+                if (pp.getHoraSaida() == null) {
+                    edtHoraEntrada.setEnabled(true);
+                    tfJustEntrada1.setEnabled(true);
+                }
+
+                
 
             } else {
                 mEntrada = true;
@@ -93,6 +100,7 @@ public class TelaJustificaPontoNaoMarcao extends javax.swing.JDialog {
         jButton4 = new javax.swing.JButton();
         cbAtestado = new javax.swing.JCheckBox();
         jLabel5 = new javax.swing.JLabel();
+        lblPonto = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -159,8 +167,14 @@ public class TelaJustificaPontoNaoMarcao extends javax.swing.JDialog {
         jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 39, 450, 290));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setText("JUSTIFICAR/VISUALIZAR PONTO");
+        jLabel5.setText("JUSTIFICAR/VISUALIZAR PONTO DE NÚMERO:");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, -1, -1));
+
+        lblPonto.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblPonto.setForeground(new java.awt.Color(255, 0, 0));
+        lblPonto.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblPonto.setText("jLabel3");
+        jPanel1.add(lblPonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 10, 80, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -284,6 +298,7 @@ public class TelaJustificaPontoNaoMarcao extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblPonto;
     private javax.swing.JTextArea tfJustEntrada1;
     private javax.swing.JTextArea tfJustSaida;
     // End of variables declaration//GEN-END:variables

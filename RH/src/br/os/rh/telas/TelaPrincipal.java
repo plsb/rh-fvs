@@ -90,7 +90,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         if (!Ativo.getUsuario().isAdministrador()) {
             str += " | Período: " + Ativo.getPeriodo().getDescricao();
         }
-        str += " | Versão 3.5";
+        str += " | Versão 3.8";
         lblInformativo.setText(str);
     }
 
@@ -135,7 +135,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 mmHorarios.setVisible(true);
                 mmSalario.setVisible(true);
                 mmRelProfLotacao.setVisible(true);
-                mmRelPlanilhaProfessores.setVisible(true);
+                mmRelPlanilhaProfessores.setVisible(false);
                 mmCurso.setVisible(true);
                 mmSemestre.setVisible(true);
                 mmRelPontosPrrofessoresCompleto.setVisible(true);
@@ -578,16 +578,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     }
                 }
 
-                mensagem += "\n\nPor favor dirija-se ao coordenador do seu curso a fim de verificar esta ocorrência;";
-                mensagem += "\n\nRH";
+                mensagem += "\n\nPor favor dirija-se ao coordenador do seu curso a fim de verificar esta ocorrência;"
+                        + "\n\nEste é um e-mail automático, por favor, não responder!";
+                mensagem += "\n\nSistema de Ponto de Professores";
                 try {
-                    Util.mandarEmail("frequenciadocente@fvs.edu.br", "fvs123456", pontoProfessores.getProfessor().getEmail(),
+                    Util.mandarEmail("frequenciadocente@fvs.edu.br", "fvs040908", pontoProfessores.getProfessor().getEmail(),
                             "Sistema Ponto Eletrônico - FVS", mensagem);
                     pontoProfessores.setEmail(true);
                     ppDAO.salvar(pontoProfessores);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(rootPane, "Não foi possível enviar e-mail para: "
-                            + f.getEmail() + "\nMotivo: " + e.getMessage());
+                 //   JOptionPane.showMessageDialog(rootPane, "Não foi possível enviar e-mail para: "
+                   //         + f.getEmail() + "\nMotivo: " + e.getMessage());
                 }
 
             }

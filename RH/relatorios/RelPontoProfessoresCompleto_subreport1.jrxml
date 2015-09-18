@@ -28,43 +28,43 @@ case
 when DATE_FORMAT(PP.data,'%w') = 0 then
 (select sum(h.qtdHora) from horario h
 		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
-						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacao l on l.professor_id=$P{codigoprofessor} and l.periodo_id=$P{periodo}
 						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
 						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Domingo" and h.turno_id=pp.turno_id))
 when DATE_FORMAT(PP.data,'%w') = 1 then
 (select sum(h.qtdHora) from horario h
 		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
-						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacao l on l.professor_id=$P{codigoprofessor} and l.periodo_id=$P{periodo}
 						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
 						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Segunda" and h.turno_id=pp.turno_id))
 when DATE_FORMAT(PP.data,'%w') = 2 then
 (select sum(h.qtdHora) from horario h
 		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
-						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacao l on l.professor_id=$P{codigoprofessor} and l.periodo_id=$P{periodo}
 						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
 						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Terça" and h.turno_id=pp.turno_id))
 when DATE_FORMAT(PP.data,'%w') = 3 then
 (select sum(h.qtdHora) from horario h
 		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
-						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacao l on l.professor_id=$P{codigoprofessor} and l.periodo_id=$P{periodo}
 						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
 						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Quarta" and h.turno_id=pp.turno_id))
 when DATE_FORMAT(PP.data,'%w') = 4 then
 (select sum(h.qtdHora) from horario h
 		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
-						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacao l on l.professor_id=$P{codigoprofessor} and l.periodo_id=$P{periodo}
 						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
 						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Quinta"  and h.turno_id=pp.turno_id))
 when DATE_FORMAT(PP.data,'%w') = 5 then
 (select sum(h.qtdHora) from horario h
 		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
-						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacao l on l.professor_id=$P{codigoprofessor} and l.periodo_id=$P{periodo}
 						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
 						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Sexta"  and h.turno_id=pp.turno_id))
 when DATE_FORMAT(PP.data,'%w') = 6 then
 (select sum(h.qtdHora) from horario h
 		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
-						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacao l on l.professor_id=$P{codigoprofessor} and l.periodo_id=$P{periodo}
 						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
 						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Sábado"  and h.turno_id=pp.turno_id))
 end IS NOT NULL THEN
@@ -72,43 +72,43 @@ case
 when DATE_FORMAT(PP.data,'%w') = 0 then
 (select sum(h.qtdHora) from horario h
 		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
-						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacao l on l.professor_id=$P{codigoprofessor} and l.periodo_id=$P{periodo}
 						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
 						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Domingo" and h.turno_id=pp.turno_id))
 when DATE_FORMAT(PP.data,'%w') = 1 then
 (select sum(h.qtdHora) from horario h
 		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
-						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacao l on l.professor_id=$P{codigoprofessor} and l.periodo_id=$P{periodo}
 						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
 						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Segunda" and h.turno_id=pp.turno_id))
 when DATE_FORMAT(PP.data,'%w') = 2 then
 (select sum(h.qtdHora) from horario h
 		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
-						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacao l on l.professor_id=$P{codigoprofessor} and l.periodo_id=$P{periodo}
 						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
 						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Terça" and h.turno_id=pp.turno_id))
 when DATE_FORMAT(PP.data,'%w') = 3 then
 (select sum(h.qtdHora) from horario h
 		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
-						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacao l on l.professor_id=$P{codigoprofessor} and l.periodo_id=$P{periodo}
 						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
 						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Quarta" and h.turno_id=pp.turno_id))
 when DATE_FORMAT(PP.data,'%w') = 4 then
 (select sum(h.qtdHora) from horario h
 		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
-						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacao l on l.professor_id=$P{codigoprofessor} and l.periodo_id=$P{periodo}
 						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
 						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Quinta"  and h.turno_id=pp.turno_id))
 when DATE_FORMAT(PP.data,'%w') = 5 then
 (select sum(h.qtdHora) from horario h
 		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
-						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacao l on l.professor_id=$P{codigoprofessor} and l.periodo_id=$P{periodo}
 						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
 						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Sexta"  and h.turno_id=pp.turno_id))
 when DATE_FORMAT(PP.data,'%w') = 6 then
 (select sum(h.qtdHora) from horario h
 		where h.id in (select ldh.horario_id from lotacaodisciplinahorario  ldh
-						inner join lotacao l on l.professor_id=$P{codigoprofessor}
+						inner join lotacao l on l.professor_id=$P{codigoprofessor} and l.periodo_id=$P{periodo}
 						inner join lotacaodisciplina ld on ld.lotacao_id=l.id
 						where ldh.salarioDisciplina_id=ld.id and ldh.diaSemana="Sábado"  and h.turno_id=pp.turno_id))
 end

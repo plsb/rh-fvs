@@ -69,9 +69,10 @@ public class TelaListarPontos extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tb = new javax.swing.JTable();
-        btJustificar = new javax.swing.JButton();
+        btExcluir = new javax.swing.JButton();
         btImprimir = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        btJustificar1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -115,14 +116,14 @@ public class TelaListarPontos extends javax.swing.JDialog {
 
         jPanel5.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 650, 174));
 
-        btJustificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/confi.gif"))); // NOI18N
-        btJustificar.setText("Justificar");
-        btJustificar.addActionListener(new java.awt.event.ActionListener() {
+        btExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/erase-icon.png"))); // NOI18N
+        btExcluir.setText("Excluir");
+        btExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btJustificarActionPerformed(evt);
+                btExcluirActionPerformed(evt);
             }
         });
-        jPanel5.add(btJustificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 230, -1, -1));
+        jPanel5.add(btExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 230, -1, -1));
 
         btImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/imprimir2.png"))); // NOI18N
         btImprimir.setText("Imprimir");
@@ -141,6 +142,15 @@ public class TelaListarPontos extends javax.swing.JDialog {
             }
         });
         jPanel5.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 230, -1, -1));
+
+        btJustificar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/os/rh/imagens/confi.gif"))); // NOI18N
+        btJustificar1.setText("Justificar");
+        btJustificar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btJustificar1ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btJustificar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 230, -1, -1));
 
         jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 39, 670, 270));
 
@@ -240,20 +250,41 @@ public class TelaListarPontos extends javax.swing.JDialog {
         
     }//GEN-LAST:event_btImprimirActionPerformed
 
-    private void btJustificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btJustificarActionPerformed
+    private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
+        int row = tb.getSelectedRow();
+        if (row > -1) { //então tem ítem selecionado
+            Object o = tb.getValueAt(row, 0);
+            PontoProfessoresDAO ppDAO = new PontoProfessoresDAO();
+            PontoProfessores pp = ppDAO.checkExists("id", Integer.parseInt(o.toString())).get(0);
+            if(JOptionPane.showConfirmDialog(rootPane, "Deseja Excluir o Ponto?",
+                    "Confirmação", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+                ppDAO.remover(pp);
+            }
+            //List<PontoProfessores> lista = ppDAO.pesquisaPonto( new Date(), Ativo.getPeriodo());
+            //preencheTabela(lista);
+            jButton1ActionPerformed(evt);
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Selecione o Ítem!",
+                "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btExcluirActionPerformed
+
+    private void btJustificar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btJustificar1ActionPerformed
         // TODO add your handling code here:
+                // TODO add your handling code here:
         int row = tb.getSelectedRow();
         if (row > -1) { //então tem ítem selecionado
             Object o = tb.getValueAt(row, 0);
             PontoProfessoresDAO ppDAO = new PontoProfessoresDAO();
             TelaJustificaPontoNaoMarcao.chamaTela(ppDAO.checkExists("id", Integer.parseInt(o.toString())).get(0));  
-            List<PontoProfessores> lista = ppDAO.pesquisaPonto( new Date(), Ativo.getPeriodo());
-            preencheTabela(lista);
+//            List<PontoProfessores> lista = ppDAO.pesquisaPonto( new Date(), Ativo.getPeriodo());
+  //          preencheTabela(lista);
+            jButton1ActionPerformed(evt);
         } else {
             JOptionPane.showMessageDialog(rootPane, "Selecione o Ítem!",
                 "ERRO", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_btJustificarActionPerformed
+    }//GEN-LAST:event_btJustificar1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -291,8 +322,9 @@ public class TelaListarPontos extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btExcluir;
     private javax.swing.JButton btImprimir;
-    private javax.swing.JButton btJustificar;
+    private javax.swing.JButton btJustificar1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
