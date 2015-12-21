@@ -49,27 +49,25 @@ public class TelaJustificaPontoNaoMarcao extends javax.swing.JDialog {
             edtHoraSaida.setEnabled(false);
 
         } else {
+            tfJustEntrada1.setText(pp.getJustEntrada());
             if (pp.getHoraEntrada() != null) {
                 edtHoraEntrada.setText(String.valueOf(pp.getHoraEntrada()));
-                tfJustEntrada1.setText(pp.getJustEntrada());
-                edtHoraEntrada.setEnabled(false);
-                tfJustEntrada1.setEnabled(false);
-                if (pp.getHoraSaida() == null) {
-                    edtHoraEntrada.setEnabled(true);
-                    tfJustEntrada1.setEnabled(true);
-                }
 
-                
-
+//                edtHoraEntrada.setEnabled(false);
+//                tfJustEntrada1.setEnabled(false);
+//                if (pp.getHoraSaida() == null) {
+//                    edtHoraEntrada.setEnabled(true);
+//                    tfJustEntrada1.setEnabled(true);
+//                }
             } else {
                 mEntrada = true;
             }
-
+            edtHoraSaida.setText(String.valueOf(pp.getHoraSaida()));
             if (pp.getHoraSaida() != null) {
                 tfJustSaida.setText(pp.getJustSaida());
-                tfJustSaida.setEnabled(false);
-                edtHoraSaida.setText(String.valueOf(pp.getHoraSaida()));
-                edtHoraSaida.setEnabled(false);
+//                tfJustSaida.setEnabled(false);
+
+//                edtHoraSaida.setEnabled(false);
             } else {
                 mSaida = true;
             }
@@ -202,46 +200,41 @@ public class TelaJustificaPontoNaoMarcao extends javax.swing.JDialog {
                 edtHoraSaida.setText("");
             }
         }
-        if (edtHoraEntrada.getText().equals("  :  :  ") && cbAtestado.isSelected() == false) {
-            JOptionPane.showMessageDialog(rootPane, "Informe a hora de entrada");
-        } else if (edtHoraSaida.getText().equals("  :  :  ") && cbAtestado.isSelected() == false) {
-            JOptionPane.showMessageDialog(rootPane, "Informe a hora de Saída");
-        } else {
-            if (cbAtestado.isSelected() == false) {
-                //só seta hora se o professor não estiver de atestado
-                try {
-                    DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-                    pp.setHoraEntrada(formatter.parse(edtHoraEntrada.getText()));
-                    pp.setHoraSaida(formatter.parse(edtHoraSaida.getText()));
-                } catch (Exception e) {
 
-                }
+        if (cbAtestado.isSelected() == false) {
+            //só seta hora se o professor não estiver de atestado
+            try {
+                DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+                pp.setHoraEntrada(formatter.parse(edtHoraEntrada.getText()));
+                pp.setHoraSaida(formatter.parse(edtHoraSaida.getText()));
+            } catch (Exception e) {
+
             }
-            pp.setJustEntrada(tfJustEntrada1.getText());
-            pp.setJustSaida(tfJustSaida.getText());
-            pp.setAtestado(cbAtestado.isSelected());
-
-            if (mEntrada) {
-                if (cbAtestado.isSelected()) {
-                    pp.setJustEntrada(pp.getJustEntrada() + "\n(ATESTADO) ");
-                }
-                pp.setJustEntrada(pp.getJustEntrada() + "\n Adicionado Por: " + Ativo.getUsuario().getNome()
-                        + "\n Data: " + new Date());
-            }
-            if (mSaida) {
-                if (cbAtestado.isSelected()) {
-                    pp.setJustSaida(pp.getJustSaida() + "\n(ATESTADO) ");
-                }
-                pp.setJustSaida(pp.getJustSaida() + "\n Adicionado Por: " + Ativo.getUsuario().getNome()
-                        + "\n Data: " + new Date());
-            }
-
-            PontoProfessoresDAO ppDAO = new PontoProfessoresDAO();
-            ppDAO.salvar(pp);
-            JOptionPane.showMessageDialog(rootPane, "Justificativa adicionada com sucesso!");
-            dispose();
-
         }
+        pp.setJustEntrada(tfJustEntrada1.getText());
+        pp.setJustSaida(tfJustSaida.getText());
+        pp.setAtestado(cbAtestado.isSelected());
+
+        if (mEntrada) {
+            if (cbAtestado.isSelected()) {
+                pp.setJustEntrada(pp.getJustEntrada() + "\n(ATESTADO) ");
+            }
+            pp.setJustEntrada(pp.getJustEntrada() + "\n Adicionado Por: " + Ativo.getUsuario().getNome()
+                    + "\n Data: " + new Date());
+        }
+        if (mSaida) {
+            if (cbAtestado.isSelected()) {
+                pp.setJustSaida(pp.getJustSaida() + "\n(ATESTADO) ");
+            }
+            pp.setJustSaida(pp.getJustSaida() + "\n Adicionado Por: " + Ativo.getUsuario().getNome()
+                    + "\n Data: " + new Date());
+        }
+
+        PontoProfessoresDAO ppDAO = new PontoProfessoresDAO();
+        ppDAO.salvar(pp);
+        JOptionPane.showMessageDialog(rootPane, "Justificativa adicionada com sucesso!");
+        dispose();
+
 
     }//GEN-LAST:event_btJustificarActionPerformed
 
